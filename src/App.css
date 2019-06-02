@@ -1,0 +1,755 @@
+* {
+  box-sizing: border-box;
+}
+
+/* Card styling starts here */
+
+.content {
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+.active1 {
+  padding: 20px;
+  position: relative;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  height: 190px;
+  margin-bottom: 10px;
+}
+
+.active1:hover {
+  display: block;
+  height: 190px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+}
+
+@media only screen and (max-width: 760px) {
+  .content {
+    margin-top: 90px;
+    margin-bottom: 50px;
+  }
+  .active1 {
+    padding: 20px;
+    position: relative;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    height: 490px;
+    margin-bottom: 10px;
+  }
+  .active1:hover {
+    display: block;
+    height: 490px;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+  }
+}
+
+.cardBorder {
+  height: 150px;
+  border-right: 1px solid rgba(0, 0, 0, 0.2)
+}
+
+.active:hover .btn {
+  display: block;
+}
+
+.search-list {
+  padding: 5px;
+}
+
+.img-fluid, .img-thumbnail {
+  max-width: 100%;
+  height: auto;
+  border-radius: 50%!important;
+  background: white;
+}
+
+.image {
+  width: 150px;
+  height: 150px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.font-medium {
+  color: rgba(20, 4, 4, 0.5);
+  font-family: DINPro-Medium;
+}
+
+.font14 {
+  font-size: 1.4rem;
+  color: black;
+}
+
+p {
+  line-height: normal;
+  margin-top: 6px;
+  margin-bottom: 1rem;
+}
+
+.img-circle {
+  border: 1px solid black;
+  background: white;
+  height: 150px;
+  width: 150px;
+  border-radius: 170px;
+  overflow: hidden;
+}
+
+.headImage {
+  border: 1px solid black;
+  height: 25px;
+  width: 25px;
+  background: whitesmoke;
+  border-radius: 170px;
+  overflow: hidden;
+}
+
+.profile {
+  margin-top: 70px;
+  margin-bottom: 50px;
+}
+
+.update {
+  display: none;
+}
+
+@media only screen and (max-width: 1170px) {}
+
+.btn1 {
+  font-weight: 500;
+  float: right;
+  margin-top: 40px;
+  background: #faa74a;
+  border-color: #faa74a;
+  color: #fff;
+  text-align: center;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: .475rem .75rem;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+}
+
+.btn1:hover {
+  font-weight: 500;
+  float: right;
+  color: #fff;
+  text-align: center;
+  user-select: none;
+  background-color: #000;
+  border: 1px solid transparent;
+  padding: .475rem .75rem;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  display: block;
+  border-radius: .25rem;
+}
+
+.h51 {
+  font-weight: bold;
+}
+
+.h51:hover {
+  color: orange;
+  cursor: pointer;
+}
+
+a:hover {
+  color: orange;
+}
+
+/* Card styling ends here */
+
+/* Footer styling here */
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+.footer-right {
+  padding-top: 15px;
+  text-align: center;
+  vertical-align: middle;
+  color: white;
+}
+
+/* Footer styling ends here */
+
+/* Authentication styling starts here */
+
+.App {
+  margin-top: 90px;
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  width: 100%;
+  color: white;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.btnShift {
+  margin-top: 10px;
+}
+
+.formErrors {
+  color: red;
+}
+
+.alert {
+  padding: 15px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+}
+
+.shift1 {
+  margin-top: 50px;
+}
+
+.shift {
+  margin-top: 10px;
+}
+
+.container-fluid {
+  padding-right: auto;
+  padding-left: auto;
+}
+
+.spinner {
+  height: 132px;
+  width: 132px;
+  text-align: center;
+}
+
+.cross {
+  float: right;
+  margin-right: 10px;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+/*Authentication styling ends here*/
+
+/*Modal styling starts here */
+
+.w3-animate-opacity {
+  animation: opac 0.8s;
+}
+
+.w3-modal {
+  z-index: 3;
+  display: none;
+  padding-top: 100px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.w3-card-4, .w3-hover-shadow:hover {
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.w3-modal-content {
+  margin: auto;
+  background-color: #fff;
+  position: relative;
+  padding: 0;
+  outline: 0;
+  width: 600px;
+}
+
+.w3-teal, .w3-hover-teal:hover {
+  color: #fff!important;
+  background-color: #001!important;
+}
+
+.w3-container, .w3-panel {
+  padding: 0.003em 16px;
+}
+
+.w3-large {
+  font-size: 18px!important;
+}
+
+.w3-display-topright {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.w3-btn, .w3-button {
+  user-select: none;
+}
+
+.w3-button {
+  border: none;
+  display: inline-block;
+  padding: 8px 16px;
+  vertical-align: middle;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  background-color: inherit;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.w3-button:hover {
+  background: rgb(218, 206, 206);
+  color: #000!important;
+}
+
+.w3-display-topright {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.w3-large {
+  font-size: 20px!important;
+}
+
+/*Modal styling ends here */
+
+/* Apply List styling starts here */
+
+.applyList {
+  text-align: center;
+}
+
+/* Apply List styling ends here */
+
+/* Notification styling starts here */
+
+.button__badge {
+  position: absolute;
+  background-color: #FB404B;
+  text-align: center;
+  border-radius: 10px;
+  min-width: 13px;
+  padding: 10 4px;
+  height: 13px;
+  font-size: 12px;
+  color: #FFFFFF;
+  font-weight: bold;
+  line-height: 13px;
+  top: 12px;
+  left: 25px;
+}
+
+.mail {
+  background: rgba(108, 226, 247, 0.747);
+  color: #000;
+  border-bottom: 1px solid #000;
+  border-width: 100%;
+}
+
+/* Notification styling ends here */
+
+/* Pagination styling starts here */
+
+.pagination {
+  margin-bottom: 45px;
+  text-align: center;
+  left: -1%;
+  position: fixed;
+  bottom: 0;
+}
+
+.pagination span {
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  color: white;
+  background: #000;
+  padding: 8px 16px;
+  /* transition: background-color .3s; */
+  border: 1px solid #ddd;
+}
+
+.pagination span.active {
+  background-color: #0099FF;
+  color: white;
+  border: 1px solid #0099FF;
+}
+
+/* Pagination styling ends here */
+
+/* Filter styling starts here */
+
+.select-search-box {
+  width: 300px;
+  position: inherit;
+  margin-bottom: 20px;
+  background: #fff;
+  border-radius: 4px;
+}
+
+.select-search-box--multiple {
+  border-radius: 4px;
+  box-shadow: 0 7px 14px 0 rgba(50, 50, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+.select-search-box::after {
+  font-family: fontawesome;
+  content: "\f078";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  text-align: center;
+  line-height: 50px;
+  color: #222f3e;
+  z-index: 1;
+}
+
+.select-search-box--multiple::after, .select-search-box--focus::after {
+  content: "\f002";
+}
+
+.select-search-box__icon--disabled::after {
+  content: none !important;
+}
+
+.select-search-box--input::after {
+  display: none !important;
+}
+
+.select-search-box__out {
+  display: none;
+}
+
+.select-search-box__search {
+  display: inline-block;
+  width: 100%;
+  height: 50px;
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 16px;
+  padding: 0 20px;
+  color: #222f3e;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  line-height: 50px;
+  box-shadow: 0 7px 14px 0 rgba(50, 50, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+}
+
+input.select-search-box__search {
+  line-height: 1;
+}
+
+.select-search-box--multiple .select-search-box__search {
+  box-shadow: none;
+}
+
+.select-search-box--input .select-search-box__search {
+  cursor: text;
+}
+
+.select-search-box__search:focus {
+  cursor: text;
+}
+
+.select-search-box__search--placeholder {
+  font-style: italic;
+  font-weight: normal;
+}
+
+.select-search-box input::-webkit-input-placeholder {
+  color: #ccc;
+  font-style: italic;
+  font-weight: normal;
+}
+
+.select-search-box input::-moz-placeholder {
+  color: #ccc;
+  font-style: italic;
+  font-weight: normal;
+}
+
+.select-search-box input:-moz-placeholder {
+  color: #ccc;
+  font-style: italic;
+  font-weight: normal;
+}
+
+.select-search-box input:-ms-input-placeholder {
+  color: #ccc;
+  font-style: italic;
+  font-weight: normal;
+}
+
+input[type='search']::-webkit-search-cancel-button, input[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+.select-search-box__select {
+  display: none;
+  position: relative;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 4px;
+  overflow: auto;
+  box-shadow: 0 7px 14px 0 rgba(50, 50, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+  z-index: 100;
+  min-height: 49px;
+}
+
+.select-search-box--multiple .select-search-box__select {
+  display: block;
+  position: static;
+  border-top: 1px solid #eee;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.select-search-box__select--display {
+  display: block;
+}
+
+.select-search-box__option {
+  font-size: 16px;
+  font-weight: 400;
+  color: #616b74;
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  user-select: none;
+}
+
+.select-search-box__option:first-child {
+  border-top: none;
+}
+
+.select-search-box__option--hover, .select-search-box__option:hover {
+  background: #f4f7fa;
+}
+
+.select-search-box__option--selected {
+  background: #54A0FF;
+  color: #fff;
+  border-top-color: #2184ff;
+}
+
+.select-search-box__option--selected:hover, .select-search-box__option--selected.select-search-box__option--hover {
+  background: #2184ff;
+  color: #fff;
+  border-top-color: #2184ff;
+}
+
+.select-search-box__group {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  position: relative;
+}
+
+.select-search-box__group-header {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 0 10px;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 12px;
+}
+
+.filter {
+  height: 50px;
+  margin-top: 10px;
+  z-index: 1;
+}
+
+.space {
+  left: 0;
+  right: 0;
+  margin-left: 15px;
+}
+
+/* Filter styling ends here */
+
+/* Chat styling starts here */
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.messages {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 550px;
+  height: 300px;
+  padding: 20px;
+}
+
+h3 .chatTitle {
+  text-align: center;
+  padding: 10px 0;
+  margin: 0;
+  border-bottom: 1px solid #ddd;
+  background-color: #eee;
+}
+
+.chat-input {
+  position: relative;
+  overflow: hidden;
+  padding: 0 40px;
+  flex-shrink: 5;
+}
+
+.chat-input input[type="text"] {
+  margin-left: -20px;
+  margin-right: -20px;
+  margin-bottom: 10px;
+}
+
+.message.from-me .username {
+  display: none;
+}
+
+.message.from-me {
+  margin-left: 400px;
+  display: block;
+  color: black;
+  justify-content: flex-end;
+  margin-bottom: 5px;
+}
+
+.message.from-me .message-body {
+  background-color: #542047;
+  ;
+  color: #fff;
+}
+
+.message {
+  margin-bottom: 20px;
+  color: black;
+}
+
+.message-body {
+  max-width: 80%;
+  display: inline-block;
+  padding: 20px;
+  background-color: #eee;
+  border: 1px;
+  color: black;
+  border-radius: 5px;
+  padding-right: 50px;
+}
+
+.username {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: black;
+  margin-bottom: 5px;
+}
+
+/* Chat styling ends here */
+
+
+/* ManageUser Styling starts here */
+#showUserDetail {
+  display: none;
+}
+
+/* Spinner styling starts here */
+
+.spinner {
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  top: 50%;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+  /* background: url(/link/to/your/image); */
+  background-size: 100%;
+}
+
+.tabs {
+  margin-top: 20px;
+}
+
+/* Styles for listing table */
+.listing-table {
+  width: 100%;
+  margin-bottom: 40px;
+}
+.listing-table th,
+.listing-table td {
+  padding: 10px;
+  border-bottom: 1px solid hsl(49, 72%, 52%);
+}
+.listing-table {
+  background: #000;
+  color: #fff;
+}
+.listing-table td:first-child,
+.listing-table th:first-child {
+  border-right: 1px solid #666;
+}
+
+#company {
+  text-align: center;
+}
+
+#candidate {
+  text-align: center;
+}
+/* Spinner styling ends here */
+/* ManageUser Styling ends here */
