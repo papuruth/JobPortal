@@ -1,6 +1,5 @@
 import { paginationService } from './paginationService'
 import { paginationConstants } from './paginationConstants'
-import { history } from '../../_helpers/history'
 import { alertActions } from '../alert/alertActions'
 
 export const paginationActions = {
@@ -16,7 +15,6 @@ function  getPageData() {
                     dispatch(alertActions.error(data))
                 } else {
                     dispatch(success(data));
-                    history.push('/');
                 }
             })
             .catch((error) => {

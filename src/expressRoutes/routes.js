@@ -13,7 +13,7 @@ router.get('/users', userController.getUsers);
 router.get('/pages', jobController.getPageData)
 router.get('/mails', jobController.getMailDetails)
 router.put('/updateuser/:id', userController.updateUser);
-router.post('/deleteuser/:id', userController.deleteUser);
+router.delete('/deleteuser/:id', userController.deleteUser);
 router.post('/jobs', jobController.postJobs);
 router.get('/appliedjobs', jobController.getAppliedJobs);
 router.get('/jobs', jobController.getJobs);

@@ -4,7 +4,11 @@ export const userService = {
   login,
   logout,
   register,
-  getAllUsers
+  getAllUsers,
+  editUser,
+  deleteUser,
+  // banUser,
+  // promoteUser
 };
 
 async function login(email, password) {
@@ -49,6 +53,30 @@ async function getAllUsers() {
   return await axios.get('http://localhost:4000/users')
       .then((res) => {
         return res.data.reverse();
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+}
+
+async function editUser(name, emailId, password, phone, _id) {
+  return await axios.put('http://localhost:4000/updateuser/'.concat(_id), {name, emailId, password, phone})
+      .then((res) => {
+        if (res.data.status === true) {
+          return true;
+        }
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+}
+
+async function deleteUser(_id) {
+  return await axios.delete('http://localhost:4000/deleteuser/'.concat(_id))
+      .then((res) => {
+        if (res.data.status === true) {
+          return true;
+        }
       })
       .catch((err) => {
         console.log(err.message);

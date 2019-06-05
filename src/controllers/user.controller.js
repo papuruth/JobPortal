@@ -7,10 +7,10 @@ exports.addUser = async function (req, res) {
     if (Object.keys(req.body).length === 0) {
       res.send('Cannot be empty')
     } else {
-      const checkDuplicate = await Users.findOne({'emailId': req.body.email})
+      const checkDuplicate = await Users.findOne({ 'emailId': req.body.email })
       console.log(checkDuplicate)
       if (checkDuplicate !== null) {
-        res.json({'checkDuplicate': true})
+        res.json({ 'checkDuplicate': true })
         throw new Error('User exists')
       }
 
@@ -33,7 +33,7 @@ exports.addUser = async function (req, res) {
       await data.save()
         .then(data => {
           console.log(data)
-          res.json({'isSignup': true});
+          res.json({ 'isSignup': true });
         })
         .catch(err => {
           throw new Error(err.message)
@@ -47,31 +47,31 @@ exports.addUser = async function (req, res) {
 exports.login = async function (req, res) {
   console.log(req.body)
   try {
-    const checkUser = await Users.findOne({ $and:[{'emailId': req.body.email },{'password': req.body.password}]});
+    const checkUser = await Users.findOne({ $and: [{ 'emailId': req.body.email }, { 'password': req.body.password }] });
     if (checkUser === null) {
       throw new Error('false')
     }
     console.log(checkUser)
     if (checkUser.emailId === req.body.email && checkUser.password === req.body.password) {
       console.log('Successfully logged in')
-      res.json({'data': checkUser, 'isLoggedIn': true});
+      res.json({ 'data': checkUser, 'isLoggedIn': true });
     } else {
       throw new Error('false');
     }
   } catch (error) {
     console.log(error.message)
-    res.json({'isLoggedIn': error.message})
+    res.json({ 'isLoggedIn': error.message })
   }
 }
 
 exports.getUsers = function (req, res, next) {
-  Users.find({},function (err, data) {
+  Users.find({}, function (err, data) {
     if (err) return next(err)
     res.send(data)
   })
 }
 
-exports.getOneUser = async function (req, res){
+exports.getOneUser = async function (req, res) {
   await Users.findById(req.params.id, (err, data) => {
     if (err) {
       return err
@@ -81,17 +81,33 @@ exports.getOneUser = async function (req, res){
   })
 }
 exports.updateUser = async function (req, res, next) {
-  console.log('done')
   await Users.findByIdAndUpdate(req.params.id, { $set: req.body }, async function (err, data) {
     if (err) return next(err)
-    await jobController.updateAppliedJobs(req.body)
-    res.send('User updated successfully')
+    // Fetching updated user details
+    const user = await Users.findById(req.params.id)
+    // User Object
+    const userDetails = {
+      "userId": user._id,
+      "name": user.name,
+      "gender": user.gender,
+      "emailId": user.emailId,
+      "phone": user.phone,
+      "role": user.role,
+      "image": user.image
+    }
+    if (user.role === 2) {
+      // Calling Update Applied Jobs with updated user details
+      await jobController.updateAppliedJobs(req, userDetails)
+      res.json({ 'status': true })
+    } else {
+      res.json({ 'status': true })
+    }
   })
 }
 
 exports.deleteUser = function (req, res, next) {
   Users.findByIdAndRemove(req.params.id, function (err, data) {
     if (err) return next(err)
-    res.send('User deleted successfully')
+    res.json({'status': true})
   })
 }

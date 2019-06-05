@@ -1,9 +1,9 @@
 import React from 'react';
 import { userActions } from '../redux/user/userActions'
-import Input from './generalComponents/input.component'
-import Button from './generalComponents/button.component'
 import isLoggedIn from '../isLoggedIn'
 import { Link } from 'react-router-dom'
+import Input from './generalComponents/input.component'
+import Button from './generalComponents/button.component'
 import Label from './generalComponents/label';
 
 class Login extends React.Component {

@@ -751,5 +751,18 @@ h3 .chatTitle {
 #candidate {
   text-align: center;
 }
+
+.btn-link {
+  font-weight: 400;
+  color: #000;
+  text-decoration: none;
+  border-radius: 0;
+}
+
+.btn-link:focus, .btn-link:hover {
+  color: #23527c;
+  text-decoration: none;
+  background-color: transparent;
+}
 /* Spinner styling ends here */
 /* ManageUser Styling ends here */

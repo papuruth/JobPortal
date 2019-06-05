@@ -1,4 +1,5 @@
 const Users = require('../models/user')
+const mongoose = require('mongoose')
 const job = require('../models/jobs')
 const page = require('../models/page')
 const apply = require('../models/appliedJobs')
@@ -89,21 +90,20 @@ exports.postJobs = async function (req, res) {
 exports.getJobs = function (req, res, next) {
   const page = req.query.page;
   const last = req.query.last
-  console.log(page, last)
 
   if (page === last) {
     job.AddJobs.find({}, function (err, data) {
       if (err) return next(err)
       res.json(data)
     })
-      .sort({updatedAt: -1})
+      .sort({ updatedAt: -1 })
       .skip(5 * (page - 1))
   } else {
     job.AddJobs.find({}, function (err, data) {
       if (err) return next(err)
       res.json(data)
     })
-      .sort({updatedAt: -1})
+      .sort({ updatedAt: -1 })
       .limit(5)
       .skip(5 * (page - 1))
   }
@@ -334,9 +334,8 @@ exports.getMailDetails = async function (req, res) {
   })
 }
 
-exports.updateAppliedJobs = async function (req) {
-  const emailId = req.emailId
-  await apply.AppliedJobs.findOneAndUpdate({ 'userDetails.emailId': emailId }, { $set: { 'userDetails.image': req.image } }, (err, res) => {
+exports.updateAppliedJobs = async function (req, data) {
+  await apply.AppliedJobs.updateMany({ 'userDetails.userId': mongoose.Types.ObjectId(req.params.id) }, { $set: { 'userDetails': data } }, { multi: true }, (err, res) => {
     if (err) {
       console.log(err.message);
     } else {

@@ -3,8 +3,8 @@ import Input from './generalComponents/input.component'
 import Button from './generalComponents/button.component'
 import isLoggedIn from '../isLoggedIn'
 import { userActions } from '../redux/user/userActions';
-import { Link } from 'react-router-dom'
 import { alertActions } from '../redux/alert/alertActions';
+import { Link } from 'react-router-dom'
 import Label from './generalComponents/label';
 
 class Signup extends React.Component {
@@ -49,7 +49,6 @@ class Signup extends React.Component {
   handleUserInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    console.log(name, value)
     this.setState({ [name]: value },
       () => { this.validateField(name, value) });
   }

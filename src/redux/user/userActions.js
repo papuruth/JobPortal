@@ -8,7 +8,11 @@ export const userActions = {
   login,
   logout,
   register,
-  getAllUsers
+  getAllUsers,
+  editUser,
+  deleteUser,
+  // banUser,
+  // promoteUser
 };
 
 function login(email, password) {
@@ -72,7 +76,7 @@ function getAllUsers() {
     dispatch(request());
     userService.getAllUsers()
       .then((users) => {
-          dispatch(success(users));
+        dispatch(success(users));
       })
       .catch((error) => {
         dispatch(failure(error));
@@ -83,4 +87,50 @@ function getAllUsers() {
   function request(users) { return { type: userConstants.GET_ALL_USERS_REQUEST, users } }
   function success(users) { return { type: userConstants.GET_ALL_USERS_SUCCESS, users } }
   function failure(error) { return { type: userConstants.GET_ALL_USERS_FAILURE, error } }
+}
+
+function editUser(name, emailId, password, phone, _id) {
+  return dispatch => {
+    dispatch(request(name, emailId, password, phone, _id));
+    userService.editUser(name, emailId, password, phone, _id)
+      .then((response) => {
+        if (response === true) {
+          dispatch(success(response));
+          dispatch(alertActions.success('User edited successfully!!!'))
+        } else {
+          dispatch(alertActions.error('Unable to edit user!'))
+        }
+      })
+      .catch((error) => {
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      })
+  };
+
+  function request(...users) { return { type: userConstants.EDIT_USER_REQUEST, users } }
+  function success(response) { return { type: userConstants.EDIT_USER_SUCCESS, response } }
+  function failure(error) { return { type: userConstants.EDIT_USER_FAILURE, error } }
+}
+
+function deleteUser(_id) {
+  return dispatch => {
+    dispatch(request(_id));
+    userService.deleteUser(_id)
+      .then((response) => {
+        if (response === true) {
+          dispatch(success(response));
+          dispatch(alertActions.success('User deleted successfully!!!'))
+        } else {
+          dispatch(alertActions.error('Unable to delete user!'))
+        }
+      })
+      .catch((error) => {
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      })
+  };
+
+  function request(id) { return { type: userConstants.DELETE_USER_REQUEST, id } }
+  function success(response) { return { type: userConstants.DELETE_USER_SUCCESS, response } }
+  function failure(error) { return { type: userConstants.DELETE_USER_FAILURE, error } }
 }
