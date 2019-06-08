@@ -19,6 +19,10 @@ const userData = new UserSchema({
     required: true,
     minlength: 8
   },
+  userStatus: {
+    type: Number,
+    required: true
+  },
   phone: {
     type: Number,
     required: true

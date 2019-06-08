@@ -19,6 +19,8 @@ class Login extends React.Component {
       emailValid: false,
       passwordValid: false,
       signinValid: false,
+      pswdType: true,
+      pswdClass: 'fa fa-eye-slash'
     }
   }
 
@@ -86,12 +88,26 @@ class Login extends React.Component {
     }
   }
 
+  showHidePassword = (e) => {
+    e.preventDefault();
+    if (document.getElementById('password').type === 'password') {
+      this.setState({
+        pswdClass: 'fa fa-eye',
+        pswdType: !this.state.pswdType
+      })
+    } else {
+      this.setState({
+        pswdClass: 'fa fa-eye-slash',
+        pswdType: !this.state.pswdType
+      })
+    }
+  }
   render() {
     if (isLoggedIn()) {
       this.props.history.push('/');
     }
     return (
-      <div className="row">
+      <div className="row justify-content-center">
         <div className="col-sm-12">
           <div className="col-md-4 col-md-offset-4">
             <h1>Login</h1>
@@ -122,17 +138,20 @@ class Login extends React.Component {
                   htmlFor={'password'}
                   title={'Password'}
                 />
-                <div className="col-sm-10">
+                <div className="input-group col-sm-10">
                   <Input
                     onChange={this.handleUserInput}
                     className={'form-control'}
                     id={'password'}
-                    input_type={'password'}
+                    input_type={this.state.pswdType ? 'password' : 'text'}
                     name={'password'}
                     value={this.state.password}
                     placeholder="Password"
                     required
                   />
+                  <div className="input-group-addon" onClick={this.showHidePassword}>
+                    <i className={this.state.pswdClass} aria-hidden="true"></i>
+                  </div>
                 </div>
               </div>
               <div className="form-group row">

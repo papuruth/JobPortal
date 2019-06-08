@@ -130,8 +130,27 @@ class ManageUser extends React.Component {
   deleteUser = (e) => {
     e.preventDefault();
     const id = e.currentTarget.id;
-    const {dispatch} = this.props;
+    const { dispatch } = this.props;
     dispatch(userActions.deleteUser(id));
+  }
+
+  banUser = (e) => {
+    e.preventDefault();
+    const id = e.currentTarget.id;
+    const oneUser = this.state.allUser.filter((item) => {
+      if (item._id === id) {
+        return true;
+      }
+      return false;
+    })
+    const userStatus = oneUser[0].userStatus;
+    if (userStatus === 1) {
+      const { dispatch } = this.props;
+      dispatch(userActions.banUser(id, 0));
+    } else {
+      const { dispatch } = this.props;
+      dispatch(userActions.banUser(id, 1));
+    }
   }
 
   closeEditUserDetail = (e) => {
@@ -259,9 +278,7 @@ class ManageUser extends React.Component {
                             <ul className="dropdown-menu">
                               <li><button id={item._id} type="button" className="btn btn-link" onClick={this.editUser}><i className="fa fa-pencil fa-fw"></i> Edit</button></li>
                               <li><button id={item._id} type="button" className="btn btn-link" onClick={this.deleteUser}><i className="fa fa-trash-o fa-fw"></i> Delete</button></li>
-                              <li><button id={item._id} type="button" className="btn btn-link" onClick={this.banUser}><i className="fa fa-ban fa-fw"></i> Ban</button></li>
-                              <li className="divider"></li>
-                              <li><button id={item._id} type="button" className="btn btn-link" onClick={this.promoteUser}><i className="fa fa-unlock"></i> Make admin</button></li>
+                              <li><button id={item._id} type="button" className="btn btn-link" onClick={this.banUser}><i className="fa fa-ban fa-fw"></i> {item.userStatus === 1 ? 'Ban' : 'Unban'}</button></li>
                             </ul>
                           </div>
                         </td>
@@ -286,11 +303,9 @@ class ManageUser extends React.Component {
                               <span className="fa fa-caret-down" title="Toggle dropdown menu"></span>
                             </button>
                             <ul className="dropdown-menu">
-                              <li><button id={item._id} type="button" className="btn btn-link" onClick={this.editUser}><i className="fa fa-pencil fa-fw"></i> Edit</button></li>
-                              <li><button id={item._id} type="button" className="btn btn-link" onClick={this.deleteUser}><i className="fa fa-trash-o fa-fw"></i> Delete</button></li>
-                              <li><button id={item._id} type="button" className="btn btn-link" onClick={this.banUser}><i className="fa fa-ban fa-fw"></i> Ban</button></li>
-                              <li className="divider"></li>
-                              <li><button id={item._id} type="button" className="btn btn-link" onClick={this.promoteUser}><i className="fa fa-unlock"></i> Make admin</button></li>
+                              <li><button id={item._id} type="button" className="btn btn-link" onClick={this.editUser}><i className="fa fa-pencil fa-fw"></i> Edit Company</button></li>
+                              <li><button id={item._id} type="button" className="btn btn-link" onClick={this.deleteUser}><i className="fa fa-trash-o fa-fw"></i> Delete Company</button></li>
+                              <li><button id={item._id} type="button" className="btn btn-link" onClick={this.banUser}><i className="fa fa-ban fa-fw"></i> {item.userStatus === 1 ? 'Ban COmpany' : 'Unban Company'}</button></li>
                             </ul>
                           </div>
                         </td>

@@ -7,7 +7,7 @@ export const userService = {
   getAllUsers,
   editUser,
   deleteUser,
-  // banUser,
+  banUser,
   // promoteUser
 };
 
@@ -15,14 +15,14 @@ async function login(email, password) {
   password = btoa(password)
   return await axios.post('http://localhost:4000/authenticate', { email, password })
     .then(user => {
-      const isLoggedIn = user.data.isLoggedIn
+      const isLoggedIn = user.data.status
       if (isLoggedIn === true) {
         // store user details in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(user.data.data));
         return user.data.data;
       }
       else {
-        return 'Credential not valid'
+        return isLoggedIn;
       }
     });
 }
@@ -77,6 +77,16 @@ async function deleteUser(_id) {
         if (res.data.status === true) {
           return true;
         }
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+}
+
+async function banUser(_id, userStatus) {
+  return await axios.put('http://localhost:4000/updateuser/'.concat(_id), {userStatus})
+      .then((res) => {
+        return res.data.status;
       })
       .catch((err) => {
         console.log(err.message);

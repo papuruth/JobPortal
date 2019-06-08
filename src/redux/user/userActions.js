@@ -11,7 +11,7 @@ export const userActions = {
   getAllUsers,
   editUser,
   deleteUser,
-  // banUser,
+  banUser,
   // promoteUser
 };
 
@@ -20,8 +20,12 @@ function login(email, password) {
     dispatch(request({ email }));
     userService.login(email, password)
       .then((user) => {
-        if (user === 'Credential not valid') {
-          dispatch(alertActions.error(user))
+        if (user === false) {
+          dispatch(alertActions.error('Credential not valid'))
+        } else if(user === 'null') {
+          dispatch(alertActions.error("Credential not valid"));
+        } else if(user === 'ban') {
+          dispatch(alertActions.error("You are banned! Please contact admin@jobportal.com"));
         } else {
           dispatch(alertActions.success('Login Successful'))
           dispatch(success(user));
@@ -133,4 +137,30 @@ function deleteUser(_id) {
   function request(id) { return { type: userConstants.DELETE_USER_REQUEST, id } }
   function success(response) { return { type: userConstants.DELETE_USER_SUCCESS, response } }
   function failure(error) { return { type: userConstants.DELETE_USER_FAILURE, error } }
+}
+
+function banUser(_id, userStatus) {
+  return dispatch => {
+    dispatch(request(_id, userStatus));
+    userService.banUser(_id, userStatus)
+      .then((response) => {
+        if (response === 'ban') {
+          dispatch(success(response));
+          dispatch(alertActions.success('User banned successfully!!!'))
+        } else if (response === 'unban') {
+          dispatch(success(response));
+          dispatch(alertActions.success('User unbanned successfully!!!'))
+        } else {
+          dispatch(alertActions.error('Unable to ban user!'))
+        }
+      })
+      .catch((error) => {
+        dispatch(failure(error));
+        dispatch(alertActions.error(error));
+      })
+  };
+
+  function request(id) { return { type: userConstants.BAN_USER_REQUEST, id } }
+  function success(response) { return { type: userConstants.BAN_USER_SUCCESS, response } }
+  function failure(error) { return { type: userConstants.BAN_USER_FAILURE, error } }
 }

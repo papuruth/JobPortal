@@ -191,7 +191,7 @@ class AppliedList extends React.Component {
                 <div className="panel-footer">
                   {
                     this.userData.role === 2 && <button className="btn btn-sm btn-primary" id={item.jobDetails.company} onClick={this.openChat} type="button" data-toggle="tooltip"
-                      data-original-title="Send message to user"><i className="glyphicon glyphicon-envelope"></i></button>
+                      data-original-title="Send message to user"><i className="glyphicon glyphicon-chat"></i></button>
                   }
                   {
                     this.userData.role === 1 && <button className="btn btn-sm btn-primary" id={item.userDetails.name} onClick={this.openChat} type="button" data-toggle="tooltip"

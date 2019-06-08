@@ -24,7 +24,9 @@ class Signup extends React.Component {
       nameValid: false,
       phoneValid: false,
       genderValid: false,
-      signupValid: false
+      signupValid: false,
+      pswdType: true,
+      pswdClass: 'fa fa-eye-slash'
     }
   }
 
@@ -116,6 +118,21 @@ class Signup extends React.Component {
     }
   }
 
+  showHidePassword = (e) => {
+    e.preventDefault();
+    if (document.getElementById('password').type === 'password') {
+      this.setState({
+        pswdClass: 'fa fa-eye',
+        pswdType: !this.state.pswdType
+      })
+    } else {
+      this.setState({
+        pswdClass: 'fa fa-eye-slash',
+        pswdType: !this.state.pswdType
+      })
+    }
+  }
+
   render() {
     if (isLoggedIn()) {
       this.props.history.push('/');
@@ -161,7 +178,7 @@ class Signup extends React.Component {
                 placeholder="@"
                 required
               />
-              <div><small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small></div>
+              <div><small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small></div>
               {this.errorClass(this.state.formErrors.Email) && <span className="formErrors">Email should be a valid email address e.g., example@domain.com</span>}
             </div>
           </div>
@@ -171,17 +188,24 @@ class Signup extends React.Component {
               htmlFor={'password'}
               title={'Password'}
             />
-            <div className="col-sm-10">
+            <div className="input-group col-sm-10">
               <Input
                 onChange={this.handleUserInput}
                 className={'form-control'}
                 id={'password'}
-                input_type={'password'}
+                input_type={this.state.pswdType ? 'password' : 'text'}
                 name={'password'}
                 value={this.state.password}
                 placeholder="Password"
                 required
               />
+              <div className="input-group-addon" onClick={this.showHidePassword}>
+                <i className={this.state.pswdClass} aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+          <div className="form-group row">
+            <div className="col-sm-10">
               {this.errorClass(this.state.formErrors.Password) && <span className="formErrors">Password is too short and must be of length 8 and must conatain a lowercase an uppercase a number and a special character</span>}
             </div>
           </div>
@@ -205,8 +229,8 @@ class Signup extends React.Component {
               {this.errorClass(this.state.formErrors.Phone) && <span className="formErrors">Phone must be only in numbers</span>}
             </div>
           </div>
-          <fieldset class="form-group">
-            <div class="row">
+          <fieldset className="form-group">
+            <div className="row">
               <Label
                 className={'col-sm-2 col-form-label pt-0'}
                 htmlFor={'phone'}
@@ -223,13 +247,14 @@ class Signup extends React.Component {
                     onChange={this.handleUserInput}
                     value={'Male'}
                   />
+                  &nbsp;
                   <Label
                     className={'form-check-label'}
                     htmlFor={'male'}
                     title={'Male'}
                   />
                 </div>
-                <div class="form-check">
+                <div className="form-check">
                   <Input
                     className={'form-check-input'}
                     input_type="radio"
@@ -239,6 +264,7 @@ class Signup extends React.Component {
                     onChange={this.handleUserInput}
                     value={'Female'}
                   />
+                  &nbsp;
                   <Label
                     className={'form-check-label'}
                     htmlFor={'female'}

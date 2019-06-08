@@ -48,19 +48,24 @@ exports.login = async function (req, res) {
   console.log(req.body)
   try {
     const checkUser = await Users.findOne({ $and: [{ 'emailId': req.body.email }, { 'password': req.body.password }] });
+    
     if (checkUser === null) {
-      throw new Error('false')
+      throw new Error('null')
+    }
+
+    if (checkUser.userStatus === 0) {
+      throw new Error('ban');
     }
     console.log(checkUser)
     if (checkUser.emailId === req.body.email && checkUser.password === req.body.password) {
       console.log('Successfully logged in')
-      res.json({ 'data': checkUser, 'isLoggedIn': true });
+      res.json({ 'data': checkUser, 'status': true });
     } else {
       throw new Error('false');
     }
   } catch (error) {
     console.log(error.message)
-    res.json({ 'isLoggedIn': error.message })
+    res.json({ 'status': error.message })
   }
 }
 
@@ -93,12 +98,27 @@ exports.updateUser = async function (req, res, next) {
       "emailId": user.emailId,
       "phone": user.phone,
       "role": user.role,
+      "userStatus": user.userStatus,
       "image": user.image
     }
     if (user.role === 2) {
       // Calling Update Applied Jobs with updated user details
       await jobController.updateAppliedJobs(req, userDetails)
-      res.json({ 'status': true })
+      if (req.body.userStatus === 1) {
+        res.json({ 'status': 'unban' })
+      } else if (req.body.userStatus === 0) {
+        res.json({ 'status': 'ban' })
+      } else {
+        res.json({ 'status': 'true' })
+      }
+    } else if (user.role === 1) {
+      if (req.body.userStatus === 1) {
+        res.json({ 'status': 'unban' })
+      } else if (req.body.userStatus === 0) {
+        res.json({ 'status': 'ban' })
+      } else {
+        res.json({ 'status': 'true' })
+      }
     } else {
       res.json({ 'status': true })
     }
@@ -108,6 +128,6 @@ exports.updateUser = async function (req, res, next) {
 exports.deleteUser = function (req, res, next) {
   Users.findByIdAndRemove(req.params.id, function (err, data) {
     if (err) return next(err)
-    res.json({'status': true})
+    res.json({ 'status': true })
   })
 }
