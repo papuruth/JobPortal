@@ -8,12 +8,19 @@ class Message extends React.Component {
     // Display the message text and sender's name
     const fromMe = this.props.fromMe ? 'from-me' : '';
     return (
-      <div className={`message ${fromMe}`}>
-        <div className='username'>
-          {this.props.username}
+      <div className="row">
+        <div className="col-sm-3">
+          { !this.props.fromMe && <img src="" alt={ this.props.username } />}
         </div>
-        <div className='message-body'>
-          {this.props.message}
+        <div className="col-sm-9">
+          <div className={`message ${fromMe}`}>
+            <div className='username'>
+              {this.props.username}
+            </div>
+            <div className='message-body'>
+              {this.props.message}
+            </div>
+          </div>
         </div>
       </div>
     );

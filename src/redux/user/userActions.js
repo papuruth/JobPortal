@@ -12,7 +12,6 @@ export const userActions = {
   editUser,
   deleteUser,
   banUser,
-  // promoteUser
 };
 
 function login(email, password) {

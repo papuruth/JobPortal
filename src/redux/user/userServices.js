@@ -8,7 +8,6 @@ export const userService = {
   editUser,
   deleteUser,
   banUser,
-  // promoteUser
 };
 
 async function login(email, password) {

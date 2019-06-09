@@ -26,7 +26,7 @@ class App extends React.Component {
 
   hideAlert = (e) => {
     e.preventDefault();
-    document.getElementById('alert').style.visibility = 'hidden'
+    document.getElementById('alert').style.display = 'none'
   }
 
   render() {
