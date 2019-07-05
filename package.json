@@ -34,12 +34,8 @@
     "uuid": "^3.3.2"
   },
   "scripts": {
-    "client": "react-scripts start",
-    "server": "nodemon node src/server.js",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
