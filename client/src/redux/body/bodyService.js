@@ -5,7 +5,7 @@ export const bodyService = {
 };
 
 async function getJobs(page, last) {
-  return await axios.get('http://localhost:4000/jobs', {
+  return await axios.get('https://jobportalmern.herokuapp.com/jobs', {
     params: {
       page: page,
       last: last
@@ -13,7 +13,7 @@ async function getJobs(page, last) {
   })
     .then(async jobs => {
       console.log(jobs.data)
-      await axios.get('http://localhost:4000/appliedjobs')
+      await axios.get('https://jobportalmern.herokuapp.com/appliedjobs')
         .then((resp) => {
           localStorage.setItem('appliedjobs', JSON.stringify(resp.data))
         })

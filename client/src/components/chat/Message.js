@@ -9,9 +9,6 @@ class Message extends React.Component {
     const fromMe = this.props.fromMe ? 'from-me' : '';
     return (
       <div className="row">
-        <div className="col-sm-3">
-          { !this.props.fromMe && <img src="" alt={ this.props.username } />}
-        </div>
         <div className="col-sm-9">
           <div className={`message ${fromMe}`}>
             <div className='username'>

@@ -6,7 +6,7 @@ const path = require('path')
 const cors = require('cors');
 const route = require('./expressRoutes/routes')
 const nodemailer = require('nodemailer');
-const creds = require('../config/mailConfig');
+const creds = require('./config/mailConfig');
 
 mongoose.connect(process.env.MongoDbURI || 'mongodb://localhost:27017/JobPortal', { useNewUrlParser: true })
   .then(() => {
@@ -25,20 +25,20 @@ var socketIo = require('socket.io')(server, { wsEngine: 'ws' });
 
 // Set constiables
 app.set('env', process.env.NODE_ENV || 'production')
-const port = 4000
+// const port = 4000
 app.use(cors());
 app.use(busboy());
 
 app.use(express.static(path.join(__dirname, "client", "build")))
 
-app.use(express.static(path.join(__dirname, 'images')))
+app.use(express.static(path.join(__dirname, 'client/src/images')))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use('/', route);
 
 // Right before your app.listen(), add this:
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 server.listen((process.env.PORT || port), () => {

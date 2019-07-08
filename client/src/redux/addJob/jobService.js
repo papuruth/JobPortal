@@ -12,14 +12,14 @@ export const jobService = {
 };
 
 async function addJob(company, profile, designation, salary, city, data) {
-  return await axios.post('http://localhost:4000/getjobsvalidate', { company, designation })
+  return await axios.post('https://jobportalmern.herokuapp.com/getjobsvalidate', { company, designation })
     .then(async (res) => {
       if (res.data !== 'false') {
-        await axios.post('http://localhost:4000/upload', data)
+        await axios.post('https://jobportalmern.herokuapp.com/upload', data)
           .then(async (response) => {
             const url = '/' + response.data
             const imageURL = url
-            await axios.post('http://localhost:4000/jobs', { company, profile, designation, salary, city, imageURL })
+            await axios.post('https://jobportalmern.herokuapp.com/jobs', { company, profile, designation, salary, city, imageURL })
               .then(async (res) => {
                 return res;
               })
@@ -41,7 +41,7 @@ async function addJob(company, profile, designation, salary, city, data) {
 }
 
 async function editJob(id) {
-  return await axios.get('http://localhost:4000/'.concat(id))
+  return await axios.get('https://jobportalmern.herokuapp.com/'.concat(id))
     .then((res) => {
       return res.data
     })
@@ -52,7 +52,7 @@ async function editJob(id) {
 
 async function updateJob(id, company, profileType, designation, annualSalary, city) {
   console.log('hello')
-  return await axios.put('http://localhost:4000/updatejob/'.concat(id), { company, profileType, designation, annualSalary, city })
+  return await axios.put('https://jobportalmern.herokuapp.com/updatejob/'.concat(id), { company, profileType, designation, annualSalary, city })
     .then((res) => {
       return res
     })
@@ -63,9 +63,9 @@ async function updateJob(id, company, profileType, designation, annualSalary, ci
 
 async function applyJob(id, name, gender) {
   console.log(id, name)
-  return await axios.post('http://localhost:4000/apply', { id, name, gender })
+  return await axios.post('https://jobportalmern.herokuapp.com/apply', { id, name, gender })
     .then(async (res) => {
-      await axios.get('http://localhost:4000/appliedjobs')
+      await axios.get('https://jobportalmern.herokuapp.com/appliedjobs')
         .then((res) => {
           localStorage.setItem('appliedjobs', JSON.stringify(res.data))
           const filteredData = res.data.filter((item) => {
@@ -92,7 +92,7 @@ async function applyJob(id, name, gender) {
 }
 
 async function getAppliedJob(name) {
-  return await axios.get('http://localhost:4000/appliedjobs')
+  return await axios.get('https://jobportalmern.herokuapp.com/appliedjobs')
     .then((res) => {
       localStorage.setItem('appliedjobs', JSON.stringify(res.data))
       const filteredData = res.data.filter((item) => {
@@ -114,7 +114,7 @@ async function getAppliedJob(name) {
 }
 
 async function removeJob(id) {
-  return await axios.post('http://localhost:4000/deletejob/'.concat(id))
+  return await axios.post('https://jobportalmern.herokuapp.com/deletejob/'.concat(id))
     .then((res) => {
       return res.data
     })
@@ -124,7 +124,7 @@ async function removeJob(id) {
 }
 
 async function updateStatus(id, status) {
-  return await axios.put('http://localhost:4000/updatejobstatus', { id, status })
+  return await axios.put('https://jobportalmern.herokuapp.com/updatejobstatus', { id, status })
     .then(async (res) => {
       const job = JSON.parse(res.data.data);
       const statusResponse = res.data.statusResponse;
@@ -137,7 +137,7 @@ async function updateStatus(id, status) {
         city: job.jobDetails.city,
         date: randomDate(new Date(2019, 7, 1), new Date())
       }
-      return await axios.post('http://localhost:4000/maildetails', { mailDetails })
+      return await axios.post('https://jobportalmern.herokuapp.com/maildetails', { mailDetails })
         .then(async (res) => {
           return res;
         })
@@ -154,7 +154,7 @@ async function updateStatus(id, status) {
 }
 
 async function getMails() {
-  return await axios.get('http://localhost:4000/mails')
+  return await axios.get('https://jobportalmern.herokuapp.com/mails')
     .then((mails) => {
       localStorage.setItem('mails', JSON.stringify(mails.data));
       const mailData = JSON.parse(localStorage.getItem('mails'));

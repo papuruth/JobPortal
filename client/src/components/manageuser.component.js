@@ -335,7 +335,7 @@ class ManageUser extends React.Component {
                       this.state.clickedUser && !this.state.clickedUser[0].image && this.state.clickedUser[0].gender === 'Female' && <img className="img-circle" src={female} alt="Upload Pic" />
                     }
                     {
-                      this.state.clickedUser && this.state.clickedUser[0].image && <img key={new Date()} className="img-circle" src={`http://localhost:4000${this.state.clickedUser[0].image}?${this.state.imageHash}`} alt="Upload Pic" />
+                      this.state.clickedUser && this.state.clickedUser[0].image && <img key={new Date()} className="img-circle" src={`https://jobportalmern.herokuapp.com${this.state.clickedUser[0].image}?${this.state.imageHash}`} alt="Upload Pic" />
                     }
                   </div>
                   <div className="col-md-8 col-lg-8">

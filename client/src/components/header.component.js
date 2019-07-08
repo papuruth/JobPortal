@@ -98,7 +98,7 @@ class Header extends React.Component {
   render() {
     let imageUrl;
     if (isLoggedIn()) {
-      imageUrl = 'http://localhost:4000'.concat(this.state.currentUser.image)
+      imageUrl = 'https://jobportalmern.herokuapp.com'.concat(this.state.currentUser.image)
     }
     return (
       <nav className="navbar navbar-inverse navbar-fixed-top">

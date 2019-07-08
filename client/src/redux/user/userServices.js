@@ -12,7 +12,7 @@ export const userService = {
 
 async function login(email, password) {
   password = btoa(password)
-  return await axios.post('http://localhost:4000/authenticate', { email, password })
+  return await axios.post('https://jobportalmern.herokuapp.com/authenticate', { email, password })
     .then(user => {
       const isLoggedIn = user.data.status
       if (isLoggedIn === true) {
@@ -33,7 +33,7 @@ function logout() {
 }
 
 async function register(fullname, email, password, phone, gender) {
-  return await axios.post('http://localhost:4000/register', {fullname, email, password, phone, gender})
+  return await axios.post('https://jobportalmern.herokuapp.com/register', {fullname, email, password, phone, gender})
       .then((res) => {
         console.log(res.data)
         const isSignup = res.data.isSignup;
@@ -49,7 +49,7 @@ async function register(fullname, email, password, phone, gender) {
 }
 
 async function getAllUsers() {
-  return await axios.get('http://localhost:4000/users')
+  return await axios.get('https://jobportalmern.herokuapp.com/users')
       .then((res) => {
         return res.data.reverse();
       })
@@ -59,7 +59,7 @@ async function getAllUsers() {
 }
 
 async function editUser(name, emailId, password, phone, _id) {
-  return await axios.put('http://localhost:4000/updateuser/'.concat(_id), {name, emailId, password, phone})
+  return await axios.put('https://jobportalmern.herokuapp.com/updateuser/'.concat(_id), {name, emailId, password, phone})
       .then((res) => {
         if (res.data.status === true) {
           return true;
@@ -71,7 +71,7 @@ async function editUser(name, emailId, password, phone, _id) {
 }
 
 async function deleteUser(_id) {
-  return await axios.delete('http://localhost:4000/deleteuser/'.concat(_id))
+  return await axios.delete('https://jobportalmern.herokuapp.com/deleteuser/'.concat(_id))
       .then((res) => {
         if (res.data.status === true) {
           return true;
@@ -83,7 +83,7 @@ async function deleteUser(_id) {
 }
 
 async function banUser(_id, userStatus) {
-  return await axios.put('http://localhost:4000/updateuser/'.concat(_id), {userStatus})
+  return await axios.put('https://jobportalmern.herokuapp.com/updateuser/'.concat(_id), {userStatus})
       .then((res) => {
         return res.data.status;
       })

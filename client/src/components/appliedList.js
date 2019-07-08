@@ -94,7 +94,7 @@ class AppliedList extends React.Component {
     dispatch(jobAction.updateStatus(id, this.state.status))
   }
   render() {
-    const imageUrl = 'http://localhost:4000'.concat(this.userData.image)
+    const imageUrl = 'https://jobportalmern.herokuapp.com'.concat(this.userData.image)
     return (
       <div className="">
         {
@@ -117,10 +117,10 @@ class AppliedList extends React.Component {
                         this.userData.image && this.userData.role === 2 && <img className="img-circle" src={imageUrl} alt="Upload Pic" />
                       }
                       {
-                        this.userData.role === 1 && item.userDetails.gender === 'Male' && <img className="img-circle" src={'http://localhost:4000'.concat(item.userDetails.image)} alt="Upload Pic" />
+                        this.userData.role === 1 && item.userDetails.gender === 'Male' && <img className="img-circle" src={'https://jobportalmern.herokuapp.com'.concat(item.userDetails.image)} alt="Upload Pic" />
                       }
                       {
-                        this.userData.role === 1 && item.userDetails.gender === 'Female' && <img className="img-circle" src={'http://localhost:4000'.concat(item.userDetails.image)} alt="Upload Pic" />
+                        this.userData.role === 1 && item.userDetails.gender === 'Female' && <img className="img-circle" src={'https://jobportalmern.herokuapp.com'.concat(item.userDetails.image)} alt="Upload Pic" />
                       }
                     </div>
                     <div className="col-md-4 col-lg-4">

@@ -155,9 +155,9 @@ class Profile extends React.Component {
     let imageUrl = '';
     try {
       if (this.state.profile) {
-        imageUrl = 'http://localhost:4000'.concat(this.state.profile.image)
+        imageUrl = 'https://jobportalmern.herokuapp.com'.concat(this.state.profile.image)
       } else {
-        imageUrl = 'http://localhost:4000'.concat(this.state.userData.image)
+        imageUrl = 'https://jobportalmern.herokuapp.com'.concat(this.state.userData.image)
       }
     } catch (error) {
       console.log(error.message)

@@ -6,7 +6,7 @@ var multer = require('multer')
 
 exports.upload = function (req, res) {
     const storage = multer.diskStorage({
-        destination: "./src/images",
+        destination: "./client/src/images",
         filename: function (req, file, cb) {
             cb(null, req.body.filename + path.extname(file.originalname));
         }

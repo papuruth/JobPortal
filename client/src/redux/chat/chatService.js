@@ -6,7 +6,7 @@ export const chatService = {
 };
 
 async function saveMessage(sender, receiver, message, date) {
-  return await axios.post('http://localhost:4000/messages', { sender, receiver, message, date })
+  return await axios.post('https://jobportalmern.herokuapp.com/messages', { sender, receiver, message, date })
     .then(async (response) => {
       return response.data;
     })
@@ -16,7 +16,7 @@ async function saveMessage(sender, receiver, message, date) {
 }
 
 async function getMessages(sender, receiver) {
-  return await axios.get('http://localhost:4000/chats', {
+  return await axios.get('https://jobportalmern.herokuapp.com/chats', {
     params: {
       sender, receiver
     }

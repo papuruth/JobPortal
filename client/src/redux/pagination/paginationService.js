@@ -5,7 +5,7 @@ export const paginationService = {
 };
 
 async function getPageData(page) {
-  return await axios.get('http://localhost:4000/pages')
+  return await axios.get('https://jobportalmern.herokuapp.com/pages')
     .then(async jobs => {
       const isJobs = jobs.data
       if (isJobs !== null) {

@@ -89,7 +89,7 @@ class Card extends React.Component {
             }
             {
               this.props.data.length > 0 && this.state.data.map((job, index) => {
-                let src = 'http://localhost:4000'.concat(job.imageURL)
+                let src = 'https://jobportalmern.herokuapp.com'.concat(job.imageURL)
                 return (
                   <li className="active1" key={index}>
                     <div className="row">
