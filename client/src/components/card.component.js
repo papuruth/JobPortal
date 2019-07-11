@@ -3,6 +3,8 @@ import '../App.css'
 import isLoggedIn from '../isLoggedIn'
 import { jobAction } from '../redux/addJob/jobActions';
 import { history } from '../_helpers/history'
+import Loader from '../../node_modules/react-loader-spinner/index'
+
 class Card extends React.Component {
   constructor(props) {
     super(props);
@@ -71,6 +73,19 @@ class Card extends React.Component {
     this.props.handleRemove(true);
   }
   render() {
+    if (this.props.data.length === 0) {
+      return (
+        // <p className="fa fa-spinner fa-spin"></p>
+        <div className="spinner">
+          <Loader
+            type="Puff"
+            color="#00BFFF"
+            height="80"
+            width="80"
+          />
+        </div>
+      );
+    }
     return (
       <div className="row">
         <div className="col-sm-12 content">
