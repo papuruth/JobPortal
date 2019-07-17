@@ -73,7 +73,7 @@ class Card extends React.Component {
     this.props.handleRemove(true);
   }
   render() {
-    if (this.props.data.length === 0) {
+    if (this.state.data.length === 0) {
       return (
         // <p className="fa fa-spinner fa-spin"></p>
         <div className="spinner">
