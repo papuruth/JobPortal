@@ -73,19 +73,6 @@ class Card extends React.Component {
     this.props.handleRemove(true);
   }
   render() {
-    if (this.state.data.length === 0) {
-      return (
-        // <p className="fa fa-spinner fa-spin"></p>
-        <div className="spinner">
-          <Loader
-            type="Puff"
-            color="#00BFFF"
-            height="80"
-            width="80"
-          />
-        </div>
-      );
-    }
     return (
       <div className="row">
         <div className="col-sm-12 content">

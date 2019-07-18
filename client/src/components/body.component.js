@@ -4,7 +4,8 @@ import { Card } from '../containers/body'
 import isLoggedIn from '../isLoggedIn'
 import { bodyActions } from '../redux/body/bodyActions'
 import { Pagination } from '../containers/body'
-import { paginationActions } from '../redux/pagination/paginationActions';
+import { paginationActions } from '../redux/pagination/paginationActions'
+import Loader from '../../node_modules/react-loader-spinner/index'
 
 class Body extends React.Component {
   constructor(props) {
@@ -12,7 +13,8 @@ class Body extends React.Component {
     this.state = {
       jobsData: [],
       roleBasedJobs: [],
-      user: JSON.parse(localStorage.getItem('currentUser'))
+      user: JSON.parse(localStorage.getItem('currentUser')),
+      loader: true
     }
   }
 
@@ -48,6 +50,7 @@ class Body extends React.Component {
     this.setState({
       jobsData: jobs,
       toFilter: jobs,
+      loader: false
     })
   }
 
@@ -74,8 +77,27 @@ class Body extends React.Component {
     }
   }
 
+  loaderState = (props) => {
+    console.log(props);
+    this.setState({
+      loader: props
+    })
+  }
+
   render() {
     const { jobs } = this.props
+    if (this.state.loader) {
+      return (
+        <div className="spinner">
+          <Loader
+            type="Puff"
+            color="#00BFFF"
+            height="80"
+            width="80"
+          />
+        </div>
+      );
+    }
     return (
       <div>
         {
@@ -102,8 +124,12 @@ class Body extends React.Component {
         {
           jobs && isLoggedIn() && this.state.user.role === 0 && <Card data={this.state.jobsData} handleRemove={this.handleRemoveLogic} />
         }
-        {isLoggedIn() && <Pagination />}
-        {!isLoggedIn() && <Pagination />}
+        {
+          isLoggedIn() && <Pagination loader={this.loaderState}/>
+        }
+        {
+          !isLoggedIn() && <Pagination loader={this.loaderState}/>
+        }
       </div>
     )
   }
