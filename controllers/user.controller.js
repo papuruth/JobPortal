@@ -48,7 +48,7 @@ exports.login = async function (req, res) {
   console.log(req.body)
   try {
     const checkUser = await Users.findOne({ $and: [{ 'emailId': req.body.email }, { 'password': req.body.password }] });
-    
+
     if (checkUser === null) {
       throw new Error('null')
     }
@@ -65,7 +65,10 @@ exports.login = async function (req, res) {
     }
   } catch (error) {
     console.log(error.message)
-    res.json({ 'status': error.message })
+    res.json({
+      'status': error.message,
+      'data': req.body
+    })
   }
 }
 

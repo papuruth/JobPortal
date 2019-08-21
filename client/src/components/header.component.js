@@ -13,7 +13,8 @@ class Header extends React.Component {
       currentUser: '',
       mails: [],  // List of all shortlisted jobs of all companies
       appliedJobs: [], // List of all applied jobs by all user
-      mailList: [] // Store mails by filtering on company and user details
+      mailList: [], // Store mails by filtering on company and user details
+      lengthMail: 0
     }
   }
 
@@ -30,13 +31,14 @@ class Header extends React.Component {
       mails: mails,
       appliedJobs: appliedjobs
     }, () => {
-      let lengthMail = 0;
       try {
         this.state.appliedJobs.map((job) => {
           this.state.mails.map((item) => {
             if (item.company === job.jobDetails.company && item.name === this.state.currentUser.name && item.jobId === job._id) {
-              this.setState({
-                lengthMail: ++lengthMail
+              this.setState((state) => {
+                return {
+                  lengthMail: state.lengthMail + 1
+                }
               })
             }
             return true;
