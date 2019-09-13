@@ -128,22 +128,24 @@ async function updateStatus(id, status) {
     .then(async (res) => {
       const job = JSON.parse(res.data.data);
       const statusResponse = res.data.statusResponse;
-      const mailDetails = {
-        jobId: job._id,
-        status: statusResponse,
-        name: job.userDetails.name,
-        designation: job.jobDetails.designation,
-        company: job.jobDetails.company,
-        city: job.jobDetails.city,
-        date: randomDate(new Date(2019, 7, 1), new Date())
+      if (statusResponse !== 'Pending') {
+        const mailDetails = {
+          jobId: job._id,
+          status: statusResponse,
+          name: job.userDetails.name,
+          designation: job.jobDetails.designation,
+          company: job.jobDetails.company,
+          city: job.jobDetails.city,
+          date: randomDate(new Date(2019, 7, 1), new Date())
+        }
+        return await axios.post('https://jobportalmern.herokuapp.com/maildetails', { mailDetails })
+          .then(async (res) => {
+            return res;
+          })
+          .catch((error) => {
+            return error.message;
+          })
       }
-      return await axios.post('https://jobportalmern.herokuapp.com/maildetails', { mailDetails })
-        .then(async (res) => {
-          return res;
-        })
-        .catch((error) => {
-          return error.message;
-        })
     })
     .catch((error) => {
       return error
