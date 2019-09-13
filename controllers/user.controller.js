@@ -26,7 +26,8 @@ exports.addUser = async function (req, res) {
           password: req.body.password,
           phone: req.body.phone,
           gender: req.body.gender,
-          role: role
+          role: role,
+          userStatus: 1
         }
       )
 

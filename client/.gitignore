@@ -20,4 +20,5 @@
 .directory
 npm-debug.log*
 yarn-debug.log*
+.directory
 yarn-error.log*
