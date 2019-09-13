@@ -63,9 +63,11 @@ class Header extends React.Component {
         this.state.appliedJobs.map((job) => {
           this.state.mails.map((item) => {
             if (item.company === job.jobDetails.company && item.name === this.state.currentUser.name && item.jobId === job._id) {
-              this.setState({
-                lengthMail: ++lengthMail,
-                imageHash: Date.now()
+              this.setState(state => {
+                return {
+                    lengthMail: state.lengthMail + 1,
+                    imageHash: Date.now()
+                }
               })
             }
             return true;
