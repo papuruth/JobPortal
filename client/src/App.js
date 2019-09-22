@@ -26,7 +26,9 @@ class App extends React.Component {
 
   componentDidMount() {
     if (localStorage.getItem('currentUser')) {
-      var currentUser = JSON.parse(localStorage.getItem('currentUser'))
+      var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      console.log(currentUser);
+      console.log(currentUser.name.split(' ')[0], currentUser.name.split(' ')[1]);
       mkos.WidgetParams({
         "first_name": currentUser.name.split(' ')[0],
         "last_name": currentUser.name.split(' ')[1],
@@ -35,7 +37,7 @@ class App extends React.Component {
       })
     }
   }
-  
+
   hideAlert = (e) => {
     e.preventDefault();
     document.getElementById('alert').style.display = 'none'
