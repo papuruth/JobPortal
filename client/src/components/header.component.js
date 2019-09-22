@@ -23,6 +23,18 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
+    if (localStorage.getItem('currentUser')) {
+      var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      console.log(currentUser);
+      console.log(currentUser.name.split(' ')[0], currentUser.name.split(' ')[1]);
+      mkos.WidgetParams({
+        "first_name": currentUser.name.split(' ')[0],
+        "last_name": currentUser.name.split(' ')[1],
+        "email": currentUser.emailId,
+        "phone": currentUser.phone
+      })
+    }
+    
     const { dispatch } = this.props
     dispatch(jobAction.getAppliedJob(this.state.currentUser.name));
     const { currentUser, mails, appliedjobs } = this.props;
@@ -65,8 +77,8 @@ class Header extends React.Component {
             if (item.company === job.jobDetails.company && item.name === this.state.currentUser.name && item.jobId === job._id) {
               this.setState(state => {
                 return {
-                    lengthMail: state.lengthMail + 1,
-                    imageHash: Date.now()
+                  lengthMail: state.lengthMail + 1,
+                  imageHash: Date.now()
                 }
               })
             }
