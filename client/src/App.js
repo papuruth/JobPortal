@@ -24,6 +24,18 @@ class App extends React.Component {
     });
   }
 
+  componentDidMount() {
+    if (localStorage.getItem('currentUser')) {
+      var currentUser = JSON.parse(localStorage.getItem('currentUser'))
+      mkos.WidgetParams({
+        "first_name": currentUser.name.split(' ')[0],
+        "last_name": currentUser.name.split(' ')[1],
+        "email": currentUser.emailId,
+        "phone": currentUser.phone
+      })
+    }
+  }
+  
   hideAlert = (e) => {
     e.preventDefault();
     document.getElementById('alert').style.display = 'none'
@@ -47,10 +59,10 @@ class App extends React.Component {
                 }
               </div>
             </div>
-            <Route path="/profile" component={PrivateRoute(Profile)}  />
+            <Route path="/profile" component={PrivateRoute(Profile)} />
             <Route exact path="/" component={Body} />
             <Route path="/register" component={Signup} />
-            <Route path="/manageusers" component={PrivateRoute(ManageUser)}/>
+            <Route path="/manageusers" component={PrivateRoute(ManageUser)} />
             <Route path="/login" component={Login} />
             <Route path="/addjob" component={PrivateRoute(JobForm)} />
             <Route path="/updatejob" component={PrivateRoute(UpdateJobForm)} />
