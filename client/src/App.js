@@ -47,10 +47,10 @@ class App extends React.Component {
                 }
               </div>
             </div>
-            <Route path="/profile" component={PrivateRoute(Profile)}  />
+            <Route path="/profile" component={PrivateRoute(Profile)} />
             <Route exact path="/" component={Body} />
             <Route path="/register" component={Signup} />
-            <Route path="/manageusers" component={PrivateRoute(ManageUser)}/>
+            <Route path="/manageusers" component={PrivateRoute(ManageUser)} />
             <Route path="/login" component={Login} />
             <Route path="/addjob" component={PrivateRoute(JobForm)} />
             <Route path="/updatejob" component={PrivateRoute(UpdateJobForm)} />
