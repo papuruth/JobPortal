@@ -13,42 +13,14 @@ class Header extends React.Component {
       currentUser: '',
       mails: [],  // List of all shortlisted jobs of all companies
       appliedJobs: [], // List of all applied jobs by all user
-      mailList: [], // Store mails by filtering on company and user details
       lengthMail: 0
     }
   }
 
-  getAppliedList = (event) => {
-    event.preventDefault();
-  }
-
   componentDidMount() {
+    console.log('incdm')
     const { dispatch } = this.props
     dispatch(jobAction.getAppliedJob(this.state.currentUser.name));
-    const { currentUser, mails, appliedjobs } = this.props;
-    this.setState({
-      currentUser: currentUser,
-      mails: mails,
-      appliedJobs: appliedjobs
-    }, () => {
-      try {
-        this.state.appliedJobs.map((job) => {
-          this.state.mails.map((item) => {
-            if (item.company === job.jobDetails.company && item.name === this.state.currentUser.name && item.jobId === job._id) {
-              this.setState((state) => {
-                return {
-                  lengthMail: state.lengthMail + 1
-                }
-              })
-            }
-            return true;
-          })
-          return true;
-        })
-      } catch (error) {
-        console.log(error.message)
-      }
-    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,11 +35,9 @@ class Header extends React.Component {
         this.state.appliedJobs.map((job) => {
           this.state.mails.map((item) => {
             if (item.company === job.jobDetails.company && item.name === this.state.currentUser.name && item.jobId === job._id) {
-              this.setState(state => {
-                return {
-                    lengthMail: state.lengthMail + 1,
-                    imageHash: Date.now()
-                }
+              this.setState({
+                lengthMail: ++lengthMail,
+                imageHash: Date.now()
               })
             }
             return true;
@@ -80,17 +50,18 @@ class Header extends React.Component {
     })
   }
 
-  // currentUser = JSON.parse(localStorage.getItem('currentUser'));
   logout = () => {
     userActions.logout()
     this.props.history.push('/')
   }
 
-  showMail = () => {
+  showMail = (e) => {
+    e.preventDefault();
     document.getElementById('mail').style.display = 'block'
   }
 
-  hideMail = () => {
+  hideMail = (e) => {
+    e.preventDefault();
     document.getElementById('mail').style.display = 'none'
   }
 

@@ -41,6 +41,7 @@ app.use('/', route);
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
+const port = 3001;
 server.listen((process.env.PORT || port), () => {
   console.log('Server is running on Port: ', process.env.PORT || port);
 });
