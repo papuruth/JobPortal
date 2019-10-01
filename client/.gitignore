@@ -4,7 +4,8 @@
 /node_modules
 /.pnp
 .pnp.js
-
+.directory
+.vscode
 # testing
 /coverage
 

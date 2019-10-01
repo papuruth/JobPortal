@@ -3,7 +3,7 @@ import '../App.css'
 import isLoggedIn from '../isLoggedIn'
 import { jobAction } from '../redux/addJob/jobActions';
 import { history } from '../_helpers/history'
-import Loader from '../../node_modules/react-loader-spinner/index'
+import config from '../config';
 
 class Card extends React.Component {
   constructor(props) {
@@ -91,7 +91,7 @@ class Card extends React.Component {
             }
             {
               this.props.data.length > 0 && this.state.data.map((job, index) => {
-                let src = 'https://jobportalmern.herokuapp.com'.concat(job.imageURL)
+                let src = config.firebase_url.concat(job.imageURL + '?alt=media'); 
                 return (
                   <li className="active1" key={index}>
                     <div className="row">

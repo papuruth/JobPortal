@@ -3,6 +3,7 @@ import { appliedStatusComp } from '../enum/appliedStatus'
 import { jobAction } from '../redux/addJob/jobActions'
 import isLoggedIn from '../isLoggedIn';
 import { ChatApp } from '../containers/chat';
+import config from '../config';
 
 
 class AppliedList extends React.Component {
@@ -94,7 +95,7 @@ class AppliedList extends React.Component {
     dispatch(jobAction.updateStatus(id, this.state.status))
   }
   render() {
-    const imageUrl = 'https://jobportalmern.herokuapp.com'.concat(this.userData.image)
+    const imageUrl = config.firebase_url.concat(this.userData.image)
     return (
       <div className="">
         {
@@ -114,13 +115,13 @@ class AppliedList extends React.Component {
                   <div className="row">
                     <div className="col-md-3 col-lg-2">
                       {
-                        this.userData.image && this.userData.role === 2 && <img className="img-circle" src={imageUrl} alt="Upload Pic" />
+                        this.userData.image && this.userData.role === 2 && <img className="img-circle" src={imageUrl + '?alt=media'} alt="Upload Pic" />
                       }
                       {
-                        this.userData.role === 1 && item.userDetails.gender === 'Male' && <img className="img-circle" src={'https://jobportalmern.herokuapp.com'.concat(item.userDetails.image)} alt="Upload Pic" />
+                        this.userData.role === 1 && item.userDetails.gender === 'Male' && <img className="img-circle" src={config.firebase_url.concat(item.userDetails.image + '?alt=media')} alt="Upload Pic" />
                       }
                       {
-                        this.userData.role === 1 && item.userDetails.gender === 'Female' && <img className="img-circle" src={'https://jobportalmern.herokuapp.com'.concat(item.userDetails.image)} alt="Upload Pic" />
+                        this.userData.role === 1 && item.userDetails.gender === 'Female' && <img className="img-circle" src={config.firebase_url.concat(item.userDetails.image + '?alt=media')} alt="Upload Pic" />
                       }
                     </div>
                     <div className="col-md-4 col-lg-4">
@@ -146,7 +147,7 @@ class AppliedList extends React.Component {
                     </div>
                     <div className="col-md-2 col-lg-2">
                       {
-                        this.userData.image && this.userData.role === 1 && <img className="img-circle" src={imageUrl} alt="Upload Pic" />
+                        this.userData.image && this.userData.role === 1 && <img className="img-circle" src={imageUrl + '?alt=media'} alt="Upload Pic" />
                       }
                     </div>
                     <div className="col-md-4 col-lg-4">

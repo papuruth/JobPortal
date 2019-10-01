@@ -6,6 +6,7 @@ import female from '../images/female.png'
 import Input from './generalComponents/input.component'
 import Button from './generalComponents/button.component'
 import Label from './generalComponents/label';
+import config from '../config'
 
 class ManageUser extends React.Component {
   constructor(props) {
@@ -335,7 +336,7 @@ class ManageUser extends React.Component {
                       this.state.clickedUser && !this.state.clickedUser[0].image && this.state.clickedUser[0].gender === 'Female' && <img className="img-circle" src={female} alt="Upload Pic" />
                     }
                     {
-                      this.state.clickedUser && this.state.clickedUser[0].image && <img key={new Date()} className="img-circle" src={`https://jobportalmern.herokuapp.com${this.state.clickedUser[0].image}?${this.state.imageHash}`} alt="Upload Pic" />
+                      this.state.clickedUser && this.state.clickedUser[0].image && <img key={new Date()} className="img-circle" src={`${config.firebase_url + this.state.clickedUser[0].image}?alt=media&${this.state.imageHash}`} alt="Upload Pic" />
                     }
                   </div>
                   <div className="col-md-8 col-lg-8">

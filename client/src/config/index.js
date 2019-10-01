@@ -5,5 +5,6 @@
 // use a publicly accessible version of this API. Storing the address in the config
 // file allows us to easily create different settings for various environments.
 export default {
-  api: 'https://jobportalmern.herokuapp.com'
+  api: 'https://jobportalmern.herokuapp.com',
+  firebase_url: 'https://firebasestorage.googleapis.com/v0/b/job-portal-mern.appspot.com/o'
 }

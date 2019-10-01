@@ -6,6 +6,7 @@ import male from '../images/male.jpg'
 import female from '../images/female.png'
 import Label from './generalComponents/label'
 import Textarea from './generalComponents/textarea';
+import config from '../config';
 
 class Profile extends React.Component {
   constructor(props) {
@@ -155,9 +156,9 @@ class Profile extends React.Component {
     let imageUrl = '';
     try {
       if (this.state.profile) {
-        imageUrl = 'https://jobportalmern.herokuapp.com'.concat(this.state.profile.image)
+        imageUrl = config.firebase_url.concat(this.state.profile.image)
       } else {
-        imageUrl = 'https://jobportalmern.herokuapp.com'.concat(this.state.userData.image)
+        imageUrl = config.firebase_url.concat(this.state.userData.image)
       }
     } catch (error) {
       console.log(error.message)
@@ -177,7 +178,7 @@ class Profile extends React.Component {
                 !this.state.userData.image && this.state.userData.gender === 'Female' && <img className="img-circle" src={female} alt="Upload Pic" />
               }
               {
-                this.state.userData.image && <img key={new Date()} className="img-circle" src={`${imageUrl}?${this.state.imageHash}`} alt="Upload Pic" />
+                this.state.userData.image && <img key={new Date()} className="img-circle" src={`${imageUrl}?alt=media&${this.state.imageHash}`} alt="Upload Pic" />
               }
             </div>
             <div className="col-md-9 col-lg-9">

@@ -5,7 +5,7 @@ import female from '../images/female.png'
 import isLoggedIn from '../isLoggedIn'
 import { userActions } from '../redux/user/userActions'
 import { jobAction } from '../redux/addJob/jobActions';
-
+import config from '../config';
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -73,7 +73,7 @@ class Header extends React.Component {
   render() {
     let imageUrl;
     if (isLoggedIn()) {
-      imageUrl = 'https://jobportalmern.herokuapp.com'.concat(this.state.currentUser.image)
+      imageUrl = config.firebase_url.concat(this.state.currentUser.image)
     }
     return (
       <nav className="navbar navbar-inverse navbar-fixed-top">
@@ -177,7 +177,7 @@ class Header extends React.Component {
                           !this.state.currentUser.image && this.state.currentUser.gender === 'Female' && <img className="headImage" src={female} alt="Upload Pic" />
                         }
                         {
-                          this.state.currentUser.image && <img className="headImage" src={`${imageUrl}?${this.state.imageHash}`} alt="Upload Pic" />
+                          this.state.currentUser.image && <img className="headImage" src={`${imageUrl}?alt=media&${Date.now()}`} alt="Upload Pic" />
                         }
                         &nbsp;Hi! {this.state.currentUser.name}
                       </Link>
