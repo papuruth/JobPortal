@@ -4,47 +4,72 @@
 
 /* Card styling starts here */
 
+#JobsList {
+  opacity: 1;
+}
+
 .content {
-  margin-top: 20px;
-  margin-bottom: 50px;
+  margin-top: auto;
+  margin-bottom: 30px;
 }
 
 .active1 {
   padding: 20px;
   position: relative;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  height: 190px;
-  margin-bottom: 10px;
+  box-shadow: rgba(0, 0, 0, 0.27) 1px 2px 10px;
+  margin-bottom: 20px;
+  height: auto;
 }
 
 .active1:hover {
-  display: block;
-  height: 190px;
+  padding: 20px;
+  position: relative;
+  margin-bottom: 20px;
+  height: auto;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
 }
 
-@media only screen and (max-width: 760px) {
-  .content {
-    margin-top: 90px;
-    margin-bottom: 50px;
-  }
-  .active1 {
-    padding: 20px;
-    position: relative;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    height: 490px;
-    margin-bottom: 10px;
-  }
-  .active1:hover {
-    display: block;
-    height: 490px;
-    box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
-  }
+.cross {
+  position: inherit;
+  float: right;
+  top: -30px;
+  margin-right: 10px;
 }
 
 .cardBorder {
   height: 150px;
   border-right: 1px solid rgba(0, 0, 0, 0.2)
+}
+
+@media only screen and (max-width: 760px) {
+  .cross {
+      position: inherit;
+      float: right;
+      top: -330px;
+      margin-right: 10px;
+  }
+  .cardBorder {
+      height: 150px;
+      border-right: none;
+  }
+  .content {
+      margin-top: auto;
+      margin-bottom: 50px;
+  }
+  .active1 {
+      padding: 20px;
+      position: relative;
+      box-shadow: rgba(0, 0, 0, 0.27) 1px 2px 10px;
+      margin-bottom: 20px;
+      height: auto;
+  }
+  .active1:hover {
+      padding: 20px;
+      position: relative;
+      margin-bottom: 20px;
+      height: auto;
+      box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+  }
 }
 
 .active:hover .btn {
@@ -245,8 +270,11 @@ a:hover {
 }
 
 .container-fluid {
-  padding-right: auto;
-  padding-left: auto;
+  padding-right: 0px!important;
+  padding-left: 0px!important;
+  margin-right: auto;
+  overflow: unset;
+  margin-left: auto;
 }
 
 .spinner {
@@ -270,6 +298,7 @@ a:hover {
   padding-left: 15px;
   z-index: 0;
 }
+
 /*Authentication styling ends here*/
 
 /*Modal styling starts here */
@@ -707,8 +736,8 @@ h3 .chatTitle {
 
 /* Chat styling ends here */
 
-
 /* ManageUser Styling starts here */
+
 #showUserDetail {
   display: none;
 }
@@ -732,21 +761,23 @@ h3 .chatTitle {
 }
 
 /* Styles for listing table */
+
 .listing-table {
   width: 100%;
   margin-bottom: 40px;
 }
-.listing-table th,
-.listing-table td {
+
+.listing-table th, .listing-table td {
   padding: 10px;
   border-bottom: 1px solid hsl(49, 72%, 52%);
 }
+
 .listing-table {
   background: #000;
   color: #fff;
 }
-.listing-table td:first-child,
-.listing-table th:first-child {
+
+.listing-table td:first-child, .listing-table th:first-child {
   border-right: 1px solid #666;
 }
 
@@ -770,5 +801,118 @@ h3 .chatTitle {
   text-decoration: none;
   background-color: transparent;
 }
+
 /* Spinner styling ends here */
+
 /* ManageUser Styling ends here */
+
+/*Error Page Styling Starts Here */
+
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+#notfound {
+  position: relative;
+  height: 100vh;
+  background: #030005;
+}
+
+#notfound .notfound {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.notfound {
+  max-width: 767px;
+  width: 100%;
+  line-height: 1.4;
+  font-size: 50px;
+  color: black;
+  text-shadow: -1px -1px 0px #8400ff, 1px 1px 0px #ff005a;
+  text-align: center;
+}
+
+.notfound .notfound-404 {
+  position: relative;
+  height: 180px;
+  margin-bottom: 20px;
+  z-index: -1;
+}
+
+.notfound .notfound-404 h1 {
+  font-family: 'Montserrat', sans-serif;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-size: 224px;
+  font-weight: 900;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: -12px;
+  color: #030005;
+  text-transform: uppercase;
+  text-shadow: -1px -1px 0px #8400ff, 1px 1px 0px #ff005a;
+  letter-spacing: -20px;
+}
+
+.notfound .notfound-404 h2 {
+  font-family: 'Montserrat', sans-serif;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 110px;
+  font-size: 42px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  text-shadow: 0px 2px 0px #8400ff;
+  letter-spacing: 13px;
+  margin: 0;
+}
+
+.notfound a {
+  font-family: 'Montserrat', sans-serif;
+  display: inline-block;
+  text-transform: uppercase;
+  color: #ff005a;
+  text-decoration: none;
+  border: 2px solid;
+  background: transparent;
+  padding: 10px 40px;
+  font-size: 14px;
+  font-weight: 700;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.notfound a:hover {
+  color: #8400ff;
+}
+
+@media only screen and (max-width: 767px) {
+  .notfound .notfound-404 h2 {
+    font-size: 24px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .notfound .notfound-404 h1 {
+    font-size: 182px;
+  }
+}
+
+/*Error Page Styling Ends Here */
