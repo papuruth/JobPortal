@@ -1,6 +1,6 @@
 # JobPortalReactJs 
 
-![Heroku](https://heroku-badge.herokuapp.com/?app=heroku-badge)
+![Heroku](https://heroku-badge.herokuapp.com/?app=heroku-badge&style=flat&svg=1)
 ==================================================================  
 This project contains basic feature of:
 1. Portal Homepage  
