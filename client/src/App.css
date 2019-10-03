@@ -808,19 +808,11 @@ h3 .chatTitle {
 
 /*Error Page Styling Starts Here */
 
-* {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-body {
-  padding: 0;
-  margin: 0;
-}
 
 #notfound {
   position: relative;
-  height: 100vh;
+  height: 85vh;
+  overflow-y: hidden;
   background: #030005;
 }
 
@@ -837,8 +829,6 @@ body {
   max-width: 767px;
   width: 100%;
   line-height: 1.4;
-  font-size: 50px;
-  color: black;
   text-shadow: -1px -1px 0px #8400ff, 1px 1px 0px #ff005a;
   text-align: center;
 }
@@ -867,6 +857,18 @@ body {
   text-transform: uppercase;
   text-shadow: -1px -1px 0px #8400ff, 1px 1px 0px #ff005a;
   letter-spacing: -20px;
+}
+
+.notfound h1 {
+  font-family: 'Montserrat';
+  font-size: 70px;
+  font-weight: 900;
+  max-width: 767px;
+  width: 100%;
+  line-height: 1.4;
+  text-align: center;
+  color: #030005;
+  text-shadow: -1px -1px 0px #8400ff, 1px 1px 0px #ff005a;
 }
 
 .notfound .notfound-404 h2 {
