@@ -59,34 +59,6 @@ class AppliedList extends React.Component {
 
   }
 
-  handleTypingData = (message, data) => {
-    if (message === false && data === false) {
-      this.setState({
-        message: false
-      })
-    } else {
-      this.setState({
-        message: message,
-        userTyping: data
-      })
-    }
-  }
-  openChat = (e) => {
-    e.preventDefault();
-    const username = e.currentTarget.id;
-    this.setState({
-      username: username
-    }, () => {
-      console.log(this.state.username)
-    })
-    document.getElementById('chatBox').style.display = 'block'
-  }
-
-  closeChat = (e) => {
-    e.preventDefault();
-    document.getElementById('chatBox').style.display = 'none'
-  }
-
   changeStatus = (event) => {
     event.preventDefault();
     let id = event.currentTarget.id;
@@ -189,33 +161,10 @@ class AppliedList extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="panel-footer">
-                  {
-                    this.userData.role === 2 && <button className="btn btn-sm btn-primary" id={item.jobDetails.company} onClick={this.openChat} type="button" data-toggle="tooltip"
-                      data-original-title="Send message to user"><i class="glyphicon glyphicon-comment"></i></button>
-                  }
-                  {
-                    this.userData.role === 1 && <button className="btn btn-sm btn-primary" id={item.userDetails.name} onClick={this.openChat} type="button" data-toggle="tooltip"
-                      data-original-title="Send message to user"><i className="glyphicon glyphicon-envelope"></i></button>
-                  }
-                </div>
               </div>
             )
           })
         }
-        <div id="chatBox" className="w3-modal w3-animate-opacity">
-          <div className="w3-modal-content w3-card-4">
-            <header className="w3-container w3-teal">
-              <span onClick={this.closeChat}
-                className="w3-button w3-large w3-display-topright">&times;</span>
-              <h3>Chat</h3>
-              {this.state.message && <i><p>{this.state.userTyping.username} is typing...</p></i>}
-            </header>
-            <div className="w3-container mail">
-              {this.state.username && <ChatApp handleTyping={this.handleTypingData} username={this.state.username} />}
-            </div>
-          </div>
-        </div>
       </div>
     )
   }

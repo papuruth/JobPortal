@@ -19,7 +19,8 @@ class Messages extends React.Component {
             key={index}
             username={message.username}
             message={message.message}
-            fromMe={message.fromMe} />
+            fromMe={message.fromMe} 
+          />
         </div>
       );
     });

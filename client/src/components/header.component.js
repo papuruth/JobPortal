@@ -6,6 +6,7 @@ import isLoggedIn from '../isLoggedIn'
 import { userActions } from '../redux/user/userActions'
 import { jobAction } from '../redux/addJob/jobActions';
 import config from '../config';
+import { ChatApp } from '../containers/chat';
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +14,8 @@ class Header extends React.Component {
       currentUser: '',
       mails: [],  // List of all shortlisted jobs of all companies
       appliedJobs: [], // List of all applied jobs by all user
-      lengthMail: 0
+      lengthMail: 0,
+      visibleChat: false
     }
   }
 
@@ -70,6 +72,60 @@ class Header extends React.Component {
     dispatch(userActions.getAllUsers());
   }
 
+  renderUserList = (props) => {
+    var usersArray = [];
+    props.data.map((job) => {
+      if (job.userDetails.name === this.state.currentUser.name) {
+        usersArray.push(job.jobDetails.company)
+      } else {
+        if(job.jobDetails.company === this.state.currentUser.name) {
+          usersArray.push(job.userDetails.name)
+        }
+      }
+    })
+    usersArray = [... new Set(usersArray)]
+    return usersArray.map((user, index) => {
+      return <li className="chatUsers list-group-item" key={index} title={user} onClick={this.openChat}>{user}<span className="messages-count" id={user}>{this.state.lengthMail}</span></li>
+    })
+  }
+
+  handleTypingData = (message, data) => {
+    if (message === false && data === false) {
+      this.setState({
+        message: false
+      })
+    } else {
+      this.setState({
+        message: message,
+        userTyping: data
+      })
+    }
+  }
+  openChat = (e) => {
+    e.preventDefault();
+    const username = e.currentTarget.title;
+    this.setState((state) => {
+      return {
+        username: state.usename = username,
+        visibleChat: !state.visibleChat
+      }
+    }, () => {
+      document.getElementById('chatBox').style.display = 'block';
+    })
+  }
+
+  closeChat = (e) => {
+    e.preventDefault();
+    this.setState((state) => {
+      return {
+        visibleChat: false
+      }
+    }, () => {
+      document.getElementById('chatBox').style.display = 'none';
+    })
+  }
+
+
   render() {
     let imageUrl;
     if (isLoggedIn()) {
@@ -77,6 +133,19 @@ class Header extends React.Component {
     }
     return (
       <nav className="navbar navbar-inverse navbar-fixed-top">
+        <div id="chatBox" className="w3-modal w3-animate-opacity">
+          <div className="w3-modal-content w3-card-4">
+            <header className="w3-container w3-teal">
+              <span onClick={this.closeChat}
+                className="w3-button w3-large w3-display-topright">&times;</span>
+              <h3>Chat</h3>
+              {this.state.message && <i><p>{this.state.userTyping.username} is typing...</p></i>}
+            </header>
+            <div className="w3-container mail">
+              {this.state.username && this.state.visibleChat ? <ChatApp handleTyping={this.handleTypingData} username={this.state.username} /> : ''}
+            </div>
+          </div>
+        </div>
         <div id="mail" className="w3-modal w3-animate-opacity">
           <div className="w3-modal-content w3-card-4">
             <header className="w3-container w3-teal">
@@ -126,7 +195,7 @@ class Header extends React.Component {
                   <span className="icon-bar"></span>
                   <span className="icon-bar"></span>
                 </button>
-                <Link to="/" className="navbar-brand"><i className="fa fa-free-code-camp" aria-hidden="true"></i> jobportal</Link>
+                <Link to="/" className="navbar-brand"><i className="fab fa-free-code-camp" aria-hidden="true"></i> jobportal</Link>
               </div>
               <div className="collapse navbar-collapse" id="myNavbar">
                 <ul className="nav navbar-nav">
@@ -148,6 +217,15 @@ class Header extends React.Component {
                           </span>
                         }
                       </Link>
+                    </li>
+                  }
+                  {
+                    isLoggedIn() &&
+                    <li class="dropdown">
+                      <span class="far fa-comment-alt dropdown-toggle" data-toggle="dropdown" style={{ fontSize: '20px' }}><span class="caret"></span></span>
+                      <ul class="dropdown-menu1 list-group">
+                        <this.renderUserList data={this.state.appliedJobs} />
+                      </ul>
                     </li>
                   }
                 </ul>

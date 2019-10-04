@@ -43,32 +43,32 @@
 
 @media only screen and (max-width: 760px) {
   .cross {
-      position: inherit;
-      float: right;
-      top: -330px;
-      margin-right: 10px;
+    position: inherit;
+    float: right;
+    top: -330px;
+    margin-right: 10px;
   }
   .cardBorder {
-      height: 150px;
-      border-right: none;
+    height: 150px;
+    border-right: none;
   }
   .content {
-      margin-top: auto;
-      margin-bottom: 50px;
+    margin-top: auto;
+    margin-bottom: 50px;
   }
   .active1 {
-      padding: 20px;
-      position: relative;
-      box-shadow: rgba(0, 0, 0, 0.27) 1px 2px 10px;
-      margin-bottom: 20px;
-      height: auto;
+    padding: 20px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.27) 1px 2px 10px;
+    margin-bottom: 20px;
+    height: auto;
   }
   .active1:hover {
-      padding: 20px;
-      position: relative;
-      margin-bottom: 20px;
-      height: auto;
-      box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+    padding: 20px;
+    position: relative;
+    margin-bottom: 20px;
+    height: auto;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
   }
 }
 
@@ -215,6 +215,64 @@ a:hover {
 .App {
   margin-top: 90px;
   text-align: center;
+}
+
+.dropdown {
+  top: 15px;
+  left: 15px;
+  color: lightgray;
+}
+
+.chatUsers {
+  /* color: wheat;
+  text-decoration: underline;
+  cursor: pointer;
+  display: block; */
+}
+
+.messages-count {
+  position: absolute;
+  background-color: #FB404B;
+  text-align: center;
+  border-radius: 100px;
+  min-width: 14px;
+  margin-top: 3px;
+  height: 14px;
+  right: 5px;
+  font-size: 12px;
+  color: #FFFFFF;
+  font-weight: bold;
+  line-height: 14px;
+}
+
+.list-group-item {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+  margin-bottom: -1px;
+  background-color: #1a2742;
+  border: 1px solid #ddd;
+}
+
+.open>.dropdown-menu1 {
+  display: block;
+}
+
+.dropdown-menu1 {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 300px;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  border-radius: 20px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
 }
 
 .App-logo {
@@ -807,7 +865,6 @@ h3 .chatTitle {
 /* ManageUser Styling ends here */
 
 /*Error Page Styling Starts Here */
-
 
 #notfound {
   position: relative;

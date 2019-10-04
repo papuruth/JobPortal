@@ -8,9 +8,9 @@ import { chatActions } from '../../redux/chat/chatActions';
 class ChatApp extends React.Component {
   constructor(props) {
     super(props);
-   this.setState({
-     messages: []
-   })
+    this.setState({
+      messages: []
+    })
     // set the initial state of messages so that it is not undefined on load
     this.state = {
       messages: [],
@@ -23,9 +23,7 @@ class ChatApp extends React.Component {
     this.socket.on('server:message', message => {
       this.addMessage(message);
     });
-  }
 
-  componentWillMount() {
     const sender = this.state.user.name;
     const receiver = this.props.username;
     const { dispatch } = this.props;
@@ -33,28 +31,32 @@ class ChatApp extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    const { chats } = props;
-    const sender = this.state.user.name;
-    const receiver = this.props.username;
-    let senderMessage = [];
-    let receiverMessage = []
-    chats.filter((item, index) => {
-      if (item.sender === sender && item.receiver === receiver) {
-        item.messages.map((chat, innerIndex) => {
-          senderMessage[innerIndex] = { 'username': sender, 'to': receiver, 'message': chat[sender], 'date': chat['date'], 'fromMe': true };
-          this.addMessage(senderMessage[innerIndex])
-          return true;
-        })
-      }
-      if (item.sender === receiver && item.receiver === sender) {
-        item.messages.map((chat, innerIndex) => {
-          receiverMessage[innerIndex] = { 'username': receiver, 'to': sender, 'date': chat['date'], 'message': chat[receiver] };
-          this.addMessage(receiverMessage[innerIndex])
-          return true;
-        })
-      }
-      return false;
-    })
+    try {
+      const { chats } = props;
+      const sender = this.state.user.name;
+      const receiver = this.props.username;
+      let senderMessage = [];
+      let receiverMessage = []
+      chats.filter((item, index) => {
+        if (item.sender === sender && item.receiver === receiver) {
+          item.messages.map((chat, innerIndex) => {
+            senderMessage[innerIndex] = { 'username': sender, 'to': receiver, 'message': chat[sender], 'date': chat['date'], 'fromMe': true };
+            this.addMessage(senderMessage[innerIndex])
+            return true;
+          })
+        }
+        if (item.sender === receiver && item.receiver === sender) {
+          item.messages.map((chat, innerIndex) => {
+            receiverMessage[innerIndex] = { 'username': receiver, 'to': sender, 'date': chat['date'], 'message': chat[receiver] };
+            this.addMessage(receiverMessage[innerIndex])
+            return true;
+          })
+        }
+        return false;
+      })
+    } catch (error) {
+      console.log(error.message)
+    }
   }
 
   sendHandler = (message) => {
@@ -90,6 +92,7 @@ class ChatApp extends React.Component {
   addMessage = (message) => {
     // Append the message to the component state
     const messages = this.state.messages;
+    const oldMessageLength = messages.length;
     messages.push(message);
     messages.sort(function (a, b) { return new Date(a.date) - new Date(b.date); });
     this.setState({ messages });
