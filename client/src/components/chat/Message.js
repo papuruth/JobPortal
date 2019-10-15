@@ -1,21 +1,22 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 // This component displays an individual message.
 // We should have logic to display it on the right if the user sent the
 // message, or on the left if it was received from someone else.
-class Message extends React.Component {
+class Message extends React.PureComponent {
   render() {
     // Display the message text and sender's name
-    const fromMe = this.props.fromMe ? 'from-me' : '';
+    const { fromMe, username, message } = this.props;
+
     return (
       <div className="row">
         <div className="col-sm-9">
-          <div className={`message ${fromMe}`}>
-            <div className='username'>
-              {this.props.username}
+          <div className={`message ${fromMe ? 'from-me' : ''}`}>
+            <div className="username">
+              {username}
             </div>
-            <div className='message-body'>
-              {this.props.message}
+            <div className="message-body">
+              {message}
             </div>
           </div>
         </div>
@@ -24,7 +25,10 @@ class Message extends React.Component {
   }
 }
 
-Message.defaultProps = {
+Message.propTypes = {
+  fromMe: PropTypes.bool.isRequired,
+  message: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
 };
 
 export default Message;

@@ -1,42 +1,42 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const JobsSchema = mongoose.Schema
+const JobsSchema = mongoose.Schema;
 
 const jobsData = new JobsSchema({
   company: {
     type: String,
-    required: true
+    required: true,
   },
   profileType: {
     type: String,
-    required: true
+    required: true,
   },
   designation: {
     type: String,
-    required: true
+    required: true,
   },
   imageURL: {
-    type: String
+    type: String,
   },
   annualSalary: {
     type: String,
-    required: true
+    required: true,
   },
   city: {
     type: String,
-    required: true
+    required: true,
   },
   venue: {
     type: String,
-    required: true
+    required: true,
   },
   status: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 },
 {
-  timestamps: true
-})
+  timestamps: true,
+});
 
-exports.AddJobs = mongoose.model('jobs', jobsData)
+exports.AddJobs = mongoose.model("jobs", jobsData);

@@ -1,7 +1,7 @@
 import React from 'react';
-import Input from './generalComponents/input.component'
-import Button from './generalComponents/button.component'
-import { jobAction } from '../redux/addJob/jobActions';
+import Input from './generalComponents/input.component';
+import Button from './generalComponents/button.component';
+import jobAction from '../redux/addJob/jobActions';
 
 class UpdateJobForm extends React.Component {
   editjob = JSON.parse(localStorage.getItem('editjob'))

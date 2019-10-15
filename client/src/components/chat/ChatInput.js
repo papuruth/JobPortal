@@ -1,4 +1,6 @@
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
+import PropTypes from 'prop-types';
 // This component is where the user can type their message and send it
 // to the chat room. We shouldn't communicate with the server here though.
 class ChatInput extends React.Component {
@@ -8,10 +10,10 @@ class ChatInput extends React.Component {
   }
 
   textChangeHandler = (event) => {
-    this.setState({ chatInput: event.target.value}, () => {
-      document.getElementById('message').addEventListener('keypress', (event) => {
+    this.setState({ chatInput: event.target.value }, () => {
+      document.getElementById('message').addEventListener('keypress', () => {
         this.props.onSend(true);
-      })
+      });
     });
   }
 
@@ -30,21 +32,23 @@ class ChatInput extends React.Component {
     return (
       <div>
         <form className="form-inline chat-input" onSubmit={this.submitHandler}>
-          <input 
-            id="message" 
+          <input
+            id="message"
             type="text"
             className="form-control"
             onChange={this.textChangeHandler}
             value={this.state.chatInput}
             placeholder="Type a message"
-            required />
+            required
+          />
         </form>
       </div>
     );
   }
 }
 
-ChatInput.defaultProps = {
+ChatInput.propTypes = {
+  onSend: PropTypes.func.isRequired,
 };
 
 export default ChatInput;

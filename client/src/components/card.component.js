@@ -1,11 +1,14 @@
+/* eslint-disable react/no-deprecated */
 import React from 'react';
 import '../App.css'
 import isLoggedIn from '../isLoggedIn'
-import { jobAction } from '../redux/addJob/jobActions';
-import { history } from '../_helpers/history'
+import jobAction from '../redux/addJob/jobActions';
+import history from '../_helpers/history'
 import config from '../config';
 
 class Card extends React.Component {
+  user = JSON.parse(localStorage.getItem('currentUser'));
+
   constructor(props) {
     super(props);
     this.state = {
@@ -14,15 +17,13 @@ class Card extends React.Component {
       data: []
     }
   }
-  user = JSON.parse(localStorage.getItem('currentUser'));
-
   editJob = (event) => {
     event.preventDefault();
     const id = event.target.id;
     const { dispatch } = this.props
     dispatch(jobAction.editJob(id))
   }
-  
+
   componentWillReceiveProps(props) {
     const { data } = props
     this.setState({
@@ -31,23 +32,23 @@ class Card extends React.Component {
       jobs: this.props.jobs,
       data: data
     }, () => {
-        if (isLoggedIn() && this.state.appliedjobs) {
-          this.state.appliedjobs.map((job, index) => {
-            this.state.jobs.map((item, innerIndex) => {
-              if (job.jobDetails.company === item.company && job.jobDetails.designation === item.designation && job.userDetails.name === this.user.name) {
-                try {
-                  document.getElementById('btn' + innerIndex).innerHTML = 'Applied';
-                  document.getElementById('btn' + innerIndex).style.background = 'red';
-                } catch (error) {
-                  console.log(error.message)
-                }
+      if (isLoggedIn() && this.state.appliedjobs) {
+        this.state.appliedjobs.map((job, index) => {
+          this.state.jobs.map((item, innerIndex) => {
+            if (job.jobDetails.company === item.company && job.jobDetails.designation === item.designation && job.userDetails.name === this.user.name) {
+              try {
+                document.getElementById('btn' + innerIndex).innerHTML = 'Applied';
+                document.getElementById('btn' + innerIndex).style.background = 'red';
+              } catch (error) {
+                console.log(error.message)
               }
-              return true;
-            })
+            }
             return true;
           })
-        }
-      })
+          return true;
+        })
+      }
+    })
   }
 
   apply = (e) => {
@@ -91,7 +92,7 @@ class Card extends React.Component {
             }
             {
               this.props.data.length > 0 && this.state.data.map((job, index) => {
-                let src = config.firebase_url.concat(job.imageURL + '?alt=media'); 
+                let src = config.firebase_url.concat(job.imageURL + '?alt=media');
                 return (
                   <li className="active1" key={index}>
                     <div className="row">

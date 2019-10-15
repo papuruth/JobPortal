@@ -1,9 +1,9 @@
 import React from 'react';
-import Input from './generalComponents/input.component'
-import Button from './generalComponents/button.component'
-import Label from './generalComponents/label'
-import { jobAction } from '../redux/addJob/jobActions';
 import Select from 'react-select';
+import jobAction from '../redux/addJob/jobActions';
+import Input from './generalComponents/input.component';
+import Button from './generalComponents/button.component';
+import Label from './generalComponents/label';
 import { userActions } from '../redux/user/userActions';
 
 class JobForm extends React.Component {

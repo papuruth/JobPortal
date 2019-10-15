@@ -4,9 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-.directory
 .vscode
-
 # testing
 /coverage
 
@@ -22,4 +20,5 @@
 .directory
 npm-debug.log*
 yarn-debug.log*
+.directory
 yarn-error.log*

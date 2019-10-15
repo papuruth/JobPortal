@@ -1,42 +1,42 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const PagesSchema = mongoose.Schema
+const PagesSchema = mongoose.Schema;
 
 const pageData = new PagesSchema({
   company: {
     type: String,
-    required: true
+    required: true,
   },
   profileType: {
     type: String,
-    required: true
+    required: true,
   },
   designation: {
     type: String,
-    required: true
+    required: true,
   },
   imageURL: {
-    type: String
+    type: String,
   },
   annualSalary: {
     type: String,
-    required: true
+    required: true,
   },
   city: {
     type: String,
-    required: true
+    required: true,
   },
   venue: {
     type: String,
-    required: true
+    required: true,
   },
   status: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 },
 {
-  timestamps: true
-})
+  timestamps: true,
+});
 
-exports.Pages = mongoose.model('pages', pageData)
+exports.Pages = mongoose.model("pages", pageData);

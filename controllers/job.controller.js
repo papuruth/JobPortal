@@ -1,37 +1,35 @@
-const Users = require('../models/user')
-const mongoose = require('mongoose')
-const job = require('../models/jobs')
-const page = require('../models/page')
-const apply = require('../models/appliedJobs')
-const mailsDetails = require('../models/mailsDetails')
-const status = require('../enum/jobeStatus')
-const { appliedStatusComp, appliedStatusUser } = require('../enum/appliedStatus')
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-shadow */
+const mongoose = require("mongoose");
+const Users = require("../models/user");
+const job = require("../models/jobs");
+const page = require("../models/page");
+const apply = require("../models/appliedJobs");
+const MailsDetails = require("../models/mailsDetails");
+const status = require("../enum/jobeStatus");
+const { appliedStatusComp, appliedStatusUser } = require("../enum/appliedStatus");
 
 exports.validateJobs = async (req, res) => {
   try {
-    const { designation, company } = req.body
-    const jobs = await job.AddJobs.findOne({ $and: [{ 'designation': designation }, { 'company': company }] })
+    const { designation, company } = req.body;
+    const jobs = await job.AddJobs.findOne({ $and: [{ designation }, { company }] });
     if (jobs !== null) {
-      console.log(jobs)
-      res.json('false')
+      res.json("false");
     } else {
-      res.json('true')
+      res.json("true");
     }
+  } catch (error) {
+    res.json(error.message);
   }
-  catch (error) {
-    console.log(error.message)
-    res.json(error.message)
-  }
-}
-exports.postJobs = async function (req, res) {
+};
+exports.postJobs = async function postJobs(req, res) {
   try {
-    const { designation, company } = req.body
-    const checkDuplicateJobs = await job.AddJobs.findOne({ $and: [{ 'designation': designation }, { 'company': company }] })
-    const checkDuplicatePage = await page.Pages.findOne({ $and: [{ 'designation': designation }, { 'company': company }] })
+    const { designation, company } = req.body;
+    const checkDuplicateJobs = await job.AddJobs.findOne({ $and: [{ designation }, { company }] });
+    const checkDuplicatePage = await page.Pages.findOne({ $and: [{ designation }, { company }] });
 
     if (checkDuplicateJobs !== null && checkDuplicatePage !== null) {
-      console.log('Job already exists. Please add new jobs')
-      throw new Error('Job already exists. Please add new jobs')
+      throw new Error("Job already exists. Please add new jobs");
     }
     const data = new job.AddJobs(
       {
@@ -42,9 +40,9 @@ exports.postJobs = async function (req, res) {
         imageURL: req.body.imageURL,
         city: req.body.city,
         venue: req.body.company,
-        status: status[0].value
-      }
-    )
+        status: status[0].value,
+      },
+    );
 
     const pageData = new page.Pages(
       {
@@ -55,114 +53,110 @@ exports.postJobs = async function (req, res) {
         imageURL: req.body.imageURL,
         city: req.body.city,
         venue: req.body.company,
-        status: status[0].value
-      }
-    )
+        status: status[0].value,
+      },
+    );
 
-    await pageData.save()
-      .then(() => {
-        console.log('Page updated successfully!!')
-      })
-      .catch((err) => {
-        console.log(err.message)
-      })
+    await pageData.save();
 
     await data.save()
       .then(() => {
-        console.log('Job posted successfully!!')
         res.json({
-          title: 'Successful',
-          detail: 'Job posted Successfully'
-        })
+          title: "Successful",
+          detail: "Job posted Successfully",
+        });
       })
       .catch((err) => {
-        console.log(err.message)
-      })
+        throw new Error(err);
+      });
   } catch (error) {
-    console.log(error.message)
     res.json({
-      title: 'Error',
-      detail: error.message
-    })
+      title: "Error",
+      detail: error.message,
+    });
   }
-}
+};
 
-exports.getJobs = function (req, res, next) {
-  const page = req.query.page;
-  const last = req.query.last
+exports.getJobs = function getJobs(req, res, next) {
+  const { page } = req.query;
+  const { last } = req.query;
 
   if (page === last) {
-    job.AddJobs.find({}, function (err, data) {
-      if (err) return next(err)
-      res.json(data)
+    job.AddJobs.find({}, (err, data) => {
+      if (err) return next(err);
+      res.json(data);
+      return true;
     })
       .sort({ updatedAt: -1 })
-      .skip(5 * (page - 1))
+      .skip(5 * (page - 1));
   } else {
-    job.AddJobs.find({}, function (err, data) {
-      if (err) return next(err)
-      res.json(data)
+    job.AddJobs.find({}, (err, data) => {
+      if (err) return next(err);
+      res.json(data);
+      return true;
     })
       .sort({ updatedAt: -1 })
       .limit(5)
-      .skip(5 * (page - 1))
+      .skip(5 * (page - 1));
   }
-}
+};
 
-exports.getPageData = function (req, res, next) {
+exports.getPageData = function getPageData(req, res, next) {
   page.Pages.find({}, (err, data) => {
-    return res.json(data)
-  })
-}
+    if (err) return next(err);
+    res.json(data);
+    return true;
+  });
+};
 
-exports.getOneJobs = async function (req, res) {
+exports.getOneJobs = async function getOneJobs(req, res) {
   await job.AddJobs.findById(req.params.id)
     .then((resp) => {
-      res.json(resp)
+      res.json(resp);
       return res;
     })
     .catch((error) => {
-      console.log(error.message)
-    })
-}
+      res.json(error);
+    });
+};
 
-exports.updateJobs = function (req, res, next) {
-  console.log(req.body)
-  job.AddJobs.findByIdAndUpdate(req.params.id, { $set: req.body }, function (err, data) {
-    if (err) return next(err)
-    res.send('Data updated successfully')
-  })
-}
+exports.updateJobs = function updateJobs(req, res, next) {
+  job.AddJobs.findByIdAndUpdate(req.params.id, { $set: req.body }, (err) => {
+    if (err) return next(err);
+    res.send("Data updated successfully");
+    return true;
+  });
+};
 
-exports.deleteJobs = function (req, res, next) {
+exports.deleteJobs = function deleteJobs(req, res) {
   page.Pages.findByIdAndRemove(req.params.id)
     .then((data) => {
-      console.log(data)
+      res.send(data);
     })
     .catch((err) => {
-      console.log(err.message)
-    })
+      res.send(err.message);
+    });
 
   job.AddJobs.findByIdAndRemove(req.params.id)
     .then((data) => {
-      console.log(data)
+      res.send(data);
     })
     .catch((err) => {
-      console.log(err.message)
-    })
-}
+      res.send(err.message);
+    });
+};
 
-exports.applyJobs = async function (req, res) {
+exports.applyJobs = async function applyJobs(req, res) {
   try {
-    const { id, name } = req.body
-    const checkUser = await Users.findOne({ 'name': name })
-    const checkJobs = await job.AddJobs.findOne({ '_id': id })
+    const { id, name } = req.body;
+    const checkUser = await Users.findOne({ name });
+    const checkJobs = await job.AddJobs.findOne({ _id: id });
     const checkDuplicateApply = await apply.AppliedJobs.findOne({
-      $and: [{ 'userDetails.name': checkUser.name }, { 'jobDetails.designation': checkJobs.designation },
-      { 'jobDetails.company': checkJobs.company }]
-    })
+      $and: [{ "userDetails.name": checkUser.name }, { "jobDetails.designation": checkJobs.designation },
+        { "jobDetails.company": checkJobs.company }],
+    });
     if (checkDuplicateApply !== null) {
-      throw new Error('You have already applied. Please wait, for result!')
+      throw new Error("You have already applied. Please wait, for result!");
     }
 
     // const lat = checkUser.location.coordinates[0]
@@ -198,8 +192,8 @@ exports.applyJobs = async function (req, res) {
     //   throw new Error('No ' + designation + ' jobs around your area')
     // }
 
-    if (checkJobs.status !== 'New') {
-      throw new Error('Early bird catches the worm :)')
+    if (checkJobs.status !== "New") {
+      throw new Error("Early bird catches the worm :)");
     }
 
     const applyData = new apply.AppliedJobs({
@@ -208,138 +202,136 @@ exports.applyJobs = async function (req, res) {
         //   type: 'Point',
         //   coordinates: [checkUser.location.coordinates[0], checkUser.location.coordinates[1]]
         // },
-        'userId': checkUser._id,
-        'image': checkUser.image,
-        'name': checkUser.name,
-        'gender': req.body.gender,
-        'emailId': checkUser.emailId,
-        'phone': checkUser.phone,
-        'role': checkUser.role
+        userId: checkUser._id,
+        image: checkUser.image,
+        name: checkUser.name,
+        gender: req.body.gender,
+        emailId: checkUser.emailId,
+        phone: checkUser.phone,
+        role: checkUser.role,
       },
       jobDetails: {
-        'company': checkJobs.company,
-        'profileType': checkJobs.profileType,
-        'designation': checkJobs.designation,
-        'annualSalary': checkJobs.annualSalary,
-        'city': checkJobs.city,
-        'venue': checkJobs.venue,
-        'status': checkJobs.status
+        company: checkJobs.company,
+        profileType: checkJobs.profileType,
+        designation: checkJobs.designation,
+        annualSalary: checkJobs.annualSalary,
+        city: checkJobs.city,
+        venue: checkJobs.venue,
+        status: checkJobs.status,
       },
       statusUser: appliedStatusUser[0].value,
-      statusComp: appliedStatusComp[0].value
-    })
+      statusComp: appliedStatusComp[0].value,
+    });
     await applyData.save()
       .then(() => {
         res.json({
-          title: 'Successful',
-          detail: 'Job Applied Successfully'
-        })
+          title: "Successful",
+          detail: "Job Applied Successfully",
+        });
       })
       .catch((err) => {
-        throw new Error(err)
-      })
+        throw new Error(err);
+      });
   } catch (err) {
-    console.log(err.message)
     res.json({
       errors: [
         {
-          title: 'Error',
-          errorMessage: err.message
-        }
-      ]
-    })
+          title: "Error",
+          errorMessage: err.message,
+        },
+      ],
+    });
   }
-}
+};
 
 // Company can get details of the job applied for his company
 // Pass object company: 'company_name'
 // Eg. company: "Kellton Tech"
-exports.getAppliedJobs = async function (req, res, next) {
+exports.getAppliedJobs = async function getAppliedJobs(req, res, next) {
   await apply.AppliedJobs.find({}, (err, data) => {
     if (err) {
-      // return next(err)
-    } else {
-      res.json(data)
+      return next(err);
     }
-  })
-}
+    res.json(data);
+    return true;
+  });
+};
 
 // Company can change their recieved job application status here
 // Jobs will be updated based on their status
 // Pass job id and  status.
 
-exports.updateJobStatus = async function (req, res, next) {
-  const { status, id } = req.body
-  const job = await apply.AppliedJobs.findById(id)
-  await apply.AppliedJobs.findByIdAndUpdate(id, { $set: { 'statusComp': status, 'statusUser': status } }, function (err, data) {
-    if (err) {
-      console.log(err)
-    } else {
+exports.updateJobStatus = async function updateJobStatus(req, res, next) {
+  const { status, id } = req.body;
+  const job = await apply.AppliedJobs.findById(id);
+  await apply.AppliedJobs
+    .findByIdAndUpdate(id, { $set: { statusComp: status, statusUser: status } }, (err) => {
+      if (err) {
+        return next(err);
+      }
       res.json({
         data: JSON.stringify(job),
-        statusResponse: status
-      })
-    }
-  })
-}
+        statusResponse: status,
+      });
+      return true;
+    });
+};
 
 
 // Posting Mail Details
-exports.mailDetails = async function (req, res) {
-  const { jobId, name, company, designation, city, date, status } = req.body.mailDetails
+exports.mailDetails = async function mailDetails(req, res) {
+  const {
+    jobId, name, company, designation, city, date, status,
+  } = req.body.mailDetails;
   try {
-    const checkDuplicate = await mailsDetails.findOne({ 'jobId': jobId })
+    const checkDuplicate = await MailsDetails.findOne({ jobId });
     if (checkDuplicate !== null) {
-      await mailsDetails.findOneAndUpdate({ 'jobId': jobId }, { $set: { 'status': status } }, (err, data) => {
+      await MailsDetails.findOneAndUpdate({ jobId }, { $set: { status } }, (err, data) => {
         if (err) {
-          throw new Error(err)
+          throw new Error(err);
         } else {
-          console.log('Mail exists and updated with new status.')
           res.json(data);
-          return;
         }
-      })
+      });
     } else {
-      const mailData = new mailsDetails({
-        jobId: jobId,
-        name: name,
-        company: company,
-        designation: designation,
-        city: city,
-        date: date,
-        status: status
-      })
+      const mailData = new MailsDetails({
+        jobId,
+        name,
+        company,
+        designation,
+        city,
+        date,
+        status,
+      });
 
       await mailData.save()
         .then((data) => {
-          console.log('New mail saved')
-          res.json(data)
+          res.json(data);
         })
         .catch((error) => {
-          throw new Error(error)
-        })
+          throw new Error(error);
+        });
     }
   } catch (error) {
-    console.log(error.message)
+    res.send(error.message);
   }
-}
+};
 
-exports.getMailDetails = async function (req, res) {
-  await mailsDetails.find({}, (err, data) => {
+exports.getMailDetails = async function getMailDetails(req, res, next) {
+  await MailsDetails.find({}, (err, data) => {
     if (err) {
-      console.log(err)
-    } else {
-      res.json(data)
+      return next(err);
     }
-  })
-}
+    res.json(data);
+    return true;
+  });
+};
 
-exports.updateAppliedJobs = async function (req, data) {
-  await apply.AppliedJobs.updateMany({ 'userDetails.userId': mongoose.Types.ObjectId(req.params.id) }, { $set: { 'userDetails': data } }, { multi: true }, (err, res) => {
+exports.updateAppliedJobs = async function updateAppliedJobs(req, data, next) {
+  await apply.AppliedJobs.updateMany({ "userDetails.userId": mongoose.Types.ObjectId(req.params.id) }, { $set: { userDetails: data } }, { multi: true }, (err, res) => {
     if (err) {
-      console.log(err.message);
-    } else {
-      return res;
+      return next(err);
     }
-  })
-}
+    return res;
+  });
+};

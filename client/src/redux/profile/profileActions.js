@@ -1,6 +1,6 @@
 import { profileService } from './profileService'
 import { profileConstants } from './profileConstants'
-import { history } from '../../_helpers/history'
+import history from '../../_helpers/history'
 import { alertActions } from '../alert/alertActions'
 
 export const profileActions = {

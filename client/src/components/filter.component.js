@@ -1,6 +1,6 @@
 import React from 'react';
 import { multiFilter } from './multiFilter'
-import { history } from '../_helpers/history'
+import history from '../_helpers/history'
 import Select from 'react-select'
 
 class Filter extends React.Component {

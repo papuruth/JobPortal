@@ -1,18 +1,8 @@
-import { jobService } from './jobService'
-import { jobConstants } from './jobConstants'
-import { history } from '../../_helpers/history'
-import { alertActions } from '../alert/alertActions'
+import { jobService } from './jobService';
+import { jobConstants } from './jobConstants';
+import history from '../../_helpers/history';
+import { alertActions } from '../alert/alertActions';
 import { paginationActions } from '../pagination/paginationActions';
-
-export const jobAction = {
-  addJob,
-  editJob,
-  updateJob,
-  applyJob,
-  getAppliedJob,
-  removeJob,
-  updateStatus
-};
 
 function addJob(company, profile, designation, salary, city, data) {
   return dispatch => {
@@ -145,27 +135,53 @@ function removeJob(id) {
 }
 
 function updateStatus(id, status) {
-  return dispatch => {
+  function request(paramsId) {
+    return {
+      type: jobConstants.UPDATE_APPLIED_STATUS_REQUEST,
+      paramsId,
+    };
+  }
+  function success(data) {
+    return {
+      type: jobConstants.UPDATE_APPLIED_STATUS_SUCCESS,
+      data,
+    };
+  }
+  function failure(error) {
+    return {
+      type: jobConstants.UPDATE_APPLIED_STATUS_FAILURE,
+      error,
+    };
+  }
+
+  return (dispatch) => {
     dispatch(request(id));
     jobService.updateStatus(id, status)
-      .then((data) => {
+      .then(() => {
         jobService.getMails()
           .then((data) => {
-            dispatch(success(data))
-            history.push('/')
+            dispatch(success(data));
+            history.push('/');
           })
           .catch((error) => {
             dispatch(failure(error));
             dispatch(alertActions.error(error.message));
-          })
+          });
       })
       .catch((error) => {
         dispatch(failure(error));
         dispatch(alertActions.error(error.message));
-      })
+      });
   };
-
-  function request(id) { return { type: jobConstants.UPDATE_APPLIED_STATUS_REQUEST, id } }
-  function success(data) { return { type: jobConstants.UPDATE_APPLIED_STATUS_SUCCESS, data } }
-  function failure(error) { return { type: jobConstants.UPDATE_APPLIED_STATUS_FAILURE, error } }
 }
+
+const jobAction = {
+  addJob,
+  editJob,
+  updateJob,
+  applyJob,
+  getAppliedJob,
+  removeJob,
+  updateStatus,
+};
+export default jobAction;

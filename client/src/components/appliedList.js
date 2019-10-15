@@ -1,8 +1,7 @@
-import React from 'react'
-import { appliedStatusComp } from '../enum/appliedStatus'
-import { jobAction } from '../redux/addJob/jobActions'
+import React from 'react';
+import { appliedStatusComp } from '../enum/appliedStatus';
+import jobAction from '../redux/addJob/jobActions';
 import isLoggedIn from '../isLoggedIn';
-import { ChatApp } from '../containers/chat';
 import config from '../config';
 
 

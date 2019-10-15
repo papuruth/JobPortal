@@ -4,7 +4,7 @@ import male from '../images/male.jpg'
 import female from '../images/female.png'
 import isLoggedIn from '../isLoggedIn'
 import { userActions } from '../redux/user/userActions'
-import { jobAction } from '../redux/addJob/jobActions';
+import jobAction from '../redux/addJob/jobActions';
 import config from '../config';
 import { ChatApp } from '../containers/chat';
 class Header extends React.Component {
@@ -82,8 +82,9 @@ class Header extends React.Component {
           usersArray.push(job.userDetails.name)
         }
       }
+      return false;
     })
-    usersArray = [... new Set(usersArray)]
+    usersArray = [...new Set(usersArray)]
     return usersArray.map((user, index) => {
       return <li className="chatUsers list-group-item" key={index} title={user} onClick={this.openChat}>{user}<span className="messages-count" id={user}>{this.state.lengthMail}</span></li>
     })

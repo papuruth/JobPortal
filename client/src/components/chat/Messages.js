@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import Message from './Message';
 
 class Messages extends React.Component {
@@ -11,30 +11,29 @@ class Messages extends React.Component {
   }
 
   render() {
+    const { messages } = this.props;
     // Loop through all the messages in the state and create a Message component
-    const messages = this.props.messages.map((message, index) => {
-      return (
-        <div key={index}>
-          <Message
-            key={index}
-            username={message.username}
-            message={message.message}
-            fromMe={message.fromMe} 
-          />
-        </div>
-      );
-    });
+    const messagesComponent = messages.map((message) => (
+      <div key={message.message}>
+        <Message
+          key={message.message}
+          username={message.username}
+          message={message.message}
+          fromMe={message.fromMe}
+        />
+      </div>
+    ));
 
     return (
-      <div className='messages' id='messageList'>
-        {messages}
+      <div className="messages" id="messageList">
+        {messagesComponent}
       </div>
     );
   }
 }
 
-Messages.defaultProps = {
-  messages: []
+Messages.propTypes = {
+  messages: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
 };
 
 export default Messages;

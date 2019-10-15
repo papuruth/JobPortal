@@ -1,28 +1,29 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const ApplySchema = mongoose.Schema
+const ApplySchema = mongoose.Schema;
 
 const applyJobs = new ApplySchema(
   {
     userDetails: {
       type: Object,
-      required: true
+      required: true,
     },
     jobDetails: {
       type: Object,
-      required: true
+      required: true,
     },
     statusUser: {
       type: String,
-      required: true
+      required: true,
     },
     statusComp: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   {
-    timestamps: true
-  })
+    timestamps: true,
+  },
+);
 
-exports.AppliedJobs = mongoose.model('appliedjobs', applyJobs, 'appliedjobs')
+exports.AppliedJobs = mongoose.model("appliedjobs", applyJobs, "appliedjobs");
