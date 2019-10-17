@@ -117,4 +117,4 @@ Click on the link to see the application
 
 ## Contributing
 
-Feel free to open issues and pull requests!
+Feel free to open issues and pull requests.!
