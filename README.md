@@ -92,7 +92,6 @@ npm test
 
 The Application Runs on **localhost:3000**
 
-
 ## Live Application URL
 
 [(Live Demo)](https://jobportalmern.herokuapp.com)
