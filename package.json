@@ -26,7 +26,7 @@
     "server": "nodemon server.js",
     "client": "cd client && npm start",
     "build": "cd client && npm run build",
-    "dev": "concurrently --kill-others-on-fail \"npm run start\" \"npm run frontend\"",
+    "dev": "concurrently --kill-others-on-fail \"npm run start\" \"npm run client\"",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "browserslist": {

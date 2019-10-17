@@ -90,6 +90,23 @@ npm test
 ``` 
 
 
+**Explanations on the commands**
+
+The scripts;
+
+- `npm start`: This runs the server.js 
+
+- `npm server`: This  give us live reloading (hot reloading) (developement)
+
+-  `npm client`: Changes the directory into client folder and run the app on localhost 3000
+
+
+- `npm build`: Changes the directory into client folder  runs build script
+
+- `npm dev`: Runs both server and client on one terminal concurrently,
+
+- `npm heroku-postbuild`: Heroku runs this script after it finish building. The script goes into the client folder, then install all node modules, then install any dev dependencies, `--no-shrinkwrap` is flag to prevent shrinkwrapping (shrinkwrapp locks down all dependencies' versions), then finally it finally build the app.
+
 The Application Runs on **localhost:3000**
 
 ## Live Application URL
