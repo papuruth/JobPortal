@@ -15,7 +15,7 @@ This project contains basic feature of:
 
 ## Live Application URL
 
-### https://jobportalmern.herokuapp.com/
+### [(Live Demo)](https://jobportalmern.herokuapp.com)
 This URL has the application deployed in.
 
 
@@ -66,7 +66,7 @@ The Application Runs on **localhost:3000**
 
 ## Live Application URL
 
-The Application is deployed in https://jobportalmern.herokuapp.com/
+[(Live Demo)](https://jobportalmern.herokuapp.com)
 
 Click on the link to see the application
 
