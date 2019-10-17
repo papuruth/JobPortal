@@ -38,7 +38,7 @@ npm install -g create-react-app
 
 Clone down this repository. You will need `node` and `npm` installed globally on your machine.  
 
-Installation (Back-End Server):
+## Installation (Back-End Server):
 
 Go into the project folder 
 ```bash
@@ -57,7 +57,7 @@ To Start Server,  Type the following command:
 npm start
 ```
 
-Installation (Front-End):
+## Installation (Front-End):
 
 Go into the project folder 
 ```bash
