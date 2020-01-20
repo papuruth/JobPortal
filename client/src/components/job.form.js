@@ -4,15 +4,15 @@ import jobAction from '../redux/addJob/jobActions';
 import Input from './generalComponents/input.component';
 import Button from './generalComponents/button.component';
 import Label from './generalComponents/label';
-import { userActions } from '../redux/user/userActions';
+import userActions from '../redux/user/userActions';
 
 class JobForm extends React.Component {
   user = JSON.parse(localStorage.getItem('currentUser'));
+
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       file: [],
-      uploadStatus: '',
       profile: '',
       designation: '',
       company: '',
@@ -20,15 +20,21 @@ class JobForm extends React.Component {
       city: '',
       photo: '',
       optionsComp: [],
-      formErrors: { profile: '', designation: '', salary: '', city: '', photo: '', company: '' },
+      formErrors: {
+        profile: '',
+        designation: '',
+        salary: '',
+        city: '',
+        photo: '',
+        company: '',
+      },
       profileValid: false,
       designationValid: false,
       salaryValid: false,
-      jobValid: '',
       cityValid: false,
       companyValid: false,
       addJobValid: false,
-      photoValid: false
+      photoValid: false,
     }
     const { dispatch } = this.props;
     dispatch(userActions.getAllUsers());

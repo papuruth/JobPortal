@@ -1,10 +1,10 @@
 import React from 'react';
-import Input from './generalComponents/input.component'
-import Button from './generalComponents/button.component'
-import isLoggedIn from '../isLoggedIn'
-import { userActions } from '../redux/user/userActions';
-import { alertActions } from '../redux/alert/alertActions';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import Input from './generalComponents/input.component';
+import Button from './generalComponents/button.component';
+import isLoggedIn from '../isLoggedIn';
+import userActions from '../redux/user/userActions';
+import alertActions from '../redux/alert/alertActions';
 import Label from './generalComponents/label';
 
 class Signup extends React.Component {
@@ -151,7 +151,7 @@ class Signup extends React.Component {
               <Input
                 onChange={this.handleUserInput}
                 className={'form-control'}
-                input_type={'text'}
+                inputType={'text'}
                 name={'fullname'}
                 id={'fullname'}
                 value={this.state.fullname}
@@ -172,7 +172,7 @@ class Signup extends React.Component {
                 onChange={this.handleUserInput}
                 className={'form-control'}
                 id={'email'}
-                input_type={'text'}
+                inputType={'text'}
                 name={'email'}
                 value={this.state.email}
                 placeholder="@"
@@ -193,7 +193,7 @@ class Signup extends React.Component {
                 onChange={this.handleUserInput}
                 className={'form-control'}
                 id={'password'}
-                input_type={this.state.pswdType ? 'password' : 'text'}
+                inputType={this.state.pswdType ? 'password' : 'text'}
                 name={'password'}
                 value={this.state.password}
                 placeholder="Password"
@@ -220,7 +220,7 @@ class Signup extends React.Component {
                 onChange={this.handleUserInput}
                 className={'form-control'}
                 id={'phone'}
-                input_type={'number'}
+                inputType={'number'}
                 name={'phone'}
                 value={this.state.phone}
                 placeholder="+91"
@@ -240,7 +240,7 @@ class Signup extends React.Component {
                 <div className="form-check">
                   <Input
                     className={'form-check-input'}
-                    input_type="radio"
+                    inputType="radio"
                     name="gender"
                     id="male"
                     checked={this.state.gender === 'Male'}
@@ -257,7 +257,7 @@ class Signup extends React.Component {
                 <div className="form-check">
                   <Input
                     className={'form-check-input'}
-                    input_type="radio"
+                    inputType="radio"
                     name="gender"
                     id="female"
                     checked={this.state.gender === 'Female'}

@@ -1,12 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
-import male from '../images/male.jpg'
-import female from '../images/female.png'
-import isLoggedIn from '../isLoggedIn'
-import { userActions } from '../redux/user/userActions'
-import jobAction from '../redux/addJob/jobActions';
-import config from '../config';
-import { ChatApp } from '../containers/chat';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
+import male from '../../images/male.jpg';
+import female from '../../images/female.png';
+import jobAction from '../../redux/addJob/jobActions';
+import config from '../../config';
+import isLoggedIn from '../../isLoggedIn';
+import userActions from '../../redux/user/userActions';
+import ChatApp from '../../containers/chat';
+
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -78,7 +81,7 @@ class Header extends React.Component {
       if (job.userDetails.name === this.state.currentUser.name) {
         usersArray.push(job.jobDetails.company)
       } else {
-        if(job.jobDetails.company === this.state.currentUser.name) {
+        if (job.jobDetails.company === this.state.currentUser.name) {
           usersArray.push(job.userDetails.name)
         }
       }
@@ -129,6 +132,7 @@ class Header extends React.Component {
 
   render() {
     let imageUrl;
+    console.log(this.props)
     if (isLoggedIn()) {
       imageUrl = config.firebase_url.concat(this.state.currentUser.image)
     }
@@ -222,9 +226,9 @@ class Header extends React.Component {
                   }
                   {
                     isLoggedIn() &&
-                    <li class="dropdown">
-                      <span class="far fa-comment-alt dropdown-toggle" data-toggle="dropdown" style={{ fontSize: '20px' }}><span class="caret"></span></span>
-                      <ul class="dropdown-menu1 list-group">
+                    <li className="dropdown">
+                      <span className="far fa-comment-alt dropdown-toggle" data-toggle="dropdown" style={{ fontSize: '20px' }}><span className="caret"></span></span>
+                      <ul className="dropdown-menu1 list-group">
                         <this.renderUserList data={this.state.appliedJobs} />
                       </ul>
                     </li>
@@ -276,4 +280,12 @@ class Header extends React.Component {
   }
 }
 
-export default Header
+Header.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  appliedjobs: PropTypes.arrayOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  mails: PropTypes.arrayOf(PropTypes.any).isRequired,
+};
+
+export default withRouter(Header);

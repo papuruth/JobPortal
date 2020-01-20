@@ -1,14 +1,14 @@
 import React from 'react';
-import { userActions } from '../redux/user/userActions'
-import isLoggedIn from '../isLoggedIn'
-import { Link } from 'react-router-dom'
-import Input from './generalComponents/input.component'
-import Button from './generalComponents/button.component'
+import { Link } from 'react-router-dom';
+import userActions from '../redux/user/userActions';
+import isLoggedIn from '../isLoggedIn';
+import Input from './generalComponents/input.component';
+import Button from './generalComponents/button.component';
 import Label from './generalComponents/label';
 
 class Login extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     // //Resets login status
     // this.props.dispatch(userActions.logout());
     this.state = {
@@ -70,9 +70,11 @@ class Login extends React.Component {
   }
 
   validateForm() {
-    this.setState({
-      signinValid: this.state.emailValid && this.state.passwordValid
-    });
+    if (this.state.emailValid && this.state.passwordValid) {
+      this.setState({
+        signinValid: this.state.emailValid && this.state.passwordValid
+      });
+    }
   }
 
   errorClass(error) {
@@ -123,7 +125,7 @@ class Login extends React.Component {
                     onChange={this.handleUserInput}
                     className={'form-control'}
                     id={'email'}
-                    input_type={'text'}
+                    inputType={'text'}
                     name={'email'}
                     value={this.state.email}
                     placeholder="@"
@@ -143,7 +145,7 @@ class Login extends React.Component {
                     onChange={this.handleUserInput}
                     className={'form-control'}
                     id={'password'}
-                    input_type={this.state.pswdType ? 'password' : 'text'}
+                    inputType={this.state.pswdType ? 'password' : 'text'}
                     name={'password'}
                     value={this.state.password}
                     placeholder="Password"
@@ -158,7 +160,6 @@ class Login extends React.Component {
                 <div className="col-sm-10">
                   <Button
                     title={'Login'}
-                    action={'submit'}
                     className="btn btn-primary"
                     disabled={this.state.signinValid}
                   />

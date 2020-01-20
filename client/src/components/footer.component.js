@@ -1,20 +1,21 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
-class Footer extends React.Component {
+class Footer extends React.PureComponent {
   render() {
     return (
       <div className="row">
         <div className="col-sm-12 footer">
           <div className="">
-            <div className="footer-right">© 2019 Copyright:
-                <Link to="/"> jobsHijobs.com</Link>
+            <div className="footer-right">
+              © 2019 Copyright:
+              <Link to="/"> jobsHijobs.com</Link>
             </div>
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default Footer
+export default Footer;

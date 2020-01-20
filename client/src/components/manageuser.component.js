@@ -1,12 +1,12 @@
-import React from 'react'
-import Loader from '../../node_modules/react-loader-spinner/index'
-import { userActions } from '../redux/user/userActions'
-import male from '../images/male.jpg'
-import female from '../images/female.png'
-import Input from './generalComponents/input.component'
-import Button from './generalComponents/button.component'
+import React from 'react';
+import Loader from '../../node_modules/react-loader-spinner/index';
+import userActions from '../redux/user/userActions';
+import male from '../images/male.jpg';
+import female from '../images/female.png';
+import Input from './generalComponents/input.component';
+import Button from './generalComponents/button.component';
 import Label from './generalComponents/label';
-import config from '../config'
+import config from '../config';
 
 class ManageUser extends React.Component {
   constructor(props) {

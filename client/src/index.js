@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { store } from './Store';
-import { App } from './containers/app';
+import App from './containers/app';
 import * as serviceWorker from './serviceWorker';
 
 render(

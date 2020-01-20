@@ -11,7 +11,6 @@ router.get("/chats", messageController.getMessages);
 router.post("/register", userController.addUser);
 router.post("/authenticate", userController.login);
 router.get("/users", userController.getUsers);
-router.get("/pages", jobController.getPageData);
 router.get("/mails", jobController.getMailDetails);
 router.put("/updateuser/:id", userController.updateUser);
 router.delete("/deleteuser/:id", userController.deleteUser);

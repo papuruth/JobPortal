@@ -1,8 +1,8 @@
 import React from 'react';
-import { Header } from './containers/header'
+import Header from './containers/header'
 import Footer from './components/footer.component'
 import { Route, Switch } from 'react-router-dom'
-import { alertActions } from './redux/alert/alertActions';
+import alertActions from './redux/alert/alertActions';
 import history from './_helpers/history';
 import routes from './routes';
 class App extends React.Component {

@@ -1,4 +1,4 @@
-import { profileConstants } from './profileConstants';
+import profileConstants from './profileConstants';
 
 export function profileUpdate(state = {}, action) {
   switch (action.type) {
@@ -6,12 +6,12 @@ export function profileUpdate(state = {}, action) {
       return {};
     case profileConstants.PROFILE_UPDATE_SUCCESS:
       return {
-        profile: action.data
+        profile: action.payload,
       };
     case profileConstants.PROFILE_UPDATE_FAILURE:
       return {};
     default:
-      return state
+      return state;
   }
 }
 
@@ -22,11 +22,11 @@ export function sendMail(state = {}, action) {
       return {};
     case profileConstants.SEND_MAIL_SUCCESS:
       return {
-        mailStatus: action.status
+        mailStatus: action.payload,
       };
     case profileConstants.SEND_MAIL_FAILURE:
       return {};
     default:
-      return state
+      return state;
   }
 }

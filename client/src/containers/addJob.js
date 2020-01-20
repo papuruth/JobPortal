@@ -1,12 +1,12 @@
-import JobForm from '../components/job.form'
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import JobForm from '../components/job.form';
 
 function mapStateToProps(state) {
   const { users } = state.Users;
   return {
-    users
-  }
+    users,
+  };
 }
 
 const connectedForm = connect(mapStateToProps)(JobForm);
-export { connectedForm as JobForm }
+export default connectedForm;

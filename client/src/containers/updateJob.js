@@ -1,12 +1,12 @@
-import UpdateJobForm from '../components/updateJobs'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux';
+import UpdateJobForm from '../components/updateJobs';
 
-function mapStateToProps (state) {
-    const {editjobs} = state.editJob
-       return {
-           editjobs
-    }
+function mapStateToProps(state) {
+  const { editjobs } = state.editJob;
+  return {
+    editjobs,
+  };
 }
 
 const connectedUpdateForm = connect(mapStateToProps)(UpdateJobForm);
-export { connectedUpdateForm as UpdateJobForm }
+export default connectedUpdateForm;

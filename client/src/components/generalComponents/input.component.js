@@ -1,20 +1,40 @@
-import React from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-class Input extends React.Component {
+class Input extends React.PureComponent {
   render() {
+    const {
+      className,
+      id,
+      name,
+      inputType,
+      value,
+      onChange,
+      placeholder,
+    } = this.props;
     return (
       <input
-        className={this.props.className}
-        id={this.props.id}
-        name={this.props.name}
-        type={this.props.input_type}
-        value={this.props.value}
-        onChange={this.props.onChange}
-        placeholder={this.props.placeholder}
+        className={className}
+        id={id}
+        name={name}
+        type={inputType}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
         autoComplete="off"
       />
-    )
+    );
   }
 }
+
+Input.propTypes = {
+  className: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  inputType: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  placeholder: PropTypes.string.isRequired,
+};
 
 export default Input;

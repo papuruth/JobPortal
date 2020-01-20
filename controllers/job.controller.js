@@ -14,9 +14,9 @@ exports.validateJobs = async (req, res) => {
     const { designation, company } = req.body;
     const jobs = await job.AddJobs.findOne({ $and: [{ designation }, { company }] });
     if (jobs !== null) {
-      res.json("false");
+      res.json(false);
     } else {
-      res.json("true");
+      res.json(true);
     }
   } catch (error) {
     res.json(error.message);
@@ -77,36 +77,33 @@ exports.postJobs = async function postJobs(req, res) {
   }
 };
 
-exports.getJobs = function getJobs(req, res, next) {
+exports.getJobs = async function getJobs(req, res, next) {
   const { page } = req.query;
-  const { last } = req.query;
+  // Get all jobs 
+  const totalJobs = await job.AddJobs.find({});
+  let totalPages = 0;
 
-  if (page === last) {
-    job.AddJobs.find({}, (err, data) => {
-      if (err) return next(err);
-      res.json(data);
-      return true;
-    })
-      .sort({ updatedAt: -1 })
-      .skip(5 * (page - 1));
+  if(totalJobs.length % 4 !== 0) {
+    totalPages = Math.floor(totalJobs.length / 4) + 1;
   } else {
-    job.AddJobs.find({}, (err, data) => {
-      if (err) return next(err);
-      res.json(data);
-      return true;
-    })
-      .sort({ updatedAt: -1 })
-      .limit(5)
-      .skip(5 * (page - 1));
+    totalPages = totalJobs / 4;
   }
-};
 
-exports.getPageData = function getPageData(req, res, next) {
-  page.Pages.find({}, (err, data) => {
+  job.AddJobs.find({}, (err, data) => {
     if (err) return next(err);
-    res.json(data);
+    res.json({
+      jobs: data,
+      pager: {
+        currentPage: Number(page),
+        pages: totalPages,
+        totalItems: totalJobs.length
+      }
+    });
     return true;
-  });
+  })
+    .sort({ updatedAt: -1 })
+    .limit(4)
+    .skip(4 * (Number(page)))
 };
 
 exports.getOneJobs = async function getOneJobs(req, res) {
@@ -153,7 +150,7 @@ exports.applyJobs = async function applyJobs(req, res) {
     const checkJobs = await job.AddJobs.findOne({ _id: id });
     const checkDuplicateApply = await apply.AppliedJobs.findOne({
       $and: [{ "userDetails.name": checkUser.name }, { "jobDetails.designation": checkJobs.designation },
-        { "jobDetails.company": checkJobs.company }],
+      { "jobDetails.company": checkJobs.company }],
     });
     if (checkDuplicateApply !== null) {
       throw new Error("You have already applied. Please wait, for result!");

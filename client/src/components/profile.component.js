@@ -1,10 +1,10 @@
-import React from 'react'
-import { profileActions } from '../redux/profile/profileActions';
+import React from 'react';
+import profileActions from '../redux/profile/profileActions';
 import Input from './generalComponents/input.component';
-import Button from './generalComponents/button.component'
-import male from '../images/male.jpg'
-import female from '../images/female.png'
-import Label from './generalComponents/label'
+import Button from './generalComponents/button.component';
+import male from '../images/male.jpg';
+import female from '../images/female.png';
+import Label from './generalComponents/label';
 import Textarea from './generalComponents/textarea';
 import config from '../config';
 
@@ -124,34 +124,34 @@ class Profile extends React.Component {
     dispatch(profileActions.updateProfile(id, data, emailId))
     document.getElementById('photoupdate').reset();
     document.getElementById('updateDetails').style.display = 'none';
-
   }
 
-  mailFlag;
   mailForm = (event) => {
+    let mailFlag = false;
     event.preventDefault();
-    const tempFlag = !this.mailFlag;
+    const tempFlag = !mailFlag;
     if (tempFlag) {
       document.getElementById('contactForm').style.display = 'block';
-      this.mailFlag = true;
+      mailFlag = true;
     } else {
-      this.mailFlag = false;
+      mailFlag = false;
       document.getElementById('contactForm').style.display = 'none';
     }
   }
 
-  updateFlag;
   updateDetails = (event) => {
-    event.preventDefault()
-    const tempFlag = !this.updateFlag;
+    let updateFlag = false;
+    event.preventDefault();
+    const tempFlag = !updateFlag;
     if (tempFlag) {
       document.getElementById('updateDetails').style.display = 'block';
-      this.updateFlag = true;
+      updateFlag = true;
     } else {
-      this.updateFlag = false;
+      updateFlag = false;
       document.getElementById('updateDetails').style.display = 'none';
     }
   }
+
   render() {
     let imageUrl = '';
     try {

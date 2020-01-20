@@ -1,4 +1,4 @@
-import { chatConstants } from './chatConstants';
+import chatConstants from './chatConstants';
 
 export function saveMessage(state = {}, action) {
   switch (action.type) {
@@ -6,12 +6,12 @@ export function saveMessage(state = {}, action) {
       return {};
     case chatConstants.MESSAGE_SAVE_SUCCESS:
       return {
-        message: action.data
+        message: action.payload,
       };
     case chatConstants.MESSAGE_SAVE_FAILURE:
       return {};
     default:
-      return state
+      return state;
   }
 }
 
@@ -22,11 +22,11 @@ export function getMessage(state = {}, action) {
       return {};
     case chatConstants.GET_MESSAGE_SUCCESS:
       return {
-        chats: action.data
+        chats: action.payload,
       };
     case chatConstants.GET_MESSAGE_FAILURE:
       return {};
     default:
-      return state
+      return state;
   }
 }

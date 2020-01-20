@@ -23,7 +23,7 @@
     "uuid": "^3.3.2"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon node server.js",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "browserslist": {
@@ -39,7 +39,7 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
+    "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2"
   }

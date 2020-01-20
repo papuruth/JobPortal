@@ -1,44 +1,58 @@
-import { chatService } from './chatService'
-import { chatConstants } from './chatConstants'
-import { alertActions } from '../alert/alertActions'
+import chatService from './chatService';
+import chatConstants from './chatConstants';
+import alertActions from '../alert/alertActions';
 
-export const chatActions = {
-  saveMessage,
-  getMessages
-};
+function request(type, payload) {
+  return {
+    type,
+    payload,
+  };
+}
+
+function success(type, payload) {
+  return {
+    type,
+    payload,
+  };
+}
+
+function failure(type, error) {
+  return {
+    type,
+    error,
+  };
+}
 
 function saveMessage(sender, receiver, message, date) {
-  return dispatch => {
-    dispatch(request(sender, receiver, message, date));
+  return (dispatch) => {
+    dispatch(request(chatConstants.MESSAGE_SAVE_REQUEST, null));
     chatService.saveMessage(sender, receiver, message, date)
       .then((data) => {
-        dispatch(success(data));
+        dispatch(success(chatConstants.MESSAGE_SAVE_SUCCESS, data));
       })
       .catch((error) => {
-        dispatch(failure(error));
+        dispatch(failure(chatConstants.MESSAGE_SAVE_FAILURE, error));
         dispatch(alertActions.error(error.message));
-      })
+      });
   };
-
-  function request() { return { type: chatConstants.MESSAGE_SAVE_REQUEST } }
-  function success(data) { return { type: chatConstants.MESSAGE_SAVE_SUCCESS, data } }
-  function failure(error) { return { type: chatConstants.MESSAGE_SAVE_FAILURE, error } }
 }
 
 function getMessages(sender, receiver) {
-  return dispatch => {
-    dispatch(request(sender, receiver));
+  return (dispatch) => {
+    dispatch(request(chatConstants.GET_MESSAGE_REQUEST, null));
     chatService.getMessages(sender, receiver)
       .then((data) => {
-        dispatch(success(data))
+        dispatch(success(chatConstants.GET_MESSAGE_SUCCESS, data));
       })
       .catch((error) => {
-        dispatch(failure(error));
+        dispatch(failure(chatConstants.GET_MESSAGE_FAILURE, error));
         dispatch(alertActions.error(error.message));
-      })
+      });
   };
-
-  function request() { return { type: chatConstants.GET_MESSAGE_REQUEST } }
-  function success(data) { return { type: chatConstants.GET_MESSAGE_SUCCESS, data } }
-  function failure(error) { return { type: chatConstants.GET_MESSAGE_FAILURE, error } }
 }
+
+const chatActions = {
+  saveMessage,
+  getMessages,
+};
+export default chatActions;

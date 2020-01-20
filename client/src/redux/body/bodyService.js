@@ -1,31 +1,20 @@
-import axios from 'axios'
+import axios from 'axios';
+import config from '../../config';
 
-export const bodyService = {
-  getJobs
+async function getJobs(page) {
+  const jobs = await axios.get(`${config.nodeBaseUrl}/jobs`, {
+    params: {
+      page,
+    },
+  });
+  if (jobs.data) {
+    return jobs.data;
+  }
+  return false;
+}
+
+const bodyService = {
+  getJobs,
 };
 
-async function getJobs(page, last) {
-  return await axios.get('/jobs', {
-    params: {
-      page: page,
-      last: last
-    }
-  })
-    .then(async jobs => {
-      console.log(jobs.data)
-      await axios.get('/appliedjobs')
-        .then((resp) => {
-          localStorage.setItem('appliedjobs', JSON.stringify(resp.data))
-        })
-        .catch((error) => {
-          console.log(error.message)
-        })
-      const isJobs = jobs.data
-      if (isJobs !== null) {
-        return jobs.data;
-      }
-      else {
-        return false;
-      }
-    });
-}
+export default bodyService;

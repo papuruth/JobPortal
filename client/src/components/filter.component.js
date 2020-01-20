@@ -1,116 +1,117 @@
 import React from 'react';
-import { multiFilter } from './multiFilter'
-import history from '../_helpers/history'
-import Select from 'react-select'
+import PropTypes from 'prop-types';
+import Select from 'react-select';
+import multiFilter from './multiFilter';
 
 class Filter extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       city: '',
       designation: '',
       company: '',
-      cityList: [],
-      desigList: [],
-      compList: [],
       optionsComp: [],
       optionsCity: [],
-      optionsDesig: []
+      optionsDesig: [],
+    };
+  }
+
+  componentDidMount() {
+    const { dataFilter } = this.props;
+    const { totalJobs } = dataFilter;
+    try {
+      let cityList = [];
+      let desigList = [];
+      let compList = [];
+      totalJobs.filter((item) => {
+        cityList.push(item.city);
+        desigList.push(item.designation);
+        compList.push(item.company);
+        return true;
+      });
+      cityList = [...new Set(cityList)];
+      desigList = [...new Set(desigList)];
+      compList = [...new Set(compList)];
+      const optionsComp = compList.map((item) => ({ label: item, value: item }));
+      const optionsCity = cityList.map((item) => ({ label: item, value: item }));
+
+      const optionsDesig = desigList.map((item) => ({ label: item, value: item }));
+      this.setState({
+        optionsComp,
+        optionsCity,
+        optionsDesig,
+      });
+    } catch (error) {
+      console.log(error.message);
     }
   }
 
   handleChangeComp = (selectedOption) => {
     this.setState({
-      company: selectedOption
+      company: selectedOption,
     });
   }
 
   handleChangeDesig = (selectedOption) => {
     this.setState({
-      designation: selectedOption
+      designation: selectedOption,
     });
   }
 
   handleChangeCity = (selectedOption) => {
     this.setState({
-      city: selectedOption
+      city: selectedOption,
     });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { currentPageData } = nextProps
-    try {
-      var cityList = [];
-      var desigList = [];
-      var compList = [];
-      currentPageData.filter((item) => {
-        return (cityList.push(item.city), desigList.push(item.designation), compList.push(item.company))
-      })
-      cityList = [...new Set(cityList)]
-      desigList = [...new Set(desigList)]
-      compList = [...new Set(compList)]
-      const optionsComp = compList.map((item) => {
-        return { 'label': item, 'value': item }
-      })
-      const optionsCity = cityList.map((item) => {
-        return { 'label': item, 'value': item }
-      })
-
-      const optionsDesig = desigList.map((item) => {
-        return { 'label': item, 'value': item }
-      })
-      this.setState({
-        cityList: cityList,
-        desigList: desigList,
-        compList: compList,
-        optionsComp: optionsComp,
-        optionsCity: optionsCity,
-        optionsDesig: optionsDesig
-      })
-    } catch (error) {
-      console.log(error.message)
-    }
   }
 
   SubmitData = (event) => {
     event.preventDefault();
-    var job_data = this.props.data_filter;
-    if ((this.state.city === '' || this.state.city === null) &&
-     (this.state.designation === '' || this.state.designation === null) &&
-      (this.state.company === '' || this.state.company === null)) {
-      var data = job_data;
-      console.log(data)
-    }
-    else {
-     try {
-      data = job_data;
-      const condition = {
-        city: this.state.city.value || '',
-        company: this.state.company.value || '',
-        designation: this.state.designation.value || ''
+    const { city, designation, company } = this.state;
+    const { dataFilter, filteredData } = this.props;
+    const { filterData } = dataFilter;
+    const jobData = filterData;
+    let data;
+    if ((city === '' || city === null)
+      && (designation === '' || designation === null)
+      && (company === '' || company === null)) {
+      data = jobData;
+    } else {
+      try {
+        data = jobData;
+        const condition = {
+          city: city.value || '',
+          company: company.value || '',
+          designation: designation.value || '',
+        };
+        // Calling filter function with condition and original data
+        data = multiFilter(jobData, condition);
+      } catch (error) {
+        console.log(error.message);
       }
-      console.log(condition)
-      data = multiFilter(job_data, condition); // Calling filter function with condition and original data
     }
-    catch (error) {
-       console.log(error.message)
-     }
+    filteredData(data); // Assigning the filter data
   }
-  console.log(data)
-  this.props.filteredData(data); // Assigning the filter data
-}
 
   reset = () => {
+    const { dataFilter, clearFilter } = this.props;
+    const { filterData } = dataFilter;
     this.setState({
       city: '',
       designation: '',
-      company: ''
-    })
-    history.push('/')
+      company: '',
+    });
+    clearFilter(filterData);
   }
 
   render() {
-    const { company, designation, city } = this.state;
+    const {
+      company,
+      designation,
+      city,
+      optionsCity,
+      optionsComp,
+      optionsDesig,
+    } = this.state;
     return (
       <div className="row filter" id="filter">
         <div className="col-sm-12 col-md-offset-1">
@@ -118,25 +119,39 @@ class Filter extends React.Component {
             <div className="form-group">
               <div className="row">
                 <div className="col-sm-3">
-                  <Select pageSize={1} options={this.state.optionsComp} value={company} onChange={this.handleChangeComp} placeholder="Choose company" isClearable={true} />
+                  <Select pageSize={1} options={optionsComp} value={company} onChange={this.handleChangeComp} placeholder="Choose company" isClearable />
                 </div>
                 <div className="col-sm-3">
-                  <Select pageSize={1} options={this.state.optionsDesig} value={designation} onChange={this.handleChangeDesig} placeholder="Choose designation" isClearable={true} />
+                  <Select pageSize={1} options={optionsDesig} value={designation} onChange={this.handleChangeDesig} placeholder="Choose designation" isClearable />
                 </div>
                 <div className="col-sm-3">
-                  <Select pageSize={1} options={this.state.optionsCity} value={city} onChange={this.handleChangeCity} placeholder="Choose city" isClearable={true} />
+                  <Select pageSize={1} options={optionsCity} value={city} onChange={this.handleChangeCity} placeholder="Choose city" isClearable />
                 </div>
                 <div className="col-sm-3">
                   <button type="submit" className="space btn btn-primary">Filter</button>
-                  <button type="reset" onClick={this.reset} className="space btn btn-danger">Clear</button>
+                  <button type="button" onClick={this.reset} className="space btn btn-danger">Clear</button>
                 </div>
               </div>
             </div>
           </form>
         </div>
       </div>
-    )
+    );
   }
 }
+
+Filter.propTypes = {
+  totalJobs: PropTypes.arrayOf(PropTypes.any),
+  dataFilter: PropTypes.shape({
+    filterData: PropTypes.array,
+    totalJobs: PropTypes.array,
+  }).isRequired,
+  filteredData: PropTypes.func.isRequired,
+  clearFilter: PropTypes.func.isRequired,
+};
+
+Filter.defaultProps = {
+  totalJobs: [],
+};
 
 export default Filter;

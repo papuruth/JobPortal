@@ -1,30 +1,34 @@
-import axios from 'axios'
-
-export const chatService = {
-  saveMessage,
-  getMessages
-};
+import axios from 'axios';
+import config from '../../config';
 
 async function saveMessage(sender, receiver, message, date) {
-  return await axios.post('https://jobportalmern.herokuapp.com/messages', { sender, receiver, message, date })
-    .then(async (response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      return error
-    })
+  try {
+    const response = await axios.post(`${config.nodeBaseUrl}/messages`, {
+      sender, receiver, message, date,
+    });
+    return response.data;
+  } catch (error) {
+    return error;
+  }
 }
 
 async function getMessages(sender, receiver) {
-  return await axios.get('https://jobportalmern.herokuapp.com/chats', {
-    params: {
-      sender, receiver
-    }
-  })
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      return error
-    })
+  try {
+    const response = await axios.get(`${config.nodeBaseUrl}/chats`, {
+      params: {
+        sender,
+        receiver,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return error;
+  }
 }
+
+const chatService = {
+  saveMessage,
+  getMessages,
+};
+
+export default chatService;
