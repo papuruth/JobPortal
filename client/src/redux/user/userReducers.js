@@ -46,3 +46,20 @@ export function Users(state = {}, action) {
       return state;
   }
 }
+
+export function Logout(state = {}, action) {
+  switch (action.type) {
+    case userConstants.USERS_LOGOUT_REQUEST:
+      return {};
+    case userConstants.USERS_LOGOUT_SUCCESS:
+      return {
+        logoutUser: action.payload,
+      };
+    case userConstants.USERS_LOGOUT_FAILURE:
+      return {};
+    default:
+      return state;
+  }
+}
+
+

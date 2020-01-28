@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Filter from './filter.component';
-import Card from './card.component';
+import Card from '../containers/card';
 import isLoggedIn from '../isLoggedIn';
 import bodyActions from '../redux/body/bodyActions';
 import Loader from '../../node_modules/react-loader-spinner/index';
@@ -32,12 +32,26 @@ class Body extends Component {
   }
 
   componentDidMount() {
+    console.log('incdm')
     const { dispatch } = this.props;
-    dispatch(bodyActions.getJobs(0));
+    if (this.user) {
+      const page = 0;
+      const { role, name } = this.user;
+      if (this.user.role === 1) {
+        dispatch(bodyActions.getJobs(page, role, name));
+      } else {
+        dispatch(bodyActions.getJobs(0));
+      }
+    } else {
+      dispatch(bodyActions.getJobs(0));
+    }
   }
 
   componentDidUpdate(prevProps) {
-    const { jobs, pager } = this.props;
+    const { jobs, pager, dispatch, logoutUser } = this.props;
+    if (logoutUser) {
+      dispatch(bodyActions.getJobs(0));
+    }
     if (prevProps.jobs !== jobs) {
       try {
         const filterJobsByComp = jobs.filter((ele) => {
@@ -134,7 +148,11 @@ class Body extends Component {
     return (
       <div>
         {
-          !isLoggedIn() && <Filter filteredData={this.filterMachine} dataFilter={toFilter} />
+          !isLoggedIn() && <Filter
+            filteredData={this.filterMachine}
+            clearFilter={this.clearFilter}
+            dataFilter={{ filterData: toFilter, totalJobs: jobsData }}
+          />
         }
         {
           isLoggedIn() && this.user.role === 2
@@ -148,7 +166,13 @@ class Body extends Component {
         }
         {
           isLoggedIn() && this.user.role === 0
-          && <Filter filteredData={this.filterMachine} dataFilter={toFilter} />
+          && (
+            <Filter
+              filteredData={this.filterMachine}
+              clearFilter={this.clearFilter}
+              dataFilter={{ filterData: toFilter, totalJobs: jobsData }}
+            />
+          )
         }
         {
           isLoggedIn() && this.user.role === 1

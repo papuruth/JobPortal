@@ -7,6 +7,7 @@ class Filter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      totalJobs: [],
       city: '',
       designation: '',
       company: '',
@@ -16,33 +17,36 @@ class Filter extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const { dataFilter } = this.props;
+  componentDidUpdate(prevProps, prevState) {
+    const { dataFilter } = prevProps;
     const { totalJobs } = dataFilter;
-    try {
-      let cityList = [];
-      let desigList = [];
-      let compList = [];
-      totalJobs.filter((item) => {
-        cityList.push(item.city);
-        desigList.push(item.designation);
-        compList.push(item.company);
-        return true;
-      });
-      cityList = [...new Set(cityList)];
-      desigList = [...new Set(desigList)];
-      compList = [...new Set(compList)];
-      const optionsComp = compList.map((item) => ({ label: item, value: item }));
-      const optionsCity = cityList.map((item) => ({ label: item, value: item }));
-
-      const optionsDesig = desigList.map((item) => ({ label: item, value: item }));
-      this.setState({
-        optionsComp,
-        optionsCity,
-        optionsDesig,
-      });
-    } catch (error) {
-      console.log(error.message);
+    if(prevProps.dataFilter.totalJobs !== prevState.totalJobs) {
+      try {
+        let cityList = [];
+        let desigList = [];
+        let compList = [];
+        totalJobs.filter((item) => {
+          cityList.push(item.city);
+          desigList.push(item.designation);
+          compList.push(item.company);
+          return true;
+        });
+        cityList = [...new Set(cityList)];
+        desigList = [...new Set(desigList)];
+        compList = [...new Set(compList)];
+        const optionsComp = compList.map((item) => ({ label: item, value: item }));
+        const optionsCity = cityList.map((item) => ({ label: item, value: item }));
+  
+        const optionsDesig = desigList.map((item) => ({ label: item, value: item }));
+        this.setState({
+          optionsComp,
+          optionsCity,
+          optionsDesig,
+          totalJobs
+        });
+      } catch (error) {
+        console.log(error.message);
+      }
     }
   }
 

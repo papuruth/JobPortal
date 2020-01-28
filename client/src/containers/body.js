@@ -3,9 +3,11 @@ import Body from '../components/body.component';
 
 function mapStateToProps(state) {
   const { jobs, pager } = state.jobs;
+  const { logoutUser } = state.Logout;
   return {
     jobs,
     pager,
+    logoutUser
   };
 }
 

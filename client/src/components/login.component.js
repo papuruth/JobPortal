@@ -9,8 +9,6 @@ import Label from './generalComponents/label';
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    // //Resets login status
-    // this.props.dispatch(userActions.logout());
     this.state = {
       email: '',
       password: '',
@@ -52,11 +50,11 @@ class Login extends React.Component {
 
     switch (fieldName) {
       case 'email':
-        emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+        emailValid = (/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i).test(value);
         fieldValidationErrors.Email = emailValid ? '' : ' is invalid';
         break;
       case 'password':
-        passwordValid = value.length >= 8 && value.match(/^(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/);
+        passwordValid = value.length >= 8 && (/^(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/).test(value);
         fieldValidationErrors.Password = passwordValid ? '' : ' is too short and must be of length 8 and must conatain a lowercase an uppercase a number and a special character';
         break;
       default:
@@ -161,7 +159,7 @@ class Login extends React.Component {
                   <Button
                     title={'Login'}
                     className="btn btn-primary"
-                    disabled={this.state.signinValid}
+                    btnDisabled={this.state.signinValid}
                   />
                   <Link to="/register" className="btn btn-link">Register</Link>
                 </div>

@@ -32,7 +32,7 @@
 .cross {
   position: inherit;
   float: right;
-  top: -30px;
+  top: 5px;
   margin-right: 10px;
 }
 
@@ -299,6 +299,11 @@ a:hover {
   to {
     transform: rotate(360deg);
   }
+}
+
+.logout {
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .btnShift {

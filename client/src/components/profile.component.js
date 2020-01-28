@@ -18,7 +18,9 @@ class Profile extends React.Component {
       photo: '',
       formErrors: { photo: '', fullname: '', email: '', subject: '', message: '' },
       profileValid: false,
-      photoValid: false
+      photoValid: false,
+      updateFlag: false,
+      mailFlag: false
     }
   }
 
@@ -32,7 +34,7 @@ class Profile extends React.Component {
   }
 
   componentWillMount() {
-    const { user,  profile } = this.props;
+    const { user, profile } = this.props;
     this.setState({
       userData: user,
       profile: profile
@@ -127,27 +129,44 @@ class Profile extends React.Component {
   }
 
   mailForm = (event) => {
-    let mailFlag = false;
+    const { mailFlag } = this.state;
     event.preventDefault();
     const tempFlag = !mailFlag;
     if (tempFlag) {
       document.getElementById('contactForm').style.display = 'block';
-      mailFlag = true;
+      this.setState((state) => {
+        return {
+          mailFlag: !state.mailFlag
+        }
+      })
     } else {
-      mailFlag = false;
+      this.setState((state) => {
+        return {
+          mailFlag: !state.mailFlag
+        }
+      })
       document.getElementById('contactForm').style.display = 'none';
     }
   }
 
   updateDetails = (event) => {
-    let updateFlag = false;
+    const { updateFlag } = this.state;
     event.preventDefault();
     const tempFlag = !updateFlag;
+    console.log(tempFlag)
     if (tempFlag) {
       document.getElementById('updateDetails').style.display = 'block';
-      updateFlag = true;
+      this.setState((state) => {
+        return {
+          updateFlag: !state.updateFlag
+        }
+      })
     } else {
-      updateFlag = false;
+      this.setState((state) => {
+        return {
+          updateFlag: !state.updateFlag
+        }
+      })
       document.getElementById('updateDetails').style.display = 'none';
     }
   }
@@ -218,9 +237,11 @@ class Profile extends React.Component {
                 <div className="col-sm-9">
                   <Input
                     className={'form-control'}
-                    input_type={'file'}
+                    inputType={'file'}
                     onChange={this.handleUserInput}
                     name={'photo'}
+                    value={this.state.file[0]}
+                    id="photo"
                     required
                   />
                   {this.errorClass(this.state.formErrors.photo) && <span className="phoneright formErrors">Photo not valid only .jpg and .png</span>}
@@ -231,7 +252,7 @@ class Profile extends React.Component {
                   <Button
                     type={'submit'}
                     className={'btn btn-primary button'}
-                    disabled={this.state.profileValid}
+                    btnDisabled={this.state.profileValid}
                     title={'Update'}
                   />
                 </div>
@@ -249,7 +270,7 @@ class Profile extends React.Component {
               />
               <div className="col-sm-10">
                 <Input
-                  input_type={'text'}
+                  inputType={'text'}
                   value={this.state.userData.name}
                   onChange={this.handleUserInput}
                   readOnly
@@ -268,7 +289,7 @@ class Profile extends React.Component {
               />
               <div className="col-sm-10">
                 <Input
-                  input_type={'text'}
+                  inputType={'text'}
                   value={this.state.userData.emailId}
                   onChange={this.handleUserInput}
                   readOnly
@@ -287,7 +308,7 @@ class Profile extends React.Component {
               />
               <div className="col-sm-10">
                 <Input
-                  input_type={'text'}
+                  inputType={'text'}
                   value={this.state.subject}
                   onChange={this.handleUserInput}
                   readOnly
@@ -321,7 +342,7 @@ class Profile extends React.Component {
                   type={'submit'}
                   className={'btn btn-primary button'}
                   title={'Send Mail'}
-                  disabled={true}
+                  btnDisabled={true}
                 />
               </div>
             </div>
@@ -333,8 +354,6 @@ class Profile extends React.Component {
           <span className="pull-right">
             <button onClick={this.updateDetails} className="btn btn-sm btn-warning" type="button" data-toggle="tooltip"
               data-original-title="Edit this user"><i className="glyphicon glyphicon-edit"></i></button>
-            <button className="space btn btn-sm btn-danger" type="button" data-toggle="tooltip"
-              data-original-title="Remove this user"><i className="glyphicon glyphicon-remove"></i></button>
           </span>
         </div>
       </div >

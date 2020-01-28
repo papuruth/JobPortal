@@ -47,7 +47,6 @@ class ManageUser extends React.Component {
       let company = [];
       let candidate = [];
       let headings = ['Id', 'Fullname', 'Email', 'Password', 'Gender', 'Role', 'Actions'];
-      console.log(headings)
       users.filter((item, index) => {
         if (item.role === 1) {
           company.push(item)

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import alert from './alert/alertReducer';
-import { authentication, registration, Users } from './user/userReducers';
+import { authentication, registration, Users, Logout } from './user/userReducers';
 import jobs from './body/bodyReducer';
 import {
   addjob,
@@ -13,6 +13,7 @@ import {
 } from './addJob/jobReducer';
 import { sendMail, profileUpdate } from './profile/profileReducer';
 import { saveMessage, getMessage } from './chat/chatReducer';
+import { getNotifications } from './notifications/notifReducer';
 
 const rootReducer = combineReducers({
   authentication,
@@ -31,6 +32,8 @@ const rootReducer = combineReducers({
   saveMessage,
   getMessage,
   Users,
+  getNotifications,
+  Logout
 });
 
 export default rootReducer;

@@ -7,18 +7,17 @@ async function login(email, password) {
   const isLoggedIn = user.data.status;
   if (isLoggedIn) {
     // store user details in local storage to keep user logged in between page refreshes
-    console.log(user.data);
     localStorage.setItem('currentUser', JSON.stringify(user.data.data));
     return user.data.data;
   }
   return isLoggedIn;
 }
 
-function logout() {
-  // remove user from local storage to log user out
-  localStorage.removeItem('currentUser');
-  return true;
-}
+const logout = () => new Promise((resolve, reject) => {
+    // remove user from local storage to log user out
+    localStorage.removeItem('currentUser');
+    resolve(true);
+});
 
 async function register(fullname, email, password, phone, gender) {
   try {

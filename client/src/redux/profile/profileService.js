@@ -4,9 +4,9 @@ import config from '../../config';
 async function updateProfile(id, data, emailId) {
   try {
     const response = await axios.post(`${config.nodeBaseUrl}/upload`, data);
-    const imageUrl = `/${response.data}`;
+    const image = `/${response.data}`;
     let updatedData;
-    await axios.put(`${config.nodeBaseUrl}/updateuser/`.concat(id), { imageUrl, emailId })
+    await axios.put(`${config.nodeBaseUrl}/updateuser/`.concat(id), { image, emailId })
       .then(async () => {
         await axios.get(`${config.nodeBaseUrl}/getoneuser/`.concat(id))
           .then((user) => {

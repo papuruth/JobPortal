@@ -86,26 +86,13 @@ async function updateJob(id, company, profileType, designation, annualSalary, ci
  * @param {string} gender
  */
 async function applyJob(id, name, gender) {
-  console.log(id, name);
   try {
     const res = await axios.post(`${config.nodeBaseUrl}/apply`, { id, name, gender });
-    await axios.get(`${config.nodeBaseUrl}/appliedjobs`)
-      .then((responseAppliedJobs) => {
-        localStorage.setItem('appliedjobs', JSON.stringify(responseAppliedJobs.data));
-        const filteredData = responseAppliedJobs.data.filter((item) => {
-          if (item.jobDetails.company === name) {
-            return true;
-          }
-          return false;
-        });
-        return filteredData;
-      })
-      .catch((error) => error.message);
     if (res.data.title === 'Successful') {
       return res.data.title;
     }
-    const error1 = res.data.errors[0];
-    return error1.errorMessage;
+    const error = res.data.errors[0];
+    return error.errorMessage;
   } catch (err) {
     return err;
   }
@@ -122,16 +109,16 @@ async function getAppliedJob(name) {
   try {
     const res = await axios.get(`${config.nodeBaseUrl}/appliedjobs`);
     localStorage.setItem('appliedjobs', JSON.stringify(res.data));
-    const filteredData = res.data.filter((item) => {
+    const filteredData = [];
+    res.data.filter((item) => {
       if (item.jobDetails.company === name) {
-        return true;
+        filteredData.push(item);
       }
       if (item.userDetails.name === name) {
-        return true;
+        filteredData.push(item);
       }
       return false;
     });
-    localStorage.setItem('appliedjobs', JSON.stringify(filteredData));
     return filteredData;
   } catch (error) {
     return error.message;
@@ -190,23 +177,6 @@ async function updateStatus(id, status) {
   }
 }
 
-/**
- * @author Papu Kumar <papu.kumar@kelltontech.com>
- * @description Redux Service for fetching jobs updated for candidate
- * @async
- * @function getMails
- */
-async function getMails() {
-  try {
-    const mails = await axios.get(`${config.nodeBaseUrl}/mails`);
-    localStorage.setItem('mails', JSON.stringify(mails.data));
-    const mailData = JSON.parse(localStorage.getItem('mails'));
-    return mailData;
-  } catch (error) {
-    return error.message;
-  }
-}
-
 const jobService = {
   addJob,
   editJob,
@@ -215,7 +185,6 @@ const jobService = {
   getAppliedJob,
   removeJob,
   updateStatus,
-  getMails,
 };
 
 export default jobService;

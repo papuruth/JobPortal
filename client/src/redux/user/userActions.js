@@ -47,8 +47,19 @@ function login(email, password) {
 }
 
 function logout() {
-  userService.logout();
-  history.push('/');
+  return (dispatch) => {
+    dispatch(request(userConstants.USERS_LOGOUT_REQUEST, null));
+    userService.logout()
+      .then((res) => {
+        if (res) {
+          dispatch(success(userConstants.USERS_LOGOUT_SUCCESS, res));
+        }
+      })
+      .catch((error) => {
+        dispatch(failure(error));
+        dispatch(alertActions.error(userConstants.USERS_LOGOUT_FAILURE, error));
+      });
+  };
 }
 
 function register(fullname, email, password, phone, gender) {
@@ -56,7 +67,6 @@ function register(fullname, email, password, phone, gender) {
     dispatch(request(userConstants.REGISTER_REQUEST, null));
     userService.register(fullname, email, password, phone, gender)
       .then((user) => {
-        console.log(user);
         if (user === 'User exists') {
           dispatch(alertActions.error(user));
         } else {

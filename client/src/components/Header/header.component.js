@@ -9,6 +9,7 @@ import config from '../../config';
 import isLoggedIn from '../../isLoggedIn';
 import userActions from '../../redux/user/userActions';
 import ChatApp from '../../containers/chat';
+import notifAction from '../../redux/notifications/notifAction';
 
 class Header extends React.Component {
   constructor(props) {
@@ -23,9 +24,9 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    console.log('incdm')
     const { dispatch } = this.props
     dispatch(jobAction.getAppliedJob(this.state.currentUser.name));
+    dispatch(notifAction.getNotifications())
   }
 
   componentWillReceiveProps(nextProps) {
@@ -56,8 +57,8 @@ class Header extends React.Component {
   }
 
   logout = () => {
-    userActions.logout()
-    this.props.history.push('/')
+    const {dispatch} = this.props;
+    dispatch(userActions.logout());
   }
 
   showMail = (e) => {
@@ -132,7 +133,6 @@ class Header extends React.Component {
 
   render() {
     let imageUrl;
-    console.log(this.props)
     if (isLoggedIn()) {
       imageUrl = config.firebase_url.concat(this.state.currentUser.image)
     }
@@ -267,7 +267,7 @@ class Header extends React.Component {
                     </li>
                   }
                   {
-                    isLoggedIn() && <li><Link to="/" onClick={this.logout}><i className="fa fa-sign-out"></i> Logout</Link></li>
+                    isLoggedIn() && <li><button type="button" className="btn btn-link logout" onClick={this.logout}><i className="fa fa-sign-out"></i> Logout</button></li>
                   }
                 </ul>
               </div >
@@ -282,10 +282,16 @@ class Header extends React.Component {
 
 Header.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
-  appliedjobs: PropTypes.arrayOf(PropTypes.any).isRequired,
+  currentUser: PropTypes.objectOf(PropTypes.any),
+  appliedjobs: PropTypes.arrayOf(PropTypes.any),
   history: PropTypes.objectOf(PropTypes.any).isRequired,
-  mails: PropTypes.arrayOf(PropTypes.any).isRequired,
+  mails: PropTypes.oneOfType([PropTypes.array]),
 };
+
+Header.defaultProp = {
+  currentUser: '',
+  appliedJobs: [],
+  mails: []
+}
 
 export default withRouter(Header);

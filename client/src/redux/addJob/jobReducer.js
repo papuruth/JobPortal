@@ -77,6 +77,7 @@ function getAppliedJobs(state = {}, action) {
     case jobConstants.GET_APPLIED_JOB_SUCCESS:
       return {
         appliedjobs: action.payload,
+        apply: false
       };
     case jobConstants.GET_APPLIED_JOB_FAILURE:
       return {

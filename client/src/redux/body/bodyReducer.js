@@ -15,16 +15,16 @@ export default function jobs(state = initialState, action) {
         },
       };
     case bodyConstants.JOBS_SUCCESS:
-      return action.jobs.pager.currentPage === 0
+      return action.payload.pager.currentPage === 0
         ? {
           ...state,
-          jobs: action.jobs.jobs,
-          pager: action.jobs.pager,
+          jobs: action.payload.jobs,
+          pager: action.payload.pager,
         }
         : {
           ...state,
-          jobs: [...state.jobs, ...action.jobs.jobs],
-          pager: action.jobs.pager,
+          jobs: [...state.jobs, ...action.payload.jobs],
+          pager: action.payload.pager,
         };
     case bodyConstants.JOBS_FAILURE:
       return {

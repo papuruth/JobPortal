@@ -45,7 +45,6 @@ exports.addUser = async function addUser(req, res) {
 };
 
 exports.login = async function login(req, res) {
-  console.log(req.body);
   try {
     const checkUser = await Users
       .findOne({ $and: [{ emailId: req.body.email }, { password: req.body.passwd }] });
@@ -104,7 +103,7 @@ exports.updateUser = async function updateUser(req, res, next) {
       image: user.image,
     };
     if (user.role === 2) {
-      // Calling Update Applied Jobs with updated user details
+      // Calling Update Applied Jobs to updated user details
       await jobController.updateAppliedJobs(req, userDetails);
       if (req.body.userStatus === 1) {
         res.json({ status: "unban" });

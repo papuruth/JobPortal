@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Button = (props) => {
-  const { className, disabled, title } = props;
+  const { className, btnDisabled, title } = props;
   return (
     <button
       className={className}
       type="submit"
-      disabled={!disabled}
+      disabled={!btnDisabled}
     >
       {title}
     </button>
@@ -16,7 +16,7 @@ const Button = (props) => {
 
 Button.propTypes = {
   className: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  btnDisabled: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
 };
 

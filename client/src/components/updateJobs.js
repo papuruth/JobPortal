@@ -30,7 +30,6 @@ class UpdateJobForm extends React.Component {
 
   componentDidMount() {
     const { editjobs } = this.props;
-    console.log(editjobs);
     const {
       profileType, company, designation, annualSalary, city, _id,
     } = editjobs;
@@ -98,7 +97,7 @@ class UpdateJobForm extends React.Component {
         fieldValidationErrors.salary = salaryValid ? '' : 'must be valid';
         break;
       case 'city':
-        cityValid = value.match(/^[a-z][^!¡?÷?¿\\+=@#$%ˆ&*{}|~<>;:[\]]{5,}$/i);
+        cityValid = value.match(/^[a-z][^!¡?÷?¿\\+=@#$%ˆ&*{}|~<>;:[\]]{2,}$/i);
         fieldValidationErrors.city = cityValid ? '' : 'can be a comb. of a-zA-Z0-9.,-_()';
         break;
       default:
@@ -131,7 +130,7 @@ class UpdateJobForm extends React.Component {
               onChange={this.handleUserInput}
               className="form-control"
               id={profile}
-              input_type="text"
+              inputType="text"
               name="profile"
               value={profile}
               placeholder="IT Services/Sales/Tester"
@@ -145,7 +144,7 @@ class UpdateJobForm extends React.Component {
               onChange={this.handleUserInput}
               className="form-control"
               id={designation}
-              input_type="text"
+              inputType="text"
               name="designation"
               value={designation}
               placeholder="Software Engineer"
@@ -159,7 +158,7 @@ class UpdateJobForm extends React.Component {
               onChange={this.handleUserInput}
               className="form-control"
               id={salary}
-              input_type="text"
+              inputType="text"
               name="salary"
               value={salary}
               placeholder="7 LPA"
@@ -173,7 +172,7 @@ class UpdateJobForm extends React.Component {
               onChange={this.handleUserInput}
               className="form-control"
               id={city}
-              input_type="text"
+              inputType="text"
               name="city"
               value={city}
               placeholder="Delhi"
@@ -186,7 +185,7 @@ class UpdateJobForm extends React.Component {
               title="Add"
               action="submit"
               className="btn btn-success"
-              disabled={addJobValid}
+              btnDisabled={addJobValid}
             />
           </div>
         </form>

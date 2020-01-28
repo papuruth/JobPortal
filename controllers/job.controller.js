@@ -78,32 +78,56 @@ exports.postJobs = async function postJobs(req, res) {
 };
 
 exports.getJobs = async function getJobs(req, res, next) {
-  const { page } = req.query;
-  // Get all jobs 
-  const totalJobs = await job.AddJobs.find({});
+  const { page, role, name } = req.query;
   let totalPages = 0;
+  if (role) {
+    // Get all jobs on company basis
+    const totalJobs = await job.AddJobs.find({ company: name });
+    if (totalJobs.length % 4 !== 0) {
+      totalPages = Math.floor(totalJobs.length / 4) + 1;
+    } else {
+      totalPages = totalJobs.length / 4;
+    }
 
-  if(totalJobs.length % 4 !== 0) {
-    totalPages = Math.floor(totalJobs.length / 4) + 1;
+    job.AddJobs.find({ company: name }, (err, data) => {
+      if (err) return next(err);
+      res.json({
+        jobs: data,
+        pager: {
+          currentPage: Number(page),
+          pages: totalPages,
+          totalItems: totalJobs.length,
+        },
+      });
+      return true;
+    })
+      .sort({ updatedAt: -1 })
+      .limit(4)
+      .skip(4 * (Number(page)));
   } else {
-    totalPages = totalJobs / 4;
+    // Get all jobs
+    const totalJobs = await job.AddJobs.find({});
+    if (totalJobs.length % 4 !== 0) {
+      totalPages = Math.floor(totalJobs.length / 4) + 1;
+    } else {
+      totalPages = totalJobs.length / 4;
+    }
+    job.AddJobs.find({}, (err, data) => {
+      if (err) return next(err);
+      res.json({
+        jobs: data,
+        pager: {
+          currentPage: Number(page),
+          pages: totalPages,
+          totalItems: totalJobs.length,
+        },
+      });
+      return true;
+    })
+      .sort({ updatedAt: -1 })
+      .limit(4)
+      .skip(4 * (Number(page)));
   }
-
-  job.AddJobs.find({}, (err, data) => {
-    if (err) return next(err);
-    res.json({
-      jobs: data,
-      pager: {
-        currentPage: Number(page),
-        pages: totalPages,
-        totalItems: totalJobs.length
-      }
-    });
-    return true;
-  })
-    .sort({ updatedAt: -1 })
-    .limit(4)
-    .skip(4 * (Number(page)))
 };
 
 exports.getOneJobs = async function getOneJobs(req, res) {
@@ -150,7 +174,7 @@ exports.applyJobs = async function applyJobs(req, res) {
     const checkJobs = await job.AddJobs.findOne({ _id: id });
     const checkDuplicateApply = await apply.AppliedJobs.findOne({
       $and: [{ "userDetails.name": checkUser.name }, { "jobDetails.designation": checkJobs.designation },
-      { "jobDetails.company": checkJobs.company }],
+        { "jobDetails.company": checkJobs.company }],
     });
     if (checkDuplicateApply !== null) {
       throw new Error("You have already applied. Please wait, for result!");
@@ -244,14 +268,14 @@ exports.applyJobs = async function applyJobs(req, res) {
 // Company can get details of the job applied for his company
 // Pass object company: 'company_name'
 // Eg. company: "Kellton Tech"
-exports.getAppliedJobs = async function getAppliedJobs(req, res, next) {
-  await apply.AppliedJobs.find({}, (err, data) => {
-    if (err) {
-      return next(err);
-    }
-    res.json(data);
-    return true;
-  });
+exports.getAppliedJobs = async function getAppliedJobs(req, res) {
+  try {
+    const appliedJobs = await apply.AppliedJobs.find({});
+    console.log(appliedJobs.length);
+    res.json(appliedJobs);
+  } catch (error) {
+    res.json(error.message);
+  }
 };
 
 // Company can change their recieved job application status here

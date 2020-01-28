@@ -85,7 +85,6 @@ function applyJob(id, name, gender) {
           dispatch(alertActions.success('Job successfully applied'));
           setTimeout(() => {
             dispatch(success(jobConstants.APPLY_JOB_SUCCESS, res));
-            history.push('/');
           }, 500);
         } else {
           dispatch(alertActions.error(res));
@@ -103,6 +102,7 @@ function getAppliedJob(name) {
     dispatch(request(jobConstants.GET_APPLIED_JOB_REQUEST, name));
     jobService.getAppliedJob(name)
       .then((res) => {
+        dispatch(success(jobConstants.APPLY_JOB_SUCCESS, false));
         dispatch(success(jobConstants.GET_APPLIED_JOB_SUCCESS, res));
       })
       .catch((error) => {
@@ -131,16 +131,9 @@ function updateStatus(id, status) {
   return (dispatch) => {
     dispatch(request(jobConstants.UPDATE_APPLIED_STATUS_REQUEST, id));
     jobService.updateStatus(id, status)
-      .then(() => {
-        jobService.getMails()
-          .then((data) => {
+      .then((data) => {
             dispatch(success(jobConstants.UPDATE_APPLIED_STATUS_SUCCESS, data));
             history.push('/');
-          })
-          .catch((error) => {
-            dispatch(failure(error));
-            dispatch(alertActions.error(error.message));
-          });
       })
       .catch((error) => {
         dispatch(failure(jobConstants.UPDATE_APPLIED_STATUS_FAILURE, error));

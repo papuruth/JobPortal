@@ -1,11 +1,11 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 import '../App.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import isLoggedIn from '../isLoggedIn';
 import jobAction from '../redux/addJob/jobActions';
-import history from '../_helpers/history';
 import config from '../config';
 import bodyActions from '../redux/body/bodyActions';
 
@@ -16,6 +16,7 @@ class Card extends React.Component {
     super(props);
     this.state = {
       hasMore: true,
+      appliedjobs: []
     };
   }
 
@@ -27,12 +28,24 @@ class Card extends React.Component {
         hasMore: true,
       };
     }
+
+    if (nextProps.appliedjobs !== prevState.appliedjobs) {
+      return {
+        appliedjobs: nextProps.appliedjobs
+      }
+    }
     return state;
   }
 
+  componentDidMount() {
+    const { dispatch } = this.props;
+    if (this.user) {
+      dispatch(jobAction.getAppliedJob(this.user.name));
+    }
+  }
 
   componentDidUpdate() {
-    const { data, appliedjobs } = this.props;
+    const { data, appliedjobs, apply } = this.props;
     if (isLoggedIn() && appliedjobs) {
       appliedjobs.map((job) => {
         data.map((item, innerIndex) => {
@@ -52,6 +65,11 @@ class Card extends React.Component {
         return true;
       });
     }
+
+    if (apply) {
+      const { dispatch } = this.props;
+      dispatch(jobAction.getAppliedJob(this.user.name));
+    }
   }
 
   editJob = (event) => {
@@ -63,6 +81,7 @@ class Card extends React.Component {
 
   apply = (e) => {
     e.preventDefault();
+    const { history } = this.props;
     const id = e.target.name;
     if (isLoggedIn()) {
       const { dispatch } = this.props;
@@ -94,7 +113,16 @@ class Card extends React.Component {
     } else if (Object.keys(pagerData).length > 0) {
       const page = pagerData.currentPage ? pagerData.currentPage + 1 : 0 + 1;
       const { dispatch } = this.props;
-      dispatch(bodyActions.getJobs(page));
+      if(this.user) {
+        const {role, name} = this.user;
+        if(this.user.role === 1) {
+          dispatch(bodyActions.getJobs(page, role, name));
+        } else {
+          dispatch(bodyActions.getJobs(page));
+        }
+      } else {
+          dispatch(bodyActions.getJobs(page));
+      }
     }
   };
 
@@ -166,7 +194,7 @@ class Card extends React.Component {
                         </div>
                         <div className="col-sm-4 col-lg-4 col-4">
                           {isLoggedIn() && this.user.role !== 2 && <i className="fa fa-times cross" id={job._id} onClick={this.removeJob} onKeyPress={this.removeJob} role="button" tabIndex={0} aria-label="Remove Job" />}
-                          {isLoggedIn() && this.user.role !== 2 && <i className="fa fa-edit cross" onClick={() => this.editJob} id={job._id} onKeyPress={this.editJob} role="button" tabIndex={0} aria-label="Remove Job" />}
+                          {isLoggedIn() && this.user.role !== 2 && <i className="fa fa-edit cross" onClick={this.editJob} id={job._id} onKeyPress={this.editJob} role="button" tabIndex={0} aria-label="Edit Job" />}
                           <div>
                             <span className="font14 font-medium">
                               Venue:
@@ -226,4 +254,4 @@ Card.defaultProps = {
   appliedjobs: [],
 };
 
-export default Card;
+export default withRouter(Card);

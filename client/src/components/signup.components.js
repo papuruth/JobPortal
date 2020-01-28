@@ -246,6 +246,7 @@ class Signup extends React.Component {
                     checked={this.state.gender === 'Male'}
                     onChange={this.handleUserInput}
                     value={'Male'}
+                    placeholder="Male"
                   />
                   &nbsp;
                   <Label
@@ -263,6 +264,7 @@ class Signup extends React.Component {
                     checked={this.state.gender === 'Female'}
                     onChange={this.handleUserInput}
                     value={'Female'}
+                    placeholder="Female"
                   />
                   &nbsp;
                   <Label
