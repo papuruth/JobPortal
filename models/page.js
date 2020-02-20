@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const PagesSchema = mongoose.Schema;
 
@@ -39,4 +39,4 @@ const pageData = new PagesSchema({
   timestamps: true,
 });
 
-exports.Pages = mongoose.model("pages", pageData);
+exports.Pages = mongoose.model('pages', pageData);

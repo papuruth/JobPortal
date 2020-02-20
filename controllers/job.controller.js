@@ -1,13 +1,13 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-shadow */
-const mongoose = require("mongoose");
-const Users = require("../models/user");
-const job = require("../models/jobs");
-const page = require("../models/page");
-const apply = require("../models/appliedJobs");
-const MailsDetails = require("../models/mailsDetails");
-const status = require("../enum/jobeStatus");
-const { appliedStatusComp, appliedStatusUser } = require("../enum/appliedStatus");
+const mongoose = require('mongoose');
+const Users = require('../models/user');
+const job = require('../models/jobs');
+const page = require('../models/page');
+const apply = require('../models/appliedJobs');
+const MailsDetails = require('../models/mailsDetails');
+const status = require('../enum/jobeStatus');
+const { appliedStatusComp, appliedStatusUser } = require('../enum/appliedStatus');
 
 exports.validateJobs = async (req, res) => {
   try {
@@ -29,7 +29,7 @@ exports.postJobs = async function postJobs(req, res) {
     const checkDuplicatePage = await page.Pages.findOne({ $and: [{ designation }, { company }] });
 
     if (checkDuplicateJobs !== null && checkDuplicatePage !== null) {
-      throw new Error("Job already exists. Please add new jobs");
+      throw new Error('Job already exists. Please add new jobs');
     }
     const data = new job.AddJobs(
       {
@@ -62,8 +62,8 @@ exports.postJobs = async function postJobs(req, res) {
     await data.save()
       .then(() => {
         res.json({
-          title: "Successful",
-          detail: "Job posted Successfully",
+          title: 'Successful',
+          detail: 'Job posted Successfully',
         });
       })
       .catch((err) => {
@@ -71,7 +71,7 @@ exports.postJobs = async function postJobs(req, res) {
       });
   } catch (error) {
     res.json({
-      title: "Error",
+      title: 'Error',
       detail: error.message,
     });
   }
@@ -144,7 +144,7 @@ exports.getOneJobs = async function getOneJobs(req, res) {
 exports.updateJobs = function updateJobs(req, res, next) {
   job.AddJobs.findByIdAndUpdate(req.params.id, { $set: req.body }, (err) => {
     if (err) return next(err);
-    res.send("Data updated successfully");
+    res.send('Data updated successfully');
     return true;
   });
 };
@@ -173,11 +173,11 @@ exports.applyJobs = async function applyJobs(req, res) {
     const checkUser = await Users.findOne({ name });
     const checkJobs = await job.AddJobs.findOne({ _id: id });
     const checkDuplicateApply = await apply.AppliedJobs.findOne({
-      $and: [{ "userDetails.name": checkUser.name }, { "jobDetails.designation": checkJobs.designation },
-        { "jobDetails.company": checkJobs.company }],
+      $and: [{ 'userDetails.name': checkUser.name }, { 'jobDetails.designation': checkJobs.designation },
+        { 'jobDetails.company': checkJobs.company }],
     });
     if (checkDuplicateApply !== null) {
-      throw new Error("You have already applied. Please wait, for result!");
+      throw new Error('You have already applied. Please wait, for result!');
     }
 
     // const lat = checkUser.location.coordinates[0]
@@ -213,8 +213,8 @@ exports.applyJobs = async function applyJobs(req, res) {
     //   throw new Error('No ' + designation + ' jobs around your area')
     // }
 
-    if (checkJobs.status !== "New") {
-      throw new Error("Early bird catches the worm :)");
+    if (checkJobs.status !== 'New') {
+      throw new Error('Early bird catches the worm :)');
     }
 
     const applyData = new apply.AppliedJobs({
@@ -246,8 +246,8 @@ exports.applyJobs = async function applyJobs(req, res) {
     await applyData.save()
       .then(() => {
         res.json({
-          title: "Successful",
-          detail: "Job Applied Successfully",
+          title: 'Successful',
+          detail: 'Job Applied Successfully',
         });
       })
       .catch((err) => {
@@ -257,7 +257,7 @@ exports.applyJobs = async function applyJobs(req, res) {
     res.json({
       errors: [
         {
-          title: "Error",
+          title: 'Error',
           errorMessage: err.message,
         },
       ],
@@ -271,7 +271,6 @@ exports.applyJobs = async function applyJobs(req, res) {
 exports.getAppliedJobs = async function getAppliedJobs(req, res) {
   try {
     const appliedJobs = await apply.AppliedJobs.find({});
-    console.log(appliedJobs.length);
     res.json(appliedJobs);
   } catch (error) {
     res.json(error.message);
@@ -349,7 +348,7 @@ exports.getMailDetails = async function getMailDetails(req, res, next) {
 };
 
 exports.updateAppliedJobs = async function updateAppliedJobs(req, data, next) {
-  await apply.AppliedJobs.updateMany({ "userDetails.userId": mongoose.Types.ObjectId(req.params.id) }, { $set: { userDetails: data } }, { multi: true }, (err, res) => {
+  await apply.AppliedJobs.updateMany({ 'userDetails.userId': mongoose.Types.ObjectId(req.params.id) }, { $set: { userDetails: data } }, { multi: true }, (err, res) => {
     if (err) {
       return next(err);
     }

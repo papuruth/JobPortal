@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const ChatSchema = mongoose.Schema;
 
@@ -20,4 +20,4 @@ const chatData = new ChatSchema({
   timestamps: true,
 });
 
-module.exports = mongoose.model("chats", chatData);
+module.exports = mongoose.model('chats', chatData);

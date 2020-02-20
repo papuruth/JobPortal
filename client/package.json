@@ -6,22 +6,10 @@
     "@types/prop-types": "^15.7.3",
     "@types/react": "^16.9.17",
     "axios": "^0.18.1",
-    "body-parser": "^1.19.0",
     "bootstrap": "^4.4.1",
     "concurrently": "^4.1.2",
-    "connect-busboy": "0.0.2",
-    "cors": "^2.8.5",
-    "enum": "^2.5.0",
-    "express": "^4.17.1",
-    "express-session": "^1.16.2",
     "history": "^4.10.1",
-    "http": "0.0.0",
-    "mongoose": "^5.8.9",
-    "multer": "^1.4.2",
-    "nodemailer": "^6.4.2",
-    "nodemon": "^1.19.4",
     "prop-types": "^15.7.2",
-    "randomstring": "^1.1.5",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-infinite-scroll-component": "^5.0.4",
@@ -34,11 +22,9 @@
     "react-select": "^2.4.4",
     "reactjs-popup": "^1.5.0",
     "redux": "^4.0.5",
-    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "socket.io": "^2.3.0",
-    "socket.io-client": "^2.3.0",
-    "uuid": "^3.4.0"
+    "socket.io-client": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -64,7 +50,8 @@
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-import": "^2.20.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.18.0",
-    "eslint-plugin-react-hooks": "^1.7.0"
+    "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "redux-logger": "^3.0.6"
   }
 }

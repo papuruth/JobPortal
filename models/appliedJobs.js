@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const ApplySchema = mongoose.Schema;
 
@@ -26,4 +26,4 @@ const applyJobs = new ApplySchema(
   },
 );
 
-exports.AppliedJobs = mongoose.model("appliedjobs", applyJobs, "appliedjobs");
+exports.AppliedJobs = mongoose.model('appliedjobs', applyJobs, 'appliedjobs');

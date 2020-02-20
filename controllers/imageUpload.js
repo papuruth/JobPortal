@@ -1,14 +1,14 @@
-const path = require("path");
-const multer = require("multer");
-const { format } = require("util");
-const { Storage } = require("@google-cloud/storage");
+const path = require('path');
+const multer = require('multer');
+const { format } = require('util');
+const { Storage } = require('@google-cloud/storage');
 
 const gcs = new Storage({
-  projectId: "job-portal-mern",
-  keyFilename: "./config/firebase_key.json",
+  projectId: 'job-portal-mern',
+  keyFilename: './config/firebase_key.json',
 });
 
-const bucketName = "job-portal-mern.appspot.com";
+const bucketName = 'job-portal-mern.appspot.com';
 
 const bucket = gcs.bucket(bucketName);
 /**
@@ -25,11 +25,11 @@ const uploadImageToStorage = (file, filename) => new Promise((resolve, reject) =
 
   });
 
-  blobStream.on("error", (error) => {
+  blobStream.on('error', (error) => {
     reject(error);
   });
 
-  blobStream.on("finish", () => {
+  blobStream.on('finish', () => {
     // The public URL can be used to directly access the file via HTTP.
     const url = format(`https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${fileUpload.name}?alt=media`);
     resolve(url);
@@ -41,7 +41,7 @@ const uploadImageToStorage = (file, filename) => new Promise((resolve, reject) =
 exports.upload = function upload(req, res) {
   try {
     const storage = multer.memoryStorage({
-      destination: "./client/src/images",
+      destination: './client/src/images',
       limits: {
         fileSize: 10 * 1024 * 1024, // no larger than 5mb
       },
@@ -49,7 +49,7 @@ exports.upload = function upload(req, res) {
 
     const uploadImage = multer({
       storage,
-    }).single("file");
+    }).single('file');
 
     uploadImage(req, res, (err) => {
       if (!err) {

@@ -333,8 +333,6 @@ a:hover {
 }
 
 .container-fluid {
-  padding-right: 0px!important;
-  padding-left: 0px!important;
   margin-right: auto;
   overflow: unset;
   margin-left: auto;

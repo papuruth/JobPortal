@@ -1,4 +1,4 @@
-const mail = require("../server");
+const mail = require('../server');
 
 exports.sendMail = function sendMail(req, res) {
   const {
@@ -11,7 +11,7 @@ exports.sendMail = function sendMail(req, res) {
 
   const mailData = {
     from: `${fullname} <${email}>`,
-    to: "papuruth@gmail.com", // Change to email address that you want to receive messages on
+    to: 'papuruth@gmail.com', // Change to email address that you want to receive messages on
     subject,
     text: content,
   };
@@ -21,7 +21,7 @@ exports.sendMail = function sendMail(req, res) {
       res.json(err.message);
     } else {
       res.json({
-        msg: "success",
+        msg: 'success',
       });
     }
   });

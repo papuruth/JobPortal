@@ -1,6 +1,5 @@
 module.exports = {
   env: {
-    browser: true,
     commonjs: true,
     es6: true,
   },
@@ -14,6 +13,6 @@ module.exports = {
   },
   rules: {
     "semi": ["error", "always"],
-    "quotes": ["error", "double"]
+    "quotes": ["error", "single"]
   },
 };

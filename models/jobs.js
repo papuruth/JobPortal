@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const JobsSchema = mongoose.Schema;
 
@@ -39,4 +39,4 @@ const jobsData = new JobsSchema({
   timestamps: true,
 });
 
-exports.AddJobs = mongoose.model("jobs", jobsData);
+exports.AddJobs = mongoose.model('jobs', jobsData);

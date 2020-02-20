@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const ApplySchema = mongoose.Schema;
 
@@ -38,4 +38,4 @@ const mails = new ApplySchema(
   },
 );
 
-module.exports = mongoose.model("mailsDetails", mails);
+module.exports = mongoose.model('mailsDetails', mails);

@@ -1,2 +1,2 @@
-exports.USER = "papuruth@gmail.com";
-exports.PASS = "uwaszmqtyrcfnvou";
+exports.USER = 'papuruth@gmail.com';
+exports.PASS = 'uwaszmqtyrcfnvou';

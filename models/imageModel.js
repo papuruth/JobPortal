@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const ImageSchema = mongoose.Schema;
 
@@ -20,4 +20,4 @@ const imageData = new ImageSchema({
   timestamps: true,
 });
 
-module.exports = mongoose.model("images", imageData);
+module.exports = mongoose.model('images', imageData);

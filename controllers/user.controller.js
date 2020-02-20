@@ -1,21 +1,21 @@
 /* eslint-disable no-underscore-dangle */
-const Users = require("../models/user");
-const roles = require("../enum/userRoles");
-const jobController = require("../controllers/job.controller");
+const Users = require('../models/user');
+const roles = require('../enum/userRoles');
+const jobController = require('../controllers/job.controller');
 
 exports.addUser = async function addUser(req, res) {
   try {
     if (Object.keys(req.body).length === 0) {
-      res.send("Cannot be empty");
+      res.send('Cannot be empty');
     } else {
       const checkDuplicate = await Users.findOne({ emailId: req.body.email });
       if (checkDuplicate !== null) {
         res.json({ checkDuplicate: true });
-        throw new Error("User exists");
+        throw new Error('User exists');
       }
 
       let role;
-      if (req.route.path === "/register") {
+      if (req.route.path === '/register') {
         role = roles[2].value;
       }
 
@@ -50,16 +50,16 @@ exports.login = async function login(req, res) {
       .findOne({ $and: [{ emailId: req.body.email }, { password: req.body.passwd }] });
 
     if (checkUser === null) {
-      throw new Error("null");
+      throw new Error('null');
     }
 
     if (checkUser.userStatus === 0) {
-      throw new Error("ban");
+      throw new Error('ban');
     }
     if (checkUser.emailId === req.body.email && checkUser.password === req.body.passwd) {
       res.json({ data: checkUser, status: true });
     } else {
-      throw new Error("false");
+      throw new Error('false');
     }
   } catch (error) {
     res.json({
@@ -106,19 +106,19 @@ exports.updateUser = async function updateUser(req, res, next) {
       // Calling Update Applied Jobs to updated user details
       await jobController.updateAppliedJobs(req, userDetails);
       if (req.body.userStatus === 1) {
-        res.json({ status: "unban" });
+        res.json({ status: 'unban' });
       } else if (req.body.userStatus === 0) {
-        res.json({ status: "ban" });
+        res.json({ status: 'ban' });
       } else {
-        res.json({ status: "true" });
+        res.json({ status: 'true' });
       }
     } else if (user.role === 1) {
       if (req.body.userStatus === 1) {
-        res.json({ status: "unban" });
+        res.json({ status: 'unban' });
       } else if (req.body.userStatus === 0) {
-        res.json({ status: "ban" });
+        res.json({ status: 'ban' });
       } else {
-        res.json({ status: "true" });
+        res.json({ status: 'true' });
       }
     } else {
       res.json({ status: true });

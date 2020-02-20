@@ -1,4 +1,4 @@
-const Message = require("../models/chats");
+const Message = require('../models/chats');
 
 exports.saveMessage = async (req) => {
   const {
