@@ -4,7 +4,10 @@ import config from '../../config';
 async function saveMessage(sender, receiver, message, date) {
   try {
     const response = await axios.post(`${config.nodeBaseUrl}/messages`, {
-      sender, receiver, message, date,
+      sender,
+      receiver,
+      message,
+      date
     });
     return response.data;
   } catch (error) {
@@ -17,8 +20,8 @@ async function getMessages(sender, receiver) {
     const response = await axios.get(`${config.nodeBaseUrl}/chats`, {
       params: {
         sender,
-        receiver,
-      },
+        receiver
+      }
     });
     return response.data;
   } catch (error) {
@@ -28,7 +31,7 @@ async function getMessages(sender, receiver) {
 
 const chatService = {
   saveMessage,
-  getMessages,
+  getMessages
 };
 
 export default chatService;

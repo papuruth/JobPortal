@@ -16,7 +16,7 @@ exports.saveMessage = async (req) => {
     chatData.save();
   } else {
     const msg = { [sender]: message, date };
-    Message.findOneAndUpdate({ sender }, { $push: { messages: msg } });
+    await Message.findOneAndUpdate({ $and: [{ sender }, { receiver }] }, { $push: { messages: msg } });
   }
 };
 

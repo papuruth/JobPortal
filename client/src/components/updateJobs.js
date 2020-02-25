@@ -17,21 +17,33 @@ class UpdateJobForm extends React.Component {
       designation: '',
       salary: '',
       city: '',
+      status: '',
       formErrors: {
-        profile: '', designation: '', salary: '', city: '',
+        profile: '',
+        designation: '',
+        salary: '',
+        city: '',
+        status: ''
       },
       profileValid: true,
       designationValid: true,
       salaryValid: true,
       cityValid: true,
       addJobValid: true,
+      statusValid: true
     };
   }
 
   componentDidMount() {
     const { editjobs } = this.props;
     const {
-      profileType, company, designation, annualSalary, city, _id,
+      profileType,
+      company,
+      designation,
+      annualSalary,
+      city,
+      _id,
+      status
     } = editjobs;
     this.setState({
       profile: profileType,
@@ -39,41 +51,66 @@ class UpdateJobForm extends React.Component {
       designation,
       salary: annualSalary,
       city,
-      id: _id,
+      status,
+      id: _id
     });
   }
 
   handleUserInput = (event) => {
     const { name } = event.target;
     const { value } = event.target;
-    this.setState({ [name]: value },
-      () => { this.validateField(name, value); });
-  }
+    this.setState({ [name]: value }, () => {
+      this.validateField(name, value);
+    });
+  };
 
   updateJob = (event) => {
     event.preventDefault();
-    const { id } = this.state;
-    const {
-      company, designation, city, profile, salary,
-    } = this.state;
+    const { id, company, designation, city, profile, salary, status } = this.state;
     const profileType = profile;
     const annualSalary = salary;
     const { dispatch } = this.props;
-    if (company && profileType && designation && annualSalary && city) {
-      dispatch(jobAction.updateJob(id, company, profileType, designation, annualSalary, city));
+    if (
+      company &&
+      profileType &&
+      designation &&
+      annualSalary &&
+      city &&
+      status
+    ) {
+      dispatch(
+        jobAction.updateJob(
+          id,
+          company,
+          profileType,
+          designation,
+          annualSalary,
+          city,
+          status
+        )
+      );
     }
-  }
+  };
 
   validateForm = () => {
     const {
-      profileValid, designationValid, salaryValid, cityValid,
+      profileValid,
+      designationValid,
+      salaryValid,
+      cityValid,
+      statusValid
     } = this.state;
     this.setState({
-      addJobValid: profileValid && designationValid && salaryValid && cityValid,
+      addJobValid:
+        profileValid &&
+        designationValid &&
+        salaryValid &&
+        cityValid &&
+        statusValid
     });
-  }
+  };
 
-  errorClass = (error) => (error.length === 0 ? '' : 'has-error')
+  errorClass = (error) => (error.length === 0 ? '' : 'has-error');
 
   validateField = (fieldName, value) => {
     const { formErrors } = this.state;
@@ -82,15 +119,22 @@ class UpdateJobForm extends React.Component {
     let { designationValid } = this.state;
     let { salaryValid } = this.state;
     let { cityValid } = this.state;
+    let { statusValid } = this.state;
 
     switch (fieldName) {
       case 'profile':
-        profileValid = value.match(/^[a-z][^0-9!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/i);
+        profileValid = value.match(
+          /^[a-z][^0-9!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/i
+        );
         fieldValidationErrors.profile = profileValid ? '' : ' is invalid';
         break;
       case 'designation':
-        designationValid = value.match(/^[a-z][^0-9!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/i);
-        fieldValidationErrors.designation = designationValid ? '' : ' is invalid';
+        designationValid = value.match(
+          /^[a-z][^0-9!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$/i
+        );
+        fieldValidationErrors.designation = designationValid
+          ? ''
+          : ' is invalid';
         break;
       case 'salary':
         salaryValid = value.match(/^[0-9]+( [a-zA-Z]+)*$/);
@@ -98,24 +142,42 @@ class UpdateJobForm extends React.Component {
         break;
       case 'city':
         cityValid = value.match(/^[a-z][^!¡?÷?¿\\+=@#$%ˆ&*{}|~<>;:[\]]{2,}$/i);
-        fieldValidationErrors.city = cityValid ? '' : 'can be a comb. of a-zA-Z0-9.,-_()';
+        fieldValidationErrors.city = cityValid
+          ? ''
+          : 'can be a comb. of a-zA-Z0-9.,-_()';
+        break;
+      case 'status':
+        console.log(value);
+        statusValid = !!value;
+        console.log(statusValid)
+        fieldValidationErrors.status = statusValid ? '' : 'must be selected atleast one';
         break;
       default:
         break;
     }
-    this.setState({
-      formErrors: fieldValidationErrors,
-      profileValid,
-      designationValid,
-      salaryValid,
-      cityValid,
-    }, this.validateForm);
-  }
+    this.setState(
+      {
+        formErrors: fieldValidationErrors,
+        profileValid,
+        designationValid,
+        salaryValid,
+        cityValid,
+        statusValid
+      },
+      this.validateForm
+    );
+  };
 
   render() {
     const { history } = this.props;
     const {
-      city, designation, profile, salary, formErrors, addJobValid,
+      city,
+      designation,
+      profile,
+      salary,
+      formErrors,
+      addJobValid,
+      status
     } = this.state;
     if (this.user.role === 2) {
       history.push('/');
@@ -136,9 +198,15 @@ class UpdateJobForm extends React.Component {
               placeholder="IT Services/Sales/Tester"
               required
             />
-            {this.errorClass(formErrors.profile) && <span className="nameright formErrors">Profile name must be valid</span>}
+            {this.errorClass(formErrors.profile) && (
+              <span className="nameright formErrors">
+                Profile name must be valid
+              </span>
+            )}
           </div>
-          <div className={`form-group ${this.errorClass(formErrors.designation)}`}>
+          <div
+            className={`form-group ${this.errorClass(formErrors.designation)}`}
+          >
             <Input
               title="Designation"
               onChange={this.handleUserInput}
@@ -150,7 +218,9 @@ class UpdateJobForm extends React.Component {
               placeholder="Software Engineer"
               required
             />
-            {this.errorClass(formErrors.designation) && <span className="emailright formErrors">Invalid designation</span>}
+            {this.errorClass(formErrors.designation) && (
+              <span className="emailright formErrors">Invalid designation</span>
+            )}
           </div>
           <div className={`form-group ${this.errorClass(formErrors.salary)}`}>
             <Input
@@ -164,7 +234,9 @@ class UpdateJobForm extends React.Component {
               placeholder="7 LPA"
               required
             />
-            {this.errorClass(formErrors.salary) && <span className="pswderrright formErrors">Invalid Salary</span>}
+            {this.errorClass(formErrors.salary) && (
+              <span className="pswderrright formErrors">Invalid Salary</span>
+            )}
           </div>
           <div className={`form-group ${this.errorClass(formErrors.city)}`}>
             <Input
@@ -178,7 +250,23 @@ class UpdateJobForm extends React.Component {
               placeholder="Delhi"
               required
             />
-            {this.errorClass(formErrors.city) && <span className="phoneright formErrors">City name must be only in a-zA-Z_-0-9()</span>}
+            {this.errorClass(formErrors.city) && (
+              <span className="phoneright formErrors">
+                City name must be only in a-zA-Z_-0-9()
+              </span>
+            )}
+          </div>
+          <div className={`form-group ${this.errorClass(formErrors.status)}`}>
+            <select value={status} name="status" className="form-control" onChange={this.handleUserInput}>
+              <option value="">Select Status of Job</option>
+              <option value="New">New</option>
+              <option value="Closed">Closed</option>
+            </select>
+            {this.errorClass(formErrors.status) && (
+              <span className="phoneright formErrors">
+                Please select a job status!
+              </span>
+            )}
           </div>
           <div className="form-group">
             <Button
@@ -197,7 +285,7 @@ class UpdateJobForm extends React.Component {
 UpdateJobForm.propTypes = {
   editjobs: PropTypes.oneOfType([PropTypes.object]).isRequired,
   history: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  dispatch: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
 export default UpdateJobForm;

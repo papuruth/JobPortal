@@ -4,7 +4,7 @@ import ManageUser from '../components/manageuser.component';
 function mapStateToProps(state) {
   const { users } = state.Users;
   return {
-    users,
+    users
   };
 }
 const connectedManageUser = connect(mapStateToProps)(ManageUser);

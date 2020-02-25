@@ -6,26 +6,27 @@ import history from '../../_helpers/history';
 function request(type, payload) {
   return {
     type,
-    payload,
+    payload
   };
 }
 function success(type, payload) {
   return {
     type,
-    payload,
+    payload
   };
 }
 function failure(type, error) {
   return {
     type,
-    error,
+    error
   };
 }
 
 function login(email, password) {
   return (dispatch) => {
     dispatch(request(userConstants.LOGIN_REQUEST, email));
-    userService.login(email, password)
+    userService
+      .login(email, password)
       .then((user) => {
         if (user) {
           dispatch(alertActions.success('Login Successful'));
@@ -34,7 +35,11 @@ function login(email, password) {
         } else if (user === 'null') {
           dispatch(alertActions.error('Credential not valid'));
         } else if (user === 'ban') {
-          dispatch(alertActions.error('You are banned! Please contact admin@jobportal.com'));
+          dispatch(
+            alertActions.error(
+              'You are banned! Please contact admin@jobportal.com'
+            )
+          );
         } else {
           dispatch(alertActions.error('Credential not valid'));
         }
@@ -49,10 +54,12 @@ function login(email, password) {
 function logout() {
   return (dispatch) => {
     dispatch(request(userConstants.USERS_LOGOUT_REQUEST, null));
-    userService.logout()
+    userService
+      .logout()
       .then((res) => {
         if (res) {
           dispatch(success(userConstants.USERS_LOGOUT_SUCCESS, res));
+          history.push('/');
         }
       })
       .catch((error) => {
@@ -65,7 +72,8 @@ function logout() {
 function register(fullname, email, password, phone, gender) {
   return (dispatch) => {
     dispatch(request(userConstants.REGISTER_REQUEST, null));
-    userService.register(fullname, email, password, phone, gender)
+    userService
+      .register(fullname, email, password, phone, gender)
       .then((user) => {
         if (user === 'User exists') {
           dispatch(alertActions.error(user));
@@ -85,13 +93,16 @@ function register(fullname, email, password, phone, gender) {
 function getAllUsers() {
   return (dispatch) => {
     dispatch(request(userConstants.GET_ALL_USERS_REQUEST, null));
-    userService.getAllUsers()
+    userService
+      .getAllUsers()
       .then((users) => {
         dispatch(success(userConstants.GET_ALL_USERS_SUCCESS, users));
       })
       .catch((error) => {
         dispatch(failure(error));
-        dispatch(alertActions.error(userConstants.GET_ALL_USERS_FAILURE, error));
+        dispatch(
+          alertActions.error(userConstants.GET_ALL_USERS_FAILURE, error)
+        );
       });
   };
 }
@@ -99,7 +110,8 @@ function getAllUsers() {
 function editUser(name, emailId, password, phone, _id) {
   return (dispatch) => {
     dispatch(request(userConstants.EDIT_USER_REQUEST, null));
-    userService.editUser(name, emailId, password, phone, _id)
+    userService
+      .editUser(name, emailId, password, phone, _id)
       .then((response) => {
         if (response === true) {
           dispatch(success(userConstants.EDIT_USER_SUCCESS, response));
@@ -118,7 +130,8 @@ function editUser(name, emailId, password, phone, _id) {
 function deleteUser(_id) {
   return (dispatch) => {
     dispatch(request(userConstants.DELETE_USER_REQUEST, null));
-    userService.deleteUser(_id)
+    userService
+      .deleteUser(_id)
       .then((response) => {
         if (response === true) {
           dispatch(success(userConstants.DELETE_USER_SUCCESS, response));
@@ -137,7 +150,8 @@ function deleteUser(_id) {
 function banUser(_id, userStatus) {
   return (dispatch) => {
     dispatch(request(userConstants.BAN_USER_REQUEST, null));
-    userService.banUser(_id, userStatus)
+    userService
+      .banUser(_id, userStatus)
       .then((response) => {
         if (response === 'ban') {
           dispatch(success(response));
@@ -163,7 +177,7 @@ const userActions = {
   getAllUsers,
   editUser,
   deleteUser,
-  banUser,
+  banUser
 };
 
 export default userActions;

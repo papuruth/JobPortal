@@ -6,9 +6,11 @@ async function updateProfile(id, data, emailId) {
     const response = await axios.post(`${config.nodeBaseUrl}/upload`, data);
     const image = `/${response.data}`;
     let updatedData;
-    await axios.put(`${config.nodeBaseUrl}/updateuser/`.concat(id), { image, emailId })
+    await axios
+      .put(`${config.nodeBaseUrl}/updateuser/`.concat(id), { image, emailId })
       .then(async () => {
-        await axios.get(`${config.nodeBaseUrl}/getoneuser/`.concat(id))
+        await axios
+          .get(`${config.nodeBaseUrl}/getoneuser/`.concat(id))
           .then((user) => {
             if (user.data !== null) {
               localStorage.setItem('currentUser', JSON.stringify(user.data));
@@ -26,7 +28,10 @@ async function updateProfile(id, data, emailId) {
 async function sendMail(fullname, email, subject, message) {
   try {
     const response = await axios.post(`${config.nodeBaseUrl}/sendmail`, {
-      fullname, email, subject, message,
+      fullname,
+      email,
+      subject,
+      message
     });
     return response.data.msg;
   } catch (error) {
@@ -36,7 +41,7 @@ async function sendMail(fullname, email, subject, message) {
 
 const profileService = {
   updateProfile,
-  sendMail,
+  sendMail
 };
 
 export default profileService;

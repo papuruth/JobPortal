@@ -9,23 +9,21 @@ function getNotifications(state = initialState, action) {
     case notifConstants.GET_NOTIFICATION_REQUEST:
       return {
         ...state,
-        notifications: [],
+        notifications: []
       };
     case notifConstants.GET_NOTIFICATION_SUCCESS:
       return {
         ...state,
-        notifications: action.payload,
+        notifications: action.payload
       };
     case notifConstants.GET_NOTIFICATION_FAILURE:
       return {
         ...state,
-        notifications: [],
+        notifications: []
       };
     default:
       return state;
   }
 }
 
-export {
-  getNotifications,
-};
+export default getNotifications;

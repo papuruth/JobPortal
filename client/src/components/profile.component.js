@@ -1,12 +1,13 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import profileActions from '../redux/profile/profileActions';
-import Input from './generalComponents/input.component';
-import Button from './generalComponents/button.component';
-import male from '../images/male.jpg';
+import config from '../config';
 import female from '../images/female.png';
+import male from '../images/male.jpg';
+import profileActions from '../redux/profile/profileActions';
+import Button from './generalComponents/button.component';
+import Input from './generalComponents/input.component';
 import Label from './generalComponents/label';
 import Textarea from './generalComponents/textarea';
-import config from '../config';
 
 class Profile extends React.Component {
   constructor(props) {
@@ -15,118 +16,76 @@ class Profile extends React.Component {
       file: [],
       subject: '',
       message: '',
-      photo: '',
-      formErrors: { photo: '', fullname: '', email: '', subject: '', message: '' },
+      userData: '',
+      profile: '',
+      formErrors: {
+        photo: '',
+        fullname: '',
+        email: '',
+        subject: '',
+        message: ''
+      },
       profileValid: false,
       photoValid: false,
       updateFlag: false,
-      mailFlag: false
-    }
-  }
-
-  componentWillReceiveProps(props) {
-    const { user, profile } = props;
-    this.setState({
-      userData: user,
-      profile: profile,
+      mailFlag: false,
       imageHash: Date.now()
-    })
+    };
   }
 
-  componentWillMount() {
-    const { user, profile } = this.props;
-    this.setState({
-      userData: user,
-      profile: profile
-    })
+  static getDerivedStateFromProps(props, state) {
+    if (props.user !== state.userData) {
+      return {
+        userData: props.user
+      };
+    }
+
+    if (props.profile !== state.profile) {
+      return {
+        profile: props.profile
+      };
+    }
+    return null;
   }
 
   handleUserInput = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    this.setState({ [name]: value },
-      () => { this.validateField(name, value) });
+    const { name } = event.target;
+    const { value } = event.target;
+    this.setState({ [name]: value }, () => {
+      this.validateField(name, value);
+    });
     if (name === 'photo') {
       this.setState({
         file: event.target.files[0]
-      })
+      });
     }
-  }
-
-  validateField(fieldName, value) {
-    let fieldValidationErrors = this.state.formErrors;
-    let photoValid = this.state.photoValid
-
-    switch (fieldName) {
-      case 'photo':
-        if (value.match(/\.[0-9a-z]+$/i)[0] === '.jpg' || value.match(/\.[0-9a-z]+$/i)[0] === '.JPG') {
-          photoValid = true;
-          fieldValidationErrors.photo = photoValid ? '' : ' is invalid';
-        } else if (value.match(/\.[0-9a-z]+$/i)[0] === '.png' || value.match(/\.[0-9a-z]+$/i)[0] === '.PNG') {
-          photoValid = true;
-          fieldValidationErrors.photo = photoValid ? '' : ' is invalid';
-        } else if (value.match(/\.[0-9a-z]+$/i)[0] === '.svg' || value.match(/\.[0-9a-z]+$/i)[0] === '.SVG') {
-          photoValid = true;
-          fieldValidationErrors.photo = photoValid ? '' : ' is invalid';
-        } else {
-          photoValid = null;
-          fieldValidationErrors.photo = photoValid ? '' : ' is invalid';
-        }
-        break;
-      case 'fullname':
-        document.getElementById('fullname').onkeydown = onkeyup = onkeypress = () => {
-          fieldValidationErrors.fullname = false ? '' : 'read only';
-        }
-        break;
-      case 'email':
-        document.getElementById('email').onkeydown = onkeyup = onkeypress = () => {
-          fieldValidationErrors.email = false ? '' : 'read only';
-        }
-        break;
-      default:
-        break;
-    }
-    this.setState({
-      formErrors: fieldValidationErrors,
-      photoValid: photoValid
-    }, this.validateForm);
-  }
-
-  validateForm() {
-    this.setState({
-      profileValid: this.state.photoValid
-    });
-  }
-
-  errorClass(error) {
-    return (error.length === 0 ? '' : 'has-error');
-  }
+  };
 
   sendMail = (event) => {
     event.preventDefault();
-    const { subject, message } = this.state
-    const { name, emailId } = this.state.userData
+    const { subject, message } = this.state;
+    const { name, emailId } = this.state.userData;
     const { dispatch } = this.props;
-    dispatch(profileActions.sendMail(name, emailId, subject, message))
+    dispatch(profileActions.sendMail(name, emailId, subject, message));
     document.getElementById('contactForm').style.display = 'none';
     this.setState({
       subject: '',
       message: ''
-    })
-  }
+    });
+  };
 
   submitDetails = (event) => {
     event.preventDefault();
     const { dispatch } = this.props;
-    const id = this.state.userData._id
-    const { emailId } = this.state.userData
+    const id = this.state.userData._id;
+    const { emailId } = this.state.userData;
     const data = new FormData();
-    data.append('filename', this.state.userData.emailId)
-    data.append('file', this.state.file)
-    dispatch(profileActions.updateProfile(id, data, emailId))
+    data.append('filename', this.state.userData.emailId);
+    data.append('file', this.state.file);
+    dispatch(profileActions.updateProfile(id, data, emailId));
     document.getElementById('photoupdate').reset();
     document.getElementById('updateDetails').style.display = 'none';
-  }
+  };
 
   mailForm = (event) => {
     const { mailFlag } = this.state;
@@ -137,123 +96,210 @@ class Profile extends React.Component {
       this.setState((state) => {
         return {
           mailFlag: !state.mailFlag
-        }
-      })
+        };
+      });
     } else {
       this.setState((state) => {
         return {
           mailFlag: !state.mailFlag
-        }
-      })
+        };
+      });
       document.getElementById('contactForm').style.display = 'none';
     }
-  }
+  };
 
   updateDetails = (event) => {
     const { updateFlag } = this.state;
     event.preventDefault();
     const tempFlag = !updateFlag;
-    console.log(tempFlag)
+    console.log(tempFlag);
     if (tempFlag) {
       document.getElementById('updateDetails').style.display = 'block';
       this.setState((state) => {
         return {
           updateFlag: !state.updateFlag
-        }
-      })
+        };
+      });
     } else {
       this.setState((state) => {
         return {
           updateFlag: !state.updateFlag
-        }
-      })
+        };
+      });
       document.getElementById('updateDetails').style.display = 'none';
     }
+  };
+
+  errorClass = (error) => {
+    return error.length === 0 ? '' : 'has-error';
+  };
+
+  validateForm() {
+    const { photoValid } = this.state;
+    this.setState({
+      profileValid: photoValid
+    });
+  }
+
+  validateField(fieldName, value) {
+    const { formErrors } = this.state;
+    const fieldValidationErrors = formErrors;
+    let { photoValid } = this.state;
+
+    switch (fieldName) {
+      case 'photo':
+        if (
+          value.match(/\.[0-9a-z]+$/i)[0] === '.jpg' ||
+          value.match(/\.[0-9a-z]+$/i)[0] === '.JPG'
+        ) {
+          photoValid = true;
+          fieldValidationErrors.photo = photoValid ? '' : ' is invalid';
+        } else if (
+          value.match(/\.[0-9a-z]+$/i)[0] === '.png' ||
+          value.match(/\.[0-9a-z]+$/i)[0] === '.PNG'
+        ) {
+          photoValid = true;
+          fieldValidationErrors.photo = photoValid ? '' : ' is invalid';
+        } else if (
+          value.match(/\.[0-9a-z]+$/i)[0] === '.svg' ||
+          value.match(/\.[0-9a-z]+$/i)[0] === '.SVG'
+        ) {
+          photoValid = true;
+          fieldValidationErrors.photo = photoValid ? '' : ' is invalid';
+        } else {
+          photoValid = null;
+          fieldValidationErrors.photo = photoValid ? '' : ' is invalid';
+        }
+        break;
+      case 'fullname':
+        document.getElementById('fullname').onkeypress = (e) => {
+          e.preventDefault();
+          fieldValidationErrors.fullname = 'read only';
+        };
+        break;
+      case 'email':
+        document.getElementById('email').onkeypress = (e) => {
+          e.preventDefault();
+          fieldValidationErrors.email = 'read only';
+        };
+        break;
+      default:
+        break;
+    }
+    this.setState(
+      {
+        formErrors: fieldValidationErrors,
+        photoValid
+      },
+      this.validateForm
+    );
   }
 
   render() {
     let imageUrl = '';
     try {
       if (this.state.profile) {
-        imageUrl = config.firebase_url.concat(this.state.profile.image)
+        imageUrl = config.firebase_url.concat(this.state.profile.image);
       } else {
-        imageUrl = config.firebase_url.concat(this.state.userData.image)
+        imageUrl = config.firebase_url.concat(this.state.userData.image);
       }
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
+    console.log(this.state.userData);
     return (
       <div className="panel panel-primary profile">
         <div className="panel-heading">
           <h3 className="panel-title">User information</h3>
         </div>
-        <div className="panel-body">
-          <div className="row">
-            <div className="col-md-3 col-lg-3">
-              {
-                !this.state.userData.image && this.state.userData.gender === 'Male' && <img className="img-circle" src={male} alt="Upload Pic" />
-              }
-              {
-                !this.state.userData.image && this.state.userData.gender === 'Female' && <img className="img-circle" src={female} alt="Upload Pic" />
-              }
-              {
-                this.state.userData.image && <img key={new Date()} className="img-circle" src={`${imageUrl}?alt=media&${this.state.imageHash}`} alt="Upload Pic" />
-              }
-            </div>
-            <div className="col-md-9 col-lg-9">
-              <strong>{this.state.userData.name} </strong><br />
-              <div>
-                <dl>
-                  <dt>UID:</dt>
-                  <dd>{this.state.userData._id}</dd>
-                </dl>
-                <dl>
-                  <dt>Fullname:</dt>
-                  <dd>{this.state.userData.name}</dd>
-                </dl>
-                <dl>
-                  <dt>Email:</dt>
-                  <dd>{this.state.userData.emailId}</dd>
-                </dl>
-                <dl>
-                  <dt>Mobile No.:</dt>
-                  <dd>{this.state.userData.phone}</dd>
-                </dl>
+        {this.state.userData && (
+          <div className="panel-body">
+            <div className="row">
+              <div className="col-md-3 col-lg-3">
+                {!this.state.userData.image &&
+                  this.state.userData.gender === 'Male' && (
+                    <img className="img-circle" src={male} alt="Upload Pic" />
+                  )}
+                {!this.state.userData.image &&
+                  this.state.userData.gender === 'Female' && (
+                    <img className="img-circle" src={female} alt="Upload Pic" />
+                  )}
+                {this.state.userData.image && (
+                  <img
+                    key={new Date()}
+                    className="img-circle"
+                    src={`${imageUrl}?alt=media&${this.state.imageHash}`}
+                    alt="Upload Pic"
+                  />
+                )}
+              </div>
+
+              <div className="col-md-9 col-lg-9">
+                <strong>{this.state.userData.name} </strong>
+                <br />
+                <div>
+                  <dl>
+                    <dt>UID:</dt>
+                    <dd>{this.state.userData._id}</dd>
+                  </dl>
+                  <dl>
+                    <dt>Fullname:</dt>
+                    <dd>{this.state.userData.name}</dd>
+                  </dl>
+                  <dl>
+                    <dt>Email:</dt>
+                    <dd>{this.state.userData.emailId}</dd>
+                  </dl>
+                  <dl>
+                    <dt>Mobile No.:</dt>
+                    <dd>{this.state.userData.phone}</dd>
+                  </dl>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
         <div className="panel-body update" id="updateDetails">
-          <form onSubmit={this.submitDetails} className="form-horizontal" id="photoupdate" method="post" encType="multipart/form-data">
+          <form
+            onSubmit={this.submitDetails}
+            className="form-horizontal"
+            id="photoupdate"
+            method="post"
+            encType="multipart/form-data"
+          >
             <hr />
             <h3 className="panel-title">Update Details!</h3>
             <div className="panel-body">
               <div className="form-group row">
                 <Label
-                  htmlFor={'photo'}
-                  title={'Profile Photo'}
-                  className={'col-form-label col-sm-3'}
+                  htmlFor="photo"
+                  title="Profile Photo"
+                  className="col-form-label col-sm-3"
                 />
                 <div className="col-sm-9">
                   <Input
-                    className={'form-control'}
-                    inputType={'file'}
+                    className="form-control"
+                    inputType="file"
                     onChange={this.handleUserInput}
-                    name={'photo'}
+                    name="photo"
                     value={this.state.file[0]}
                     id="photo"
                     required
                   />
-                  {this.errorClass(this.state.formErrors.photo) && <span className="phoneright formErrors">Photo not valid only .jpg and .png</span>}
+                  {this.errorClass(this.state.formErrors.photo) && (
+                    <span className="phoneright formErrors">
+                      Photo not valid only .jpg and .png
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="form-group">
                 <div className="col-sm-9">
                   <Button
-                    type={'submit'}
-                    className={'btn btn-primary button'}
+                    type="submit"
+                    className="btn btn-primary button"
                     btnDisabled={this.state.profileValid}
-                    title={'Update'}
+                    title="Update"
                   />
                 </div>
               </div>
@@ -265,54 +311,62 @@ class Profile extends React.Component {
             <div className="form-group row">
               <Label
                 htmlFor="fullname"
-                title={'Fullname'}
-                className={'col-form-label col-sm-2'}
+                title="Fullname"
+                className="col-form-label col-sm-2"
               />
               <div className="col-sm-10">
                 <Input
-                  inputType={'text'}
-                  value={this.state.userData.name}
+                  inputType="text"
+                  value={this.state.userData && this.state.userData.name}
                   onChange={this.handleUserInput}
                   readOnly
-                  name={'fullname'}
+                  name="fullname"
                   className="form-control"
                   id="fullname"
                 />
-                {this.errorClass(this.state.formErrors.fullname) && <span className="phoneright formErrors">Read Only Field!</span>}
+                {this.errorClass(this.state.formErrors.fullname) && (
+                  <span className="phoneright formErrors">
+                    Read Only Field!
+                  </span>
+                )}
               </div>
             </div>
             <div className="form-group row">
               <Label
                 htmlFor="email"
-                title={'Email'}
-                className={'col-form-label col-sm-2'}
+                title="Email"
+                className="col-form-label col-sm-2"
               />
               <div className="col-sm-10">
                 <Input
-                  inputType={'text'}
-                  value={this.state.userData.emailId}
+                  inputType="text"
+                  value={this.state.userData && this.state.userData.emailId}
                   onChange={this.handleUserInput}
                   readOnly
-                  name={'email'}
+                  name="email"
                   className="form-control"
                   id="email"
                 />
-                {this.errorClass(this.state.formErrors.email) && <span className="phoneright formErrors">Read Only Field!</span>}
+                {this.errorClass(this.state.formErrors.email) && (
+                  <span className="phoneright formErrors">
+                    Read Only Field!
+                  </span>
+                )}
               </div>
             </div>
             <div className="form-group row">
               <Label
                 htmlFor="subject"
-                title={'Subject'}
-                className={'col-form-label col-sm-2'}
+                title="Subject"
+                className="col-form-label col-sm-2"
               />
               <div className="col-sm-10">
                 <Input
-                  inputType={'text'}
+                  inputType="text"
                   value={this.state.subject}
                   onChange={this.handleUserInput}
                   readOnly
-                  name={'subject'}
+                  name="subject"
                   className="form-control"
                   id="subject"
                 />
@@ -320,9 +374,9 @@ class Profile extends React.Component {
             </div>
             <div className="form-group row">
               <Label
-                htmlFor={'message'}
-                title={'Message'}
-                className={'col-sm-2 col-form-label'}
+                htmlFor="message"
+                title="Message"
+                className="col-sm-2 col-form-label"
               />
               <div className="col-sm-10">
                 <Textarea
@@ -339,26 +393,45 @@ class Profile extends React.Component {
             <div className="form-group">
               <div className="col-sm-9">
                 <Button
-                  type={'submit'}
-                  className={'btn btn-primary button'}
-                  title={'Send Mail'}
-                  btnDisabled={true}
+                  type="submit"
+                  className="btn btn-primary button"
+                  title="Send Mail"
+                  btnDisabled
                 />
               </div>
             </div>
           </form>
         </div>
         <div className="panel-footer">
-          <button onClick={this.mailForm} className="btn btn-sm btn-primary" type="button" data-toggle="tooltip"
-            data-original-title="Send message to user"><i className="glyphicon glyphicon-envelope"></i></button>
+          <button
+            onClick={this.mailForm}
+            className="btn btn-sm btn-primary"
+            type="button"
+            data-toggle="tooltip"
+            data-original-title="Send message to user"
+          >
+            <i className="glyphicon glyphicon-envelope"></i>
+          </button>
           <span className="pull-right">
-            <button onClick={this.updateDetails} className="btn btn-sm btn-warning" type="button" data-toggle="tooltip"
-              data-original-title="Edit this user"><i className="glyphicon glyphicon-edit"></i></button>
+            <button
+              onClick={this.updateDetails}
+              className="btn btn-sm btn-warning"
+              type="button"
+              data-toggle="tooltip"
+              data-original-title="Edit this user"
+            >
+              <i className="glyphicon glyphicon-edit"></i>
+            </button>
           </span>
         </div>
-      </div >
-    )
+      </div>
+    );
   }
 }
 
+Profile.propTypes = {
+  user: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  profile: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  dispatch: PropTypes.func.isRequired
+};
 export default Profile;

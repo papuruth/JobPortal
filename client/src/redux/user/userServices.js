@@ -1,9 +1,13 @@
 import axios from 'axios';
 import config from '../../config';
+import history from '../../_helpers/history';
 
 async function login(email, password) {
   const passwd = btoa(password);
-  const user = await axios.post(`${config.nodeBaseUrl}/authenticate`, { email, passwd });
+  const user = await axios.post(`${config.nodeBaseUrl}/authenticate`, {
+    email,
+    passwd
+  });
   const isLoggedIn = user.data.status;
   if (isLoggedIn) {
     // store user details in local storage to keep user logged in between page refreshes
@@ -13,16 +17,22 @@ async function login(email, password) {
   return isLoggedIn;
 }
 
-const logout = () => new Promise((resolve, reject) => {
+const logout = () =>
+  new Promise((resolve, reject) => {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     resolve(true);
-});
+    history.push('/')
+  });
 
 async function register(fullname, email, password, phone, gender) {
   try {
     const res = await axios.post(`${config.nodeBaseUrl}/register`, {
-      fullname, email, password, phone, gender,
+      fullname,
+      email,
+      password,
+      phone,
+      gender
     });
     console.log(res.data);
     const { isSignup } = res.data;
@@ -46,9 +56,15 @@ async function getAllUsers() {
 
 async function editUser(name, emailId, password, phone, _id) {
   try {
-    const res = await axios.put(`${config.nodeBaseUrl}/updateuser/`.concat(_id), {
-      name, emailId, password, phone,
-    });
+    const res = await axios.put(
+      `${config.nodeBaseUrl}/updateuser/`.concat(_id),
+      {
+        name,
+        emailId,
+        password,
+        phone
+      }
+    );
     if (res.data.status) {
       return true;
     }
@@ -60,7 +76,9 @@ async function editUser(name, emailId, password, phone, _id) {
 
 async function deleteUser(_id) {
   try {
-    const res = await axios.delete(`${config.nodeBaseUrl}/deleteuser/`.concat(_id));
+    const res = await axios.delete(
+      `${config.nodeBaseUrl}/deleteuser/`.concat(_id)
+    );
     if (res.data.status) {
       return true;
     }
@@ -72,7 +90,10 @@ async function deleteUser(_id) {
 
 async function banUser(_id, userStatus) {
   try {
-    const res = await axios.put(`${config.nodeBaseUrl}/updateuser/`.concat(_id), { userStatus });
+    const res = await axios.put(
+      `${config.nodeBaseUrl}/updateuser/`.concat(_id),
+      { userStatus }
+    );
     return res.data.status;
   } catch (err) {
     return err.message;
@@ -86,7 +107,7 @@ const userService = {
   getAllUsers,
   editUser,
   deleteUser,
-  banUser,
+  banUser
 };
 
 export default userService;

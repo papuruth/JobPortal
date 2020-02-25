@@ -1,6 +1,11 @@
 import { combineReducers } from 'redux';
 import alert from './alert/alertReducer';
-import { authentication, registration, Users, Logout } from './user/userReducers';
+import {
+  authentication,
+  registration,
+  Users,
+  Logout
+} from './user/userReducers';
 import jobs from './body/bodyReducer';
 import {
   addjob,
@@ -9,11 +14,12 @@ import {
   applyJob,
   getAppliedJobs,
   removeJob,
-  updateStatus,
+  updateStatus
 } from './addJob/jobReducer';
 import { sendMail, profileUpdate } from './profile/profileReducer';
 import { saveMessage, getMessage } from './chat/chatReducer';
-import { getNotifications } from './notifications/notifReducer';
+import getNotifications from './notifications/notifReducer';
+import loaderReducer from './loader/loaderReducer';
 
 const rootReducer = combineReducers({
   authentication,
@@ -33,7 +39,8 @@ const rootReducer = combineReducers({
   getMessage,
   Users,
   getNotifications,
-  Logout
+  Logout,
+  loaderReducer
 });
 
 export default rootReducer;

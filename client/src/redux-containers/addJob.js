@@ -4,7 +4,7 @@ import JobForm from '../components/job.form';
 function mapStateToProps(state) {
   const { users } = state.Users;
   return {
-    users,
+    users
   };
 }
 

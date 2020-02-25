@@ -4,7 +4,7 @@ import UpdateJobForm from '../components/updateJobs';
 function mapStateToProps(state) {
   const { editjobs } = state.editJob;
   return {
-    editjobs,
+    editjobs
   };
 }
 

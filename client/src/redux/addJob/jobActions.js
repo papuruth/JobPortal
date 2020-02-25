@@ -6,28 +6,29 @@ import alertActions from '../alert/alertActions';
 function request(type, payload) {
   return {
     type,
-    payload,
+    payload
   };
 }
 
 function success(type, payload) {
   return {
     type,
-    payload,
+    payload
   };
 }
 
 function failure(type, payload) {
   return {
     type,
-    payload,
+    payload
   };
 }
 
 function addJob(company, profile, designation, salary, city, data) {
   return (dispatch) => {
     dispatch(request(jobConstants.ADD_JOB_REQUEST, company));
-    jobService.addJob(company, profile, designation, salary, city, data)
+    jobService
+      .addJob(company, profile, designation, salary, city, data)
       .then((job) => {
         if (job === true) {
           dispatch(alertActions.error('Job Exists'));
@@ -46,7 +47,8 @@ function addJob(company, profile, designation, salary, city, data) {
 function editJob(id) {
   return (dispatch) => {
     dispatch(request(jobConstants.EDIT_JOB_REQUEST, id));
-    jobService.editJob(id)
+    jobService
+      .editJob(id)
       .then(async (job) => {
         await dispatch(success(jobConstants.EDIT_JOB_SUCCESS, job));
         history.push('/updatejob');
@@ -58,10 +60,11 @@ function editJob(id) {
   };
 }
 
-function updateJob(id, company, profileType, designation, annualSalary, city) {
+function updateJob(id, company, profileType, designation, annualSalary, city, status) {
   return (dispatch) => {
     dispatch(request(jobConstants.UPDATE_JOB_REQUEST, id));
-    jobService.updateJob(id, company, profileType, designation, annualSalary, city)
+    jobService
+      .updateJob(id, company, profileType, designation, annualSalary, city, status)
       .then((job) => {
         if (job !== null) {
           dispatch(alertActions.success('Job successfully updated'));
@@ -79,7 +82,8 @@ function updateJob(id, company, profileType, designation, annualSalary, city) {
 function applyJob(id, name, gender) {
   return (dispatch) => {
     dispatch(request(jobConstants.APPLY_JOB_REQUEST, true));
-    jobService.applyJob(id, name, gender)
+    jobService
+      .applyJob(id, name, gender)
       .then((res) => {
         if (res === 'Successful') {
           dispatch(alertActions.success('Job successfully applied'));
@@ -100,7 +104,8 @@ function applyJob(id, name, gender) {
 function getAppliedJob(name) {
   return (dispatch) => {
     dispatch(request(jobConstants.GET_APPLIED_JOB_REQUEST, name));
-    jobService.getAppliedJob(name)
+    jobService
+      .getAppliedJob(name)
       .then((res) => {
         dispatch(success(jobConstants.APPLY_JOB_SUCCESS, false));
         dispatch(success(jobConstants.GET_APPLIED_JOB_SUCCESS, res));
@@ -115,7 +120,8 @@ function getAppliedJob(name) {
 function removeJob(id) {
   return (dispatch) => {
     dispatch(request(jobConstants.REMOVE_JOB_REQUEST, id));
-    jobService.removeJob(id)
+    jobService
+      .removeJob(id)
       .then((res) => {
         dispatch(success(jobConstants.REMOVE_JOB_SUCCESS, res));
         history.push('/');
@@ -130,10 +136,11 @@ function removeJob(id) {
 function updateStatus(id, status) {
   return (dispatch) => {
     dispatch(request(jobConstants.UPDATE_APPLIED_STATUS_REQUEST, id));
-    jobService.updateStatus(id, status)
+    jobService
+      .updateStatus(id, status)
       .then((data) => {
-            dispatch(success(jobConstants.UPDATE_APPLIED_STATUS_SUCCESS, data));
-            history.push('/');
+        dispatch(success(jobConstants.UPDATE_APPLIED_STATUS_SUCCESS, data));
+        history.push('/');
       })
       .catch((error) => {
         dispatch(failure(jobConstants.UPDATE_APPLIED_STATUS_FAILURE, error));
@@ -149,6 +156,6 @@ const jobAction = {
   applyJob,
   getAppliedJob,
   removeJob,
-  updateStatus,
+  updateStatus
 };
 export default jobAction;

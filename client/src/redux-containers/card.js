@@ -3,10 +3,12 @@ import Card from '../components/card.component';
 
 function mapStateToProps(state) {
   const { appliedjobs } = state.getAppliedJobs;
-  const { apply } = state.applyJob
+  const { apply } = state.applyJob;
+  const { loaderStatus } = state.loaderReducer;
   return {
     appliedjobs,
-    apply
+    apply,
+    loaderStatus
   };
 }
 
