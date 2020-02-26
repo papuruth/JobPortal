@@ -2,7 +2,7 @@ import bodyConstants from './bodyConstants';
 
 const initialState = {
   pager: {},
-  jobs: [],
+  jobs: []
 };
 
 export default function jobs(state = initialState, action) {
@@ -11,25 +11,25 @@ export default function jobs(state = initialState, action) {
       return {
         ...state,
         pager: {
-          currentPage: 0,
-        },
+          currentPage: 0
+        }
       };
     case bodyConstants.JOBS_SUCCESS:
       return action.payload.pager.currentPage === 0
         ? {
-          ...state,
-          jobs: action.payload.jobs,
-          pager: action.payload.pager,
-        }
+            ...state,
+            jobs: action.payload.jobs,
+            pager: action.payload.pager
+          }
         : {
-          ...state,
-          jobs: [...state.jobs, ...action.payload.jobs],
-          pager: action.payload.pager,
-        };
+            ...state,
+            jobs: [...state.jobs, ...action.payload.jobs],
+            pager: action.payload.pager
+          };
     case bodyConstants.JOBS_FAILURE:
       return {
         ...state,
-        jobs: [],
+        jobs: []
       };
     default:
       return state;

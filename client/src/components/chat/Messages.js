@@ -14,7 +14,7 @@ class Messages extends React.Component {
     const { messages } = this.props;
     // Loop through all the messages in the state and create a Message component
     const messagesComponent = messages.map((message) => (
-      <div key={message.message}>
+      <div key={message.message.concat(new Date())}>
         <Message
           key={message.message}
           username={message.username}
@@ -33,7 +33,8 @@ class Messages extends React.Component {
 }
 
 Messages.propTypes = {
-  messages: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
+  messages: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string]))
+    .isRequired
 };
 
 export default Messages;

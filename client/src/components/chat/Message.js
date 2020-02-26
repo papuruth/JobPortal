@@ -10,14 +10,10 @@ class Message extends React.PureComponent {
 
     return (
       <div className="row">
-        <div className="col-sm-9">
+        <div className="col-sm-12">
           <div className={`message ${fromMe ? 'from-me' : ''}`}>
-            <div className="username">
-              {username}
-            </div>
-            <div className="message-body">
-              {message}
-            </div>
+            <div className="username">{username}</div>
+            <div className="message-body">{message}</div>
           </div>
         </div>
       </div>
@@ -28,7 +24,7 @@ class Message extends React.PureComponent {
 Message.propTypes = {
   fromMe: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired
 };
 
 export default Message;

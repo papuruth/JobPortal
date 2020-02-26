@@ -15,7 +15,7 @@ function clear() {
 const alertActions = {
   success,
   error,
-  clear,
+  clear
 };
 
 export default alertActions;

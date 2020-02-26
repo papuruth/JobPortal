@@ -6,28 +6,28 @@ import userConstants from '../user/userConstants';
 function request(type, payload) {
   return {
     type,
-    payload,
+    payload
   };
 }
 function success(type, payload) {
   return {
     type,
-    payload,
+    payload
   };
 }
 function failure(type, error) {
   return {
     type,
-    error,
+    error
   };
 }
-
 
 function getJobs(page, role = null, name = null) {
   return (dispatch) => {
     dispatch(request(bodyConstants.JOBS_REQUEST, page));
     dispatch(success(userConstants.USERS_LOGOUT_SUCCESS, false));
-    bodyService.getJobs(page, role, name)
+    bodyService
+      .getJobs(page, role, name)
       .then((jobs) => {
         dispatch(success(bodyConstants.JOBS_SUCCESS, jobs));
       })
@@ -39,7 +39,7 @@ function getJobs(page, role = null, name = null) {
 }
 
 const bodyActions = {
-  getJobs,
+  getJobs
 };
 
 export default bodyActions;

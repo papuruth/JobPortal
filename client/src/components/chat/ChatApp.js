@@ -11,21 +11,23 @@ class ChatApp extends React.Component {
 
   constructor(props) {
     super(props);
-    this.setState({
-      messages: [],
-    });
     // set the initial state of messages so that it is not undefined on load
     this.state = {
       messages: [],
-      chats: [],
+      chats: []
     };
     // Connect to the server
-    this.socket = io(config.nodeBaseUrl, { query: `username=${this.user.name}` }, { transports: ['websocket', 'polling'] }).connect();
+    this.socket = io(
+      config.nodeBaseUrl,
+      { query: `username=${this.user.name}` },
+      { transports: ['websocket', 'polling'] }
+    ).connect();
 
     // Listen for messages from the server
     this.socket.on('server:message', (message) => {
       this.addMessage(message);
     });
+    console.log(this.props)
     const { username } = this.props;
     const sender = this.user.name;
     const receiver = username;
@@ -36,7 +38,7 @@ class ChatApp extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.chats !== prevState.chats) {
       return {
-        chats: nextProps.chats,
+        chats: nextProps.chats
       };
     }
     return null;
@@ -58,7 +60,7 @@ class ChatApp extends React.Component {
                 to: receiver,
                 message: chat[sender],
                 date: chat.date,
-                fromMe: true,
+                fromMe: true
               };
               this.addMessage(senderMessage[innerIndex]);
               return true;
@@ -67,7 +69,10 @@ class ChatApp extends React.Component {
           if (item.sender === receiver && item.receiver === sender) {
             item.messages.map((chat, innerIndex) => {
               receiverMessage[innerIndex] = {
-                username: receiver, to: sender, date: chat.date, message: chat[receiver],
+                username: receiver,
+                to: sender,
+                date: chat.date,
+                message: chat[receiver]
               };
               this.addMessage(receiverMessage[innerIndex]);
               return true;
@@ -95,7 +100,7 @@ class ChatApp extends React.Component {
       const messageObject = {
         username: this.user.name,
         to: username,
-        message,
+        message
       };
 
       // Dispatch the messages to redux action to be saved into db
@@ -140,7 +145,7 @@ ChatApp.propTypes = {
   username: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   chats: PropTypes.string.isRequired,
-  handleTyping: PropTypes.func.isRequired,
+  handleTyping: PropTypes.func.isRequired
 };
 
 export default ChatApp;

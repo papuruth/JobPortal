@@ -5,28 +5,29 @@ import alertActions from '../alert/alertActions';
 function request(type, payload) {
   return {
     type,
-    payload,
+    payload
   };
 }
 
 function success(type, payload) {
   return {
     type,
-    payload,
+    payload
   };
 }
 
 function failure(type, payload) {
   return {
     type,
-    payload,
+    payload
   };
 }
 
 function getNotifications() {
   return (dispatch) => {
     dispatch(request(notifConstants.GET_NOTIFICATION_REQUEST, null));
-    notifService.getNotifications()
+    notifService
+      .getNotifications()
       .then((data) => {
         dispatch(success(notifConstants.GET_NOTIFICATION_SUCCESS, data));
       })

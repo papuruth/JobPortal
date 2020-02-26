@@ -6,26 +6,27 @@ import alertActions from '../alert/alertActions';
 function request(type, payload) {
   return {
     type,
-    payload,
+    payload
   };
 }
 function success(type, payload) {
   return {
     type,
-    payload,
+    payload
   };
 }
 function failure(type, error) {
   return {
     type,
-    error,
+    error
   };
 }
 
 function updateProfile(id, data, emailId) {
   return (dispatch) => {
     dispatch(request(profileConstants.PROFILE_UPDATE_REQUEST, id));
-    profileService.updateProfile(id, data, emailId)
+    profileService
+      .updateProfile(id, data, emailId)
       .then((response) => {
         dispatch(success(profileConstants.PROFILE_UPDATE_SUCCESS, response));
         history.push('/profile');
@@ -40,7 +41,8 @@ function updateProfile(id, data, emailId) {
 function sendMail(fullname, email, subject, message) {
   return (dispatch) => {
     dispatch(request(profileConstants.SEND_MAIL_REQUEST, null));
-    profileService.sendMail(fullname, email, subject, message)
+    profileService
+      .sendMail(fullname, email, subject, message)
       .then((status) => {
         if (status === 'success') {
           dispatch(alertActions.success('Message Sent.'));
@@ -58,7 +60,7 @@ function sendMail(fullname, email, subject, message) {
 
 const profileActions = {
   updateProfile,
-  sendMail,
+  sendMail
 };
 
 export default profileActions;

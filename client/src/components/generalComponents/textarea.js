@@ -2,14 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Textarea = (props) => {
-  const {
-    className,
-    rows,
-    id,
-    onChange,
-    name,
-    value,
-  } = props;
+  const { className, rows, id, onChange, name, value } = props;
   return (
     <textarea
       className={className}
@@ -28,7 +21,7 @@ Textarea.propTypes = {
   id: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired
 };
 
 export default Textarea;

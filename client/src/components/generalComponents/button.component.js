@@ -4,11 +4,7 @@ import PropTypes from 'prop-types';
 const Button = (props) => {
   const { className, btnDisabled, title } = props;
   return (
-    <button
-      className={className}
-      type="submit"
-      disabled={!btnDisabled}
-    >
+    <button className={className} type="submit" disabled={!btnDisabled}>
       {title}
     </button>
   );
@@ -17,7 +13,7 @@ const Button = (props) => {
 Button.propTypes = {
   className: PropTypes.string.isRequired,
   btnDisabled: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
 };
 
 export default Button;

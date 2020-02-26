@@ -7,9 +7,7 @@ const FormErrors = ({ formErrors }) => (
       if (formErrors[fieldName].length > 0) {
         return (
           <p key={Math.floor(Math.random() * 10)}>
-            {fieldName}
-            {' '}
-            {formErrors[fieldName]}
+            {fieldName} {formErrors[fieldName]}
           </p>
         );
       }
@@ -19,7 +17,7 @@ const FormErrors = ({ formErrors }) => (
 );
 
 FormErrors.propTypes = {
-  formErrors: PropTypes.arrayOf(PropTypes.oneOfType(PropTypes.any)).isRequired,
+  formErrors: PropTypes.arrayOf(PropTypes.oneOfType(PropTypes.any)).isRequired
 };
 
 export default FormErrors;

@@ -6,7 +6,7 @@ export function saveMessage(state = {}, action) {
       return {};
     case chatConstants.MESSAGE_SAVE_SUCCESS:
       return {
-        message: action.payload,
+        message: action.payload
       };
     case chatConstants.MESSAGE_SAVE_FAILURE:
       return {};
@@ -15,14 +15,13 @@ export function saveMessage(state = {}, action) {
   }
 }
 
-
 export function getMessage(state = {}, action) {
   switch (action.type) {
     case chatConstants.GET_MESSAGE_REQUEST:
       return {};
     case chatConstants.GET_MESSAGE_SUCCESS:
       return {
-        chats: action.payload,
+        chats: action.payload
       };
     case chatConstants.GET_MESSAGE_FAILURE:
       return {};

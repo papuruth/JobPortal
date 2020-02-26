@@ -6,7 +6,7 @@ export function profileUpdate(state = {}, action) {
       return {};
     case profileConstants.PROFILE_UPDATE_SUCCESS:
       return {
-        profile: action.payload,
+        profile: action.payload
       };
     case profileConstants.PROFILE_UPDATE_FAILURE:
       return {};
@@ -15,14 +15,13 @@ export function profileUpdate(state = {}, action) {
   }
 }
 
-
 export function sendMail(state = {}, action) {
   switch (action.type) {
     case profileConstants.SEND_MAIL_REQUEST:
       return {};
     case profileConstants.SEND_MAIL_SUCCESS:
       return {
-        mailStatus: action.payload,
+        mailStatus: action.payload
       };
     case profileConstants.SEND_MAIL_FAILURE:
       return {};

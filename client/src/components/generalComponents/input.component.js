@@ -10,7 +10,7 @@ class Input extends React.PureComponent {
       inputType,
       value,
       onChange,
-      placeholder,
+      placeholder
     } = this.props;
     return (
       <input
@@ -34,12 +34,12 @@ Input.propTypes = {
   inputType: PropTypes.string.isRequired,
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  placeholder: PropTypes.string,
+  placeholder: PropTypes.string
 };
 
 Input.defaultProps = {
   value: '',
   placeholder: ''
-}
+};
 
 export default Input;

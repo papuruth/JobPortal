@@ -1,10 +1,13 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import Header from './containers/header'
-import Footer from './components/footer.component'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom';
+import Footer from './components/footer.component';
+import Header from './redux-containers/header';
 import alertActions from './redux/alert/alertActions';
-import history from './_helpers/history';
 import routes from './routes';
+import history from './_helpers/history';
+import ErrorBoundary from './components/generalComponents/error.boundary';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -17,38 +20,50 @@ class App extends React.Component {
 
   hideAlert = (e) => {
     e.preventDefault();
-    document.getElementById('alert').style.display = 'none'
-  }
+    document.getElementById('alert').style.display = 'none';
+  };
 
   render() {
     const { alert } = this.props;
     return (
-      <div className="container-fluid">
+      <ErrorBoundary>
+        <div className="container-fluid">
           <Header />
           <div className="shift1">
             <div className="row">
               <div className="col-sm-12">
-                {
-                  alert.message && <div id="alert" className={`alert ${alert.type}`}>
+                {alert.message && (
+                  <div id="alert" className={`alert ${alert.type}`}>
                     {alert.message}
-                    <span onClick={this.hideAlert}
-                      className="w3-button w3-large w3-display-topright">&times;</span>
+                    <span
+                      tabIndex={0}
+                      role="button"
+                      onClick={this.hideAlert}
+                      onKeyPress={this.onKeyPress}
+                      className="w3-button w3-large w3-display-topright"
+                    >
+                      &times;
+                    </span>
                   </div>
-                }
+                )}
               </div>
             </div>
             <Switch>
-                {
-                  routes.map((route, index) => (
-                    <Route key={index} {...route}/>
-                  ))
-                }
+              {routes.map((route, index) => (
+                <Route {...route} key={`route${Math.random()}`} />
+              ))}
             </Switch>
           </div>
           <Footer />
-      </div>
+        </div>
+      </ErrorBoundary>
     );
   }
 }
+
+App.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  alert: PropTypes.oneOf([PropTypes.any]).isRequired
+};
 
 export default App;

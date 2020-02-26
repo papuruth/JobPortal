@@ -5,28 +5,29 @@ import alertActions from '../alert/alertActions';
 function request(type, payload) {
   return {
     type,
-    payload,
+    payload
   };
 }
 
 function success(type, payload) {
   return {
     type,
-    payload,
+    payload
   };
 }
 
 function failure(type, error) {
   return {
     type,
-    error,
+    error
   };
 }
 
 function saveMessage(sender, receiver, message, date) {
   return (dispatch) => {
     dispatch(request(chatConstants.MESSAGE_SAVE_REQUEST, null));
-    chatService.saveMessage(sender, receiver, message, date)
+    chatService
+      .saveMessage(sender, receiver, message, date)
       .then((data) => {
         dispatch(success(chatConstants.MESSAGE_SAVE_SUCCESS, data));
       })
@@ -40,7 +41,8 @@ function saveMessage(sender, receiver, message, date) {
 function getMessages(sender, receiver) {
   return (dispatch) => {
     dispatch(request(chatConstants.GET_MESSAGE_REQUEST, null));
-    chatService.getMessages(sender, receiver)
+    chatService
+      .getMessages(sender, receiver)
       .then((data) => {
         dispatch(success(chatConstants.GET_MESSAGE_SUCCESS, data));
       })
@@ -53,6 +55,6 @@ function getMessages(sender, receiver) {
 
 const chatActions = {
   saveMessage,
-  getMessages,
+  getMessages
 };
 export default chatActions;

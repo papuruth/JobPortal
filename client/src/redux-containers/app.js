@@ -4,7 +4,7 @@ import App from '../App';
 function mapStateToProps(state) {
   const { alert } = state;
   return {
-    alert,
+    alert
   };
 }
 

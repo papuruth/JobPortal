@@ -7,7 +7,7 @@ async function getJobs(page, role, name) {
       page,
       role,
       name
-    },
+    }
   });
   if (jobs.data) {
     return jobs.data;
@@ -16,7 +16,7 @@ async function getJobs(page, role, name) {
 }
 
 const bodyService = {
-  getJobs,
+  getJobs
 };
 
 export default bodyService;

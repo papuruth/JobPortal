@@ -6,7 +6,7 @@ function mapStateToProps(state) {
   const { mails } = state.updateStatus;
   return {
     appliedjobs,
-    mails,
+    mails
   };
 }
 

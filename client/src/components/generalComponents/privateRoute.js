@@ -22,7 +22,7 @@ export default function PrivateRoute(Component) {
     }
   }
   AuthenticatedComponent.propTypes = {
-    history: PropTypes.oneOfType([PropTypes.any]).isRequired,
+    history: PropTypes.oneOfType([PropTypes.any]).isRequired
   };
   return withRouter(AuthenticatedComponent);
 }

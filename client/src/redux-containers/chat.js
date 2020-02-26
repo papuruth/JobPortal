@@ -6,7 +6,7 @@ function mapStateToProps(state) {
   const { chats } = state.getMessage;
   return {
     message,
-    chats,
+    chats
   };
 }
 

@@ -11,15 +11,14 @@ async function getNotifications() {
   try {
     const mails = await axios.get(`${config.nodeBaseUrl}/mails`);
     localStorage.setItem('mails', JSON.stringify(mails.data));
-    const mailData = JSON.parse(localStorage.getItem('mails'));
-    return mailData;
+    return mails.data;
   } catch (error) {
     return error.message;
   }
 }
 
 const notifService = {
-  getNotifications,
+  getNotifications
 };
 
 export default notifService;

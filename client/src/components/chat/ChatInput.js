@@ -15,7 +15,7 @@ class ChatInput extends React.Component {
         this.props.onSend(true);
       });
     });
-  }
+  };
 
   submitHandler = (event) => {
     // Stop the form from refreshing the page on submit
@@ -24,8 +24,7 @@ class ChatInput extends React.Component {
     this.props.onSend(this.state.chatInput);
     // Clear the input box
     this.setState({ chatInput: '' });
-  }
-
+  };
 
   render() {
     // Display a user input form and do something when it is submitted
@@ -48,7 +47,7 @@ class ChatInput extends React.Component {
 }
 
 ChatInput.propTypes = {
-  onSend: PropTypes.func.isRequired,
+  onSend: PropTypes.func.isRequired
 };
 
 export default ChatInput;

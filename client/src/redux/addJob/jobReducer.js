@@ -6,11 +6,11 @@ function addjob(state = {}, action) {
       return {};
     case jobConstants.ADD_JOB_SUCCESS:
       return {
-        jobs: action.payload,
+        jobs: action.payload
       };
     case jobConstants.ADD_JOB_FAILURE:
       return {
-        error: action.payload,
+        error: action.payload
       };
     default:
       return state;
@@ -23,11 +23,11 @@ function editJob(state = {}, action) {
       return {};
     case jobConstants.EDIT_JOB_SUCCESS:
       return {
-        editjobs: action.payload,
+        editjobs: action.payload
       };
     case jobConstants.EDIT_JOB_FAILURE:
       return {
-        error: action.payload,
+        error: action.payload
       };
     default:
       return state;
@@ -40,11 +40,11 @@ function updateJob(state = {}, action) {
       return {};
     case jobConstants.UPDATE_JOB_SUCCESS:
       return {
-        editjobs: action.payload,
+        editjobs: action.payload
       };
     case jobConstants.UPDATE_JOB_FAILURE:
       return {
-        error: action.payload,
+        error: action.payload
       };
     default:
       return state;
@@ -55,15 +55,15 @@ function applyJob(state = {}, action) {
   switch (action.type) {
     case jobConstants.APPLY_JOB_REQUEST:
       return {
-        apply: action.payload,
+        apply: action.payload
       };
     case jobConstants.APPLY_JOB_SUCCESS:
       return {
-        apply: action.payload,
+        apply: action.payload
       };
     case jobConstants.APPLY_JOB_FAILURE:
       return {
-        error: action.payload,
+        error: action.payload
       };
     default:
       return state;
@@ -81,7 +81,7 @@ function getAppliedJobs(state = {}, action) {
       };
     case jobConstants.GET_APPLIED_JOB_FAILURE:
       return {
-        error: action.payload,
+        error: action.payload
       };
     default:
       return state;
@@ -94,11 +94,11 @@ function removeJob(state = {}, action) {
       return {};
     case jobConstants.REMOVE_JOB_SUCCESS:
       return {
-        removedjobs: action.payload,
+        removedjobs: action.payload
       };
     case jobConstants.REMOVE_JOB_FAILURE:
       return {
-        error: action.payload,
+        error: action.payload
       };
     default:
       return state;
@@ -109,15 +109,15 @@ function updateStatus(state = {}, action) {
   switch (action.type) {
     case jobConstants.UPDATE_APPLIED_JOB_STATUS_REQUEST:
       return {
-        mails: action.payload,
+        mails: action.payload
       };
     case jobConstants.UPDATE_APPLIED_STATUS_SUCCESS:
       return {
-        mails: action.payload,
+        mails: action.payload
       };
     case jobConstants.UPDATE_APPLIED_JOB_STATUS_FAILURE:
       return {
-        error: action.payload,
+        error: action.payload
       };
     default:
       return state;
@@ -131,5 +131,5 @@ export {
   applyJob,
   getAppliedJobs,
   removeJob,
-  updateStatus,
+  updateStatus
 };

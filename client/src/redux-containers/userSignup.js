@@ -4,7 +4,7 @@ import Signup from '../components/signup.components';
 function mapStateToProps(state) {
   const { registered } = state.registration;
   return {
-    registered,
+    registered
   };
 }
 

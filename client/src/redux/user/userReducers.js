@@ -1,6 +1,5 @@
 import userConstants from './userConstants';
 
-
 export function authentication(state = {}, action) {
   switch (action.type) {
     case userConstants.LOGIN_REQUEST:
@@ -8,7 +7,7 @@ export function authentication(state = {}, action) {
     case userConstants.LOGIN_SUCCESS:
       return {
         loggedIn: true,
-        currentUser: action.payload,
+        currentUser: action.payload
       };
     case userConstants.LOGIN_FAILURE:
       return {};
@@ -23,7 +22,7 @@ export function registration(state = {}, action) {
       return {};
     case userConstants.REGISTER_SUCCESS:
       return {
-        registering: true,
+        registering: true
       };
     case userConstants.REGISTER_FAILURE:
       return {};
@@ -38,7 +37,7 @@ export function Users(state = {}, action) {
       return {};
     case userConstants.GET_ALL_USERS_SUCCESS:
       return {
-        users: action.payload,
+        users: action.payload
       };
     case userConstants.GET_ALL_USERS_FAILURE:
       return {};
@@ -53,7 +52,7 @@ export function Logout(state = {}, action) {
       return {};
     case userConstants.USERS_LOGOUT_SUCCESS:
       return {
-        logoutUser: action.payload,
+        logoutUser: action.payload
       };
     case userConstants.USERS_LOGOUT_FAILURE:
       return {};
@@ -61,5 +60,3 @@ export function Logout(state = {}, action) {
       return state;
   }
 }
-
-

@@ -5,7 +5,7 @@ function mapStateToProps(state) {
   const { profile } = state.profileUpdate;
   return {
     profile,
-    user: JSON.parse(localStorage.getItem('currentUser')),
+    user: JSON.parse(localStorage.getItem('currentUser'))
   };
 }
 
