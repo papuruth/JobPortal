@@ -74,9 +74,9 @@ class Header extends React.Component {
             </footer>
           </div>
         </div>
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-sm-12">
+        <div className="container-fluid mobile-container-fluid">
+          <div>
+            <div>
               <div className="navbar-header">
                 <button
                   type="button"

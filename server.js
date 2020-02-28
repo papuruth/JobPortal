@@ -10,7 +10,7 @@ require('dotenv').config();
 mongoose
   .connect(process.env.MongoDbURI || 'mongodb://localhost:27017/JobPortal', {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
   })
   .then(() => {
     console.log('Database is connected');
@@ -56,20 +56,19 @@ socketIo.on('connection', (socket) => {
   console.log(`${username} connected`);
   clients.push({ [username]: socket });
   clients = [...new Set(clients)];
-
   socket.on('client:message', (data) => {
-    console.log(data);
-    console.log(`${data.username}: ${data.message}`);
+    console.log('client message', data);
+    console.log(`${data.sender}: ${data.message}`);
     // message received from client, now broadcast it to desired user
     clients.forEach((item, index) => {
-      if (JSON.stringify(Object.keys(item)).indexOf(data.to) !== -1) {
-        clients[index][data.to].emit('server:message', data);
+      if (JSON.stringify(Object.keys(item)).indexOf(data.receiver) !== -1) {
+        clients[index][data.receiver].emit('server:message', data);
       }
     });
   });
 
-  socket.on('typing', () => {
-    socket.broadcast.emit('typing', { username });
+  socket.on('typing', (data) => {
+    socket.broadcast.emit('typing', {owner: username, isTyping: data});
   });
 
   socket.on('disconnect', () => {
@@ -84,8 +83,8 @@ const transport = {
   host: 'smtp.gmail.com',
   auth: {
     user: creds.USER,
-    pass: creds.PASS,
-  },
+    pass: creds.PASS
+  }
 };
 
 const transporter = nodemailer.createTransport(transport);

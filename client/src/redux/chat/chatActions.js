@@ -23,11 +23,11 @@ function failure(type, error) {
   };
 }
 
-function saveMessage(sender, receiver, message, date) {
+function saveMessage(message) {
   return (dispatch) => {
     dispatch(request(chatConstants.MESSAGE_SAVE_REQUEST, null));
     chatService
-      .saveMessage(sender, receiver, message, date)
+      .saveMessage(message)
       .then((data) => {
         dispatch(success(chatConstants.MESSAGE_SAVE_SUCCESS, data));
       })

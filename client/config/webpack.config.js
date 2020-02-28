@@ -24,7 +24,7 @@ const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
-
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const postcssNormalize = require('postcss-normalize');
 
 const appPackageJson = require(paths.appPackageJson);
@@ -336,6 +336,7 @@ module.exports = function(webpackEnv) {
             {
               options: {
                 cache: true,
+                parser: require.resolve('babel-eslint'),
                 useEslintrc: true,
                 formatter: require.resolve('react-dev-utils/eslintFormatter'),
                 eslintPath: require.resolve('eslint'),
@@ -512,6 +513,9 @@ module.exports = function(webpackEnv) {
       ],
     },
     plugins: [
+      // MomentJs Loacale Plugin
+      // To strip all locales except “en”
+      new MomentLocalesPlugin(),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(

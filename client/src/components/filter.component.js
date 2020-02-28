@@ -130,8 +130,8 @@ class Filter extends React.Component {
       optionsDesig
     } = this.state;
     return (
-      <div className="row filter" id="filter">
-        <div className="col-sm-12 col-md-offset-1">
+      <div className="filter" id="filter">
+        <div className="col-md-offset-1">
           <form
             className="form"
             onSubmit={this.SubmitData}

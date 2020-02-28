@@ -1,13 +1,10 @@
 import axios from 'axios';
 import config from '../../config';
 
-async function saveMessage(sender, receiver, message, date) {
+async function saveMessage(message) {
   try {
     const response = await axios.post(`${config.nodeBaseUrl}/messages`, {
-      sender,
-      receiver,
-      message,
-      date
+      message
     });
     return response.data;
   } catch (error) {
@@ -23,7 +20,8 @@ async function getMessages(sender, receiver) {
         receiver
       }
     });
-    return response.data;
+    console.log(response.data);
+    return response.data ? response.data : [];
   } catch (error) {
     return error;
   }

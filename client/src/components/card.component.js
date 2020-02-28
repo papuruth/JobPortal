@@ -134,168 +134,166 @@ class Card extends React.Component {
     const { data } = this.props;
     const { hasMore } = this.state;
     return (
-      <div className="row">
-        <div className="col-sm-12 content">
-          <ul className="searchlist">
-            {isLoggedIn() && data.length === 0 && this.user.role === 1 && (
-              <h1 style={{ textAlign: 'center' }}>
-                No jobs posted yet. Please post some jobs!
-              </h1>
-            )}
-            {isLoggedIn() && data.length === 0 && this.user.role === 2 && (
-              <h1 style={{ textAlign: 'center' }}>
-                No jobs posted yet. Please wait for companies!
-              </h1>
-            )}
-            {isLoggedIn() && data.length === 0 && this.user.role === 0 && (
-              <h1 style={{ textAlign: 'center' }}>
-                No jobs posted yet. Please wait for companies or post some jobs!
-              </h1>
-            )}
-            {!isLoggedIn() && data.length === 0 && (
-              <h1 style={{ textAlign: 'center' }}>
-                No jobs posted yet. Please wait for companies!
-              </h1>
-            )}
-            <LoadingOverlay
-              active={this.props.loaderStatus}
-              spinner={<SyncLoader />}
-              text='Loading your content...'
+      <div className="col-sm-12 content">
+        <ul className="searchlist">
+          {isLoggedIn() && data.length === 0 && this.user.role === 1 && (
+            <h1 style={{ textAlign: 'center' }}>
+              No jobs posted yet. Please post some jobs!
+            </h1>
+          )}
+          {isLoggedIn() && data.length === 0 && this.user.role === 2 && (
+            <h1 style={{ textAlign: 'center' }}>
+              No jobs posted yet. Please wait for companies!
+            </h1>
+          )}
+          {isLoggedIn() && data.length === 0 && this.user.role === 0 && (
+            <h1 style={{ textAlign: 'center' }}>
+              No jobs posted yet. Please wait for companies or post some jobs!
+            </h1>
+          )}
+          {!isLoggedIn() && data.length === 0 && (
+            <h1 style={{ textAlign: 'center' }}>
+              No jobs posted yet. Please wait for companies!
+            </h1>
+          )}
+          <LoadingOverlay
+            active={this.props.loaderStatus}
+            spinner={<SyncLoader />}
+            text="Loading your content..."
+          >
+            <InfiniteScroll
+              dataLength={data.length} // This is important field to render the next data
+              next={this.fetchMoreData}
+              hasMore={hasMore}
+              endMessage={(
+                <p style={{ textAlign: 'center' }}>
+                  <b>Yay! You have seen it all</b>
+                </p>
+              )}
+              // below props only if you need pull down functionality
+              // refreshFunction={this.refresh}
+              // pullDownToRefresh
+              // pullDownToRefreshContent={
+              //   <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
+              // }
+              // releaseToRefreshContent={
+              //   <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
+              // }
             >
-              <InfiniteScroll
-                dataLength={data.length} // This is important field to render the next data
-                next={this.fetchMoreData}
-                hasMore={hasMore}
-                endMessage={(
-                  <p style={{ textAlign: 'center' }}>
-                    <b>Yay! You have seen it all</b>
-                  </p>
-                )}
-                // below props only if you need pull down functionality
-                // refreshFunction={this.refresh}
-                // pullDownToRefresh
-                // pullDownToRefreshContent={
-                //   <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
-                // }
-                // releaseToRefreshContent={
-                //   <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
-                // }
-              >
-                {data.length > 0 &&
-                  data.map((job, index) => {
-                    const src = config.firebase_url.concat(
-                      `${job.imageURL}?alt=media`
-                    );
-                    return (
-                      <li
-                        className={job.status === 'New' ? 'active1' : 'closed'}
-                        key={'index'.concat(index)}
-                      >
-                        <div className="row">
-                          <div className="col-sm-4 col-lg-2 col-4">
-                            <div className="doc-image rounded-circle">
-                              <img
-                                src={src}
-                                className="img-fluid image"
-                                width="78"
-                                height="78"
-                                alt={job.company}
-                              />
-                            </div>
+              {data.length > 0 &&
+                data.map((job, index) => {
+                  const src = config.firebase_url.concat(
+                    `${job.imageURL}?alt=media`
+                  );
+                  return (
+                    <li
+                      className={job.status === 'New' ? 'active1' : 'closed'}
+                      key={'index'.concat(index)}
+                    >
+                      <div className="row">
+                        <div className="col-sm-4 col-lg-2 col-4">
+                          <div className="doc-image rounded-circle">
+                            <img
+                              src={src}
+                              className="img-fluid image"
+                              width="78"
+                              height="78"
+                              alt={job.company}
+                            />
                           </div>
-                          <div className="col-sm-4 col-lg-6 col-4 cardBorder">
-                            <div className="doc-details">
-                              <h5 className="m-0 h51" id={`comp${index}`}>
-                                {job.company}
-                              </h5>
-                              <p className="grey-text txt-uppercase">
-                                Profile: {job.profileType}
-                              </p>
-                              <span className="salary">
-                                Salary: {job.annualSalary}
-                              </span>
-                              <p id={`des${index}`}>{job.designation}</p>
-                            </div>
+                        </div>
+                        <div className="col-sm-4 col-lg-6 col-4 cardBorder">
+                          <div className="doc-details">
+                            <h5 className="m-0 h51" id={`comp${index}`}>
+                              {job.company}
+                            </h5>
+                            <p className="grey-text txt-uppercase">
+                              Profile: {job.profileType}
+                            </p>
+                            <span className="salary">
+                              Salary: {job.annualSalary}
+                            </span>
+                            <p id={`des${index}`}>{job.designation}</p>
                           </div>
-                          <div className="col-sm-4 col-lg-4 col-4">
-                            {isLoggedIn() && this.user.role !== 2 && (
-                              <i
-                                className="fa fa-times cross"
-                                id={job._id}
-                                onClick={this.removeJob}
-                                onKeyPress={this.removeJob}
-                                role="button"
-                                tabIndex={0}
-                                aria-label="Remove Job"
-                              />
-                            )}
-                            {isLoggedIn() && this.user.role !== 2 && (
-                              <i
-                                className="fa fa-edit cross"
-                                onClick={this.editJob}
-                                id={job._id}
-                                onKeyPress={this.editJob}
-                                role="button"
-                                tabIndex={0}
-                                aria-label="Edit Job"
-                              />
-                            )}
-                            <div>
-                              <span className="font14 font-medium">
-                                Venue: {job.venue}
-                              </span>
-                            </div>
-                            <div>
-                              <span className="font14 font-medium">
-                                Location: {job.city}
-                              </span>
-                            </div>
-                            <div>
-                              <h5 className="m-1">Status: {job.status}</h5>
-                            </div>
-                            {job.status !== 'New' && (
-                              <div>
-                                <h5 className="m-1 closedJob">
-                                  Early bird catches the worm!
-                                </h5>
-                              </div>
-                            )}
-                          </div>
-                          {isLoggedIn() && this.user.role === 2 && (
-                            <button
-                              type="button"
-                              className={
-                                job.status === 'New' ? 'btn1' : 'btnDisabled'
-                              }
-                              name={job._id}
-                              id={`btn${index}`}
-                              onClick={this.apply}
-                              disabled={job.status === 'Closed'}
-                            >
-                              Apply
-                            </button>
-                          )}
-                          {!isLoggedIn() && (
-                            <button
-                              type="button"
-                              className={
-                                job.status === 'New' ? 'btn1' : 'btnDisabled'
-                              }
+                        </div>
+                        <div className="col-sm-4 col-lg-4 col-4">
+                          {isLoggedIn() && this.user.role !== 2 && (
+                            <i
+                              className="fa fa-times cross"
                               id={job._id}
-                              onClick={this.apply}
-                              disabled={job.status === 'Closed'}
-                            >
-                              Apply
-                            </button>
+                              onClick={this.removeJob}
+                              onKeyPress={this.removeJob}
+                              role="button"
+                              tabIndex={0}
+                              aria-label="Remove Job"
+                            />
+                          )}
+                          {isLoggedIn() && this.user.role !== 2 && (
+                            <i
+                              className="fa fa-edit cross"
+                              onClick={this.editJob}
+                              id={job._id}
+                              onKeyPress={this.editJob}
+                              role="button"
+                              tabIndex={0}
+                              aria-label="Edit Job"
+                            />
+                          )}
+                          <div>
+                            <span className="font14 font-medium">
+                              Venue: {job.venue}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="font14 font-medium">
+                              Location: {job.city}
+                            </span>
+                          </div>
+                          <div>
+                            <h5 className="m-1">Status: {job.status}</h5>
+                          </div>
+                          {job.status !== 'New' && (
+                            <div>
+                              <h5 className="m-1 closedJob">
+                                Early bird catches the worm!
+                              </h5>
+                            </div>
                           )}
                         </div>
-                      </li>
-                    );
-                  })}
-              </InfiniteScroll>
-            </LoadingOverlay>
-          </ul>
-        </div>
+                        {isLoggedIn() && this.user.role === 2 && (
+                          <button
+                            type="button"
+                            className={
+                              job.status === 'New' ? 'btn1' : 'btnDisabled'
+                            }
+                            name={job._id}
+                            id={`btn${index}`}
+                            onClick={this.apply}
+                            disabled={job.status === 'Closed'}
+                          >
+                            Apply
+                          </button>
+                        )}
+                        {!isLoggedIn() && (
+                          <button
+                            type="button"
+                            className={
+                              job.status === 'New' ? 'btn1' : 'btnDisabled'
+                            }
+                            id={job._id}
+                            onClick={this.apply}
+                            disabled={job.status === 'Closed'}
+                          >
+                            Apply
+                          </button>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
+            </InfiniteScroll>
+          </LoadingOverlay>
+        </ul>
       </div>
     );
   }

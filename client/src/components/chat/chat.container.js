@@ -1,36 +1,34 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unused-state */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
-import MenuIcon from '@material-ui/icons/Menu';
+import { withStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, withTheme } from '@material-ui/core/styles';
+import MenuIcon from '@material-ui/icons/Menu';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import ChatApp from '../../redux-containers/chat';
 import jobAction from '../../redux/addJob/jobActions';
 
-const drawerWidth = 240;
+const drawerWidth = 255;
 
 const styles = (theme) => ({
   root: {
-    display: 'flex'
+    display: 'flex',
+    marginLeft: '-15px',
+    marginRight: '-15px'
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
+      width: '240px',
       flexShrink: 0
     }
   },
@@ -49,15 +47,24 @@ const styles = (theme) => ({
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
-    top: '51px',
+    top: '54px',
     height: '85%'
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3)
+    padding: '5px',
+    height: 'calc(100vh - 60px)',
+    margin: 0,
+    background:
+      '#181b21 url(https://www.toptal.com/designers/subtlepatterns/patterns/nami.png)',
+    fontFamily: '\'Quicksand\', sans-serif',
+    letterSpacing: '-0.23px'
   },
   appBarFixed: {
-    top: '51px',
+    top: '54px'
+  },
+  primaryList: {
+      fontSize: '1.5rem'
   }
 });
 
@@ -89,13 +96,10 @@ class ChatContainer extends PureComponent {
   }
 
   renderUserList = (props) => {
-    console.log(props.data);
     let usersArray = [];
     const { currentUser } = this.state;
-    console.log(currentUser);
     const { name } = currentUser;
-    props.data.forEach((job) => {
-      console.log(job.userDetails.name === name);
+    props.forEach((job) => {
       if (job.userDetails.name === name) {
         usersArray.push(job.jobDetails.company);
       } else if (job.jobDetails.company === name) {
@@ -103,22 +107,7 @@ class ChatContainer extends PureComponent {
       }
     });
     usersArray = [...new Set(usersArray)];
-    console.log(usersArray);
-    return usersArray.map((user, index) => {
-      return (
-        <li
-          className="list-group-item"
-          key={user}
-          id={user}
-          title={user}
-          onClick={this.openChat}
-          onKeyPress={this.onKeyPress}
-        >
-          {user}
-          <span className="messages-count"></span>
-        </li>
-      );
-    });
+    return usersArray;
   };
 
   handleDrawerToggle = () => {
@@ -129,56 +118,32 @@ class ChatContainer extends PureComponent {
     });
   };
 
-  openChat = (e) => {
-    e.preventDefault();
-    const username = e.target.id;
+  openChat = (props) => {
+    const username = props;
     this.setState({
       active: true,
       username
     });
   };
 
-  handleTypingData = (message, data) => {
-    // if (message === false && data === false) {
-    //   this.setState({
-    //     message: false
-    //   });
-    // } else {
-    //   this.setState({
-    //     message,
-    //     userTyping: data
-    //   });
-    // }
-  };
-
   render() {
-    const { classes, container, theme } = this.props;
-    console.log(classes);
+    const { classes, container, theme, loading = false } = this.props;
     const { appliedjobs, active, mobileOpen } = this.state;
     const drawer = (
       <div>
         <div className={classes.toolbar} />
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          {appliedjobs &&
+            this.renderUserList(appliedjobs).map((text, index) => (
+              <ListItem button key={text}>
+                <ListItemText
+                  classes={{primary: classes.primaryList}}
+                  primary={text}
+                  onClick={() => this.openChat(text)}
+                />
+              </ListItem>
+            ))}
         </List>
       </div>
     );
@@ -221,7 +186,7 @@ class ChatContainer extends PureComponent {
                 keepMounted: true // Better open performance on mobile.
               }}
             >
-              {appliedjobs && <this.renderUserList data={appliedjobs} />}
+              {drawer}
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
@@ -232,23 +197,16 @@ class ChatContainer extends PureComponent {
               variant="permanent"
               open
             >
-              {appliedjobs && <this.renderUserList data={appliedjobs} />}
+              {drawer}
             </Drawer>
           </Hidden>
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Typography div>
-            {active ? (
-              <ChatApp
-                handleTyping={this.handleTypingData}
-                username={this.state.username}
-                key={this.state.username}
-              />
-            ) : (
-              ''
-            )}
-          </Typography>
+          <section id="chatApp" className="chatApp"></section>
+          {active ? (
+            <ChatApp key={this.state.username} username={this.state.username} />
+          ) : null}
         </main>
       </div>
     );

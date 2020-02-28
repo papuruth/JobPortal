@@ -1,25 +1,27 @@
+/* eslint-disable react/no-unused-state */
+/* eslint-disable react/sort-comp */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/no-access-state-in-setstate */
 import React from 'react';
-import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 import config from '../../config';
-import Messages from './Messages';
-import ChatInput from './ChatInput';
 import chatActions from '../../redux/chat/chatActions';
+import ChatBox from './ChatBox';
+import detectURL from './detectURL';
 
-class ChatApp extends React.Component {
-  user = JSON.parse(localStorage.getItem('currentUser'));
-
-  constructor(props) {
-    super(props);
-    // set the initial state of messages so that it is not undefined on load
+export default class ChatApp extends React.Component {
+  constructor(props, context) {
+    super(props, context);
     this.state = {
+      chats: [],
       messages: [],
-      chats: []
+      isTyping: [],
+      user: JSON.parse(localStorage.getItem('currentUser'))
     };
     // Connect to the server
     this.socket = io(
       config.nodeBaseUrl,
-      { query: `username=${this.user.name}` },
+      { query: `username=${this.state.user.name}` },
       { transports: ['websocket', 'polling'] }
     ).connect();
 
@@ -27,9 +29,8 @@ class ChatApp extends React.Component {
     this.socket.on('server:message', (message) => {
       this.addMessage(message);
     });
-    console.log(this.props)
     const { username } = this.props;
-    const sender = this.user.name;
+    const sender = this.state.user.name;
     const receiver = username;
     const { dispatch } = this.props;
     dispatch(chatActions.getMessages(sender, receiver));
@@ -45,107 +46,104 @@ class ChatApp extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { chats, username } = this.props;
-    if (prevProps.chats !== chats) {
-      try {
-        const sender = this.user.name;
-        const receiver = username;
-        const senderMessage = [];
-        const receiverMessage = [];
-        chats.filter((item) => {
-          if (item.sender === sender && item.receiver === receiver) {
-            item.messages.map((chat, innerIndex) => {
-              senderMessage[innerIndex] = {
-                username: sender,
-                to: receiver,
-                message: chat[sender],
-                date: chat.date,
-                fromMe: true
-              };
-              this.addMessage(senderMessage[innerIndex]);
-              return true;
-            });
+    try {
+      const { chats, username } = this.props;
+      const sender = this.state.user.name;
+      const receiver = username;
+      if (prevProps.chats !== chats) {
+        chats.forEach((chat, index) => {
+          if (
+            (chat.sender === sender && chat.receiver === receiver) ||
+            (chat.sender === receiver && chat.receiver === sender)
+          ) {
+            const { messages } = chat;
+            messages.forEach((msg) => this.addMessage(msg));
           }
-          if (item.sender === receiver && item.receiver === sender) {
-            item.messages.map((chat, innerIndex) => {
-              receiverMessage[innerIndex] = {
-                username: receiver,
-                to: sender,
-                date: chat.date,
-                message: chat[receiver]
-              };
-              this.addMessage(receiverMessage[innerIndex]);
-              return true;
-            });
-          }
-          return false;
         });
-      } catch (error) {
-        console.log(error.message);
       }
+    } catch (error) {
+      console.log(error.message);
     }
   }
 
-  sendHandler = (message) => {
-    const { handleTyping, username } = this.props;
-    if (message === true) {
-      this.socket.emit('typing');
-      this.socket.on('typing', (data) => {
-        handleTyping(message, data);
-        return () => {
-          this.socket.disconnect();
-        };
-      });
-    } else {
-      const messageObject = {
-        username: this.user.name,
-        to: username,
-        message
+  /* adds a new message to the chatroom */
+  sendMessage = (sender, senderAvatar, message) => {
+    setTimeout(() => {
+      const messageFormat = detectURL(message);
+      const newMessageItem = {
+        id: this.state.messages.length + 1,
+        sender,
+        receiver: this.props.username,
+        senderAvatar,
+        message: messageFormat,
+        date: new Date().toString()
       };
-
+      this.addMessage(newMessageItem);
       // Dispatch the messages to redux action to be saved into db
-      const sender = this.user.name;
-      const receiver = username;
-      const date = new Date().toString();
       const { dispatch } = this.props;
-      dispatch(chatActions.saveMessage(sender, receiver, message, date));
+      dispatch(chatActions.saveMessage(newMessageItem));
       // Emit the message to the server
-      this.socket.emit('client:message', messageObject);
-      messageObject.fromMe = true;
-      this.addMessage(messageObject);
+      this.socket.emit('client:message', newMessageItem);
+      this.resetTyping(sender);
+    }, 400);
+  };
+
+  /* updates the writing indicator if not already displayed */
+  typing = (writer) => {
+    if (!this.state.isTyping[writer]) {
+      const stateTyping = this.state.isTyping;
+      stateTyping[writer] = true;
+      this.socket.emit('typing', true);
+      this.socket.on('typing', (data) => {
+        stateTyping[data.owner] = data.isTyping;
+        this.setState({ isTyping: stateTyping });
+      });
     }
   };
 
   addMessage = (message) => {
-    const { handleTyping } = this.props;
-    // Append the message to the component state
-    const { messages } = this.state;
-    messages.push(message);
-    messages.sort((a, b) => new Date(a.date) - new Date(b.date));
-    this.setState({ messages });
-    handleTyping(false, false);
-    return true;
+    this.setState((state) => {
+      return {
+        messages: [...state.messages, message]
+      };
+    });
+  };
+
+  /* hide the writing indicator */
+  resetTyping = (writer) => {
+    const stateTyping = this.state.isTyping;
+    stateTyping[writer] = false;
+    this.setState({ isTyping: stateTyping });
+    this.socket.emit('typing', false);
   };
 
   render() {
-    const { username } = this.props;
+    const { user } = this.state;
+    const { name, image } = user;
+    const chatBoxes = [];
     const { messages } = this.state;
-    // Here we want to render the main chat application components
-    return (
-      <div className="container chat">
-        <h3 className="chatTitle">{username}</h3>
-        <Messages messages={messages} />
-        <ChatInput onSend={this.sendHandler} />
-      </div>
-    );
+    const { isTyping } = this.state;
+
+    /* user details - can add as many users as desired */
+    const users = [{ name, avatar: image }];
+    /* creation of a chatbox for each user present in the chatroom */
+    this.props.chats &&
+      Object.keys(users).map((key) => {
+        const chatUser = users[key];
+        chatBoxes.push(
+          <ChatBox
+            key={key}
+            owner={chatUser.name}
+            receiver={this.props.username}
+            ownerAvatar={chatUser.avatar}
+            sendMessage={this.sendMessage}
+            typing={this.typing}
+            resetTyping={this.resetTyping}
+            messages={messages}
+            isTyping={isTyping}
+          />
+        );
+      });
+    return <div className="chatApp__room">{this.props.chats && chatBoxes}</div>;
   }
 }
-
-ChatApp.propTypes = {
-  username: PropTypes.string.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  chats: PropTypes.string.isRequired,
-  handleTyping: PropTypes.func.isRequired
-};
-
-export default ChatApp;

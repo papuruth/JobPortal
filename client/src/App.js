@@ -27,11 +27,11 @@ class App extends React.Component {
     const { alert } = this.props;
     return (
       <ErrorBoundary>
-        <div className="container-fluid">
+        <div className="container-fluid mobile-container-fluid">
           <Header />
-          <div className="shift1">
-            <div className="row">
-              <div className="col-sm-12">
+          <div className="content">
+            <div className="">
+              <div className="">
                 {alert.message && (
                   <div id="alert" className={`alert ${alert.type}`}>
                     {alert.message}
