@@ -90,11 +90,11 @@ function register(fullname, email, password, phone, gender) {
   };
 }
 
-function getAllUsers() {
+function getAllUsers(param) {
   return (dispatch) => {
     dispatch(request(userConstants.GET_ALL_USERS_REQUEST, null));
     userService
-      .getAllUsers()
+      .getAllUsers(param)
       .then((users) => {
         dispatch(success(userConstants.GET_ALL_USERS_SUCCESS, users));
       })

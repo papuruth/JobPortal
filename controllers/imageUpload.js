@@ -55,6 +55,7 @@ exports.upload = function upload(req, res) {
       if (!err) {
         const { file } = req;
         const filename = req.body.filename + path.extname(file.originalname);
+        console.log(filename)
         if (file) {
           uploadImageToStorage(file, filename)
             .then(() => res.send(filename))

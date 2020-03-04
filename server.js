@@ -5,12 +5,15 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
+const http = require('http');
+const axios = require('axios');
+const moment = require('moment');
 require('dotenv').config();
 
 mongoose
   .connect(process.env.MongoDbURI || 'mongodb://localhost:27017/JobPortal', {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
   })
   .then(() => {
     console.log('Database is connected');
@@ -23,7 +26,7 @@ mongoose.set('useFindAndModify', false);
 
 // setup server
 const app = express();
-const server = require('http').createServer(app);
+const server = http.createServer(app);
 const socketIo = require('socket.io')(server, { wsEngine: 'ws' });
 const creds = require('./config/mailConfig');
 const route = require('./expressRoutes/routes');
@@ -50,31 +53,55 @@ server.listen(process.env.PORT || port, () => {
 });
 let clients = [];
 // Setup socket.io
-socketIo.on('connection', (socket) => {
+socketIo.on('connection', async (socket) => {
   const { username } = socket.handshake.query;
-
   console.log(`${username} connected`);
+  if (username) {
+    await axios
+      .post('http://localhost:3001/online-users', {
+        username,
+        status: 'Online',
+        disconnectTime: ''
+      })
+      .then(() => {})
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  socket.broadcast.emit('isonline', [username]);
   clients.push({ [username]: socket });
   clients = [...new Set(clients)];
-
   socket.on('client:message', (data) => {
-    console.log(data);
-    console.log(`${data.username}: ${data.message}`);
+    console.log('client message', data);
+    console.log(`${data.sender}: ${data.message}`);
     // message received from client, now broadcast it to desired user
     clients.forEach((item, index) => {
-      if (JSON.stringify(Object.keys(item)).indexOf(data.to) !== -1) {
-        clients[index][data.to].emit('server:message', data);
+      if (JSON.stringify(Object.keys(item)).indexOf(data.receiver) !== -1) {
+        clients[index][data.receiver].emit('server:message', data);
       }
     });
   });
 
-  socket.on('typing', () => {
-    socket.broadcast.emit('typing', { username });
+  socket.on('typing', (data) => {
+    socket.broadcast.emit('typing', { owner: username, isTyping: data });
   });
 
-  socket.on('disconnect', () => {
+  socket.on('disconnect', async () => {
     clients.pop();
     console.log(`${username} disconnected`);
+    if (username) {
+      await axios
+        .post('http://localhost:3001/online-users', {
+          username,
+          status: 'Offline',
+          disconnectTime: moment(new Date(), 'HH:mm')
+        })
+        .then(() => {})
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+    socket.broadcast.emit('isoffline', [username]);
   });
 });
 
@@ -84,8 +111,8 @@ const transport = {
   host: 'smtp.gmail.com',
   auth: {
     user: creds.USER,
-    pass: creds.PASS,
-  },
+    pass: creds.PASS
+  }
 };
 
 const transporter = nodemailer.createTransport(transport);

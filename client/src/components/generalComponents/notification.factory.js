@@ -34,8 +34,8 @@ export default class NotificationFactory extends Component {
   }
 
   render() {
-    const {appliedJobs, mails} = this.state;
-    const {currentUser} = this.props;
+    const { appliedJobs, mails } = this.state;
+    const { currentUser } = this.props;
     return (
       <div>
         {isLoggedIn() &&
@@ -51,8 +51,7 @@ export default class NotificationFactory extends Component {
               ) {
                 return (
                   <p key={item.toString()} className="mail">
-                    Hi! {currentUser.name}, you have been{' '}
-                    {`${item.status} `}
+                    Hi! {currentUser.name}, you have been {`${item.status} `}
                     in {item.company} for the position of {item.designation}.
                     So, we are pleased to inform you to be prepared for the
                     interview which is going to be held at {item.company},

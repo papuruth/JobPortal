@@ -45,9 +45,13 @@ async function register(fullname, email, password, phone, gender) {
   }
 }
 
-async function getAllUsers() {
+async function getAllUsers(user = null) {
   try {
-    const res = await axios.get(`${config.nodeBaseUrl}/users`);
+    const res = await axios.get(`${config.nodeBaseUrl}/users`, {
+      params: {
+        user
+      }
+    });
     return res.data.reverse();
   } catch (err) {
     return err.message;

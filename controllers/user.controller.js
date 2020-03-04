@@ -70,11 +70,20 @@ exports.login = async function login(req, res) {
 };
 
 exports.getUsers = function getUsers(req, res, next) {
-  Users.find({}, (err, data) => {
-    if (err) return next(err);
-    res.send(data);
-    return true;
-  });
+  const { user } = req.query;
+  if(req.query) {
+    Users.find({name: user}, (err, data) => {
+      if (err) return next(err);
+      res.send(data);
+      return true;
+    });
+  } else {
+    Users.find({}, (err, data) => {
+      if (err) return next(err);
+      res.send(data);
+      return true;
+    });
+  }
 };
 
 exports.getOneUser = async function getOneUser(req, res) {
@@ -86,6 +95,7 @@ exports.getOneUser = async function getOneUser(req, res) {
     return true;
   });
 };
+
 exports.updateUser = async function updateUser(req, res, next) {
   await Users.findByIdAndUpdate(req.params.id, { $set: req.body }, async (err) => {
     if (err) return next(err);

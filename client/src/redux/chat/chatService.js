@@ -1,13 +1,10 @@
 import axios from 'axios';
 import config from '../../config';
 
-async function saveMessage(sender, receiver, message, date) {
+async function saveMessage(message) {
   try {
     const response = await axios.post(`${config.nodeBaseUrl}/messages`, {
-      sender,
-      receiver,
-      message,
-      date
+      message
     });
     return response.data;
   } catch (error) {
@@ -23,6 +20,19 @@ async function getMessages(sender, receiver) {
         receiver
       }
     });
+    return response.data ? response.data : [];
+  } catch (error) {
+    return error;
+  }
+}
+
+async function getOnlineUser(username) {
+  try {
+    const response = await axios.get(`${config.nodeBaseUrl}/onlineusers`, {
+      params: {
+        username
+      }
+    });
     return response.data;
   } catch (error) {
     return error;
@@ -31,7 +41,8 @@ async function getMessages(sender, receiver) {
 
 const chatService = {
   saveMessage,
-  getMessages
+  getMessages,
+  getOnlineUser
 };
 
 export default chatService;

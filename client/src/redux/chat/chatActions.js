@@ -23,11 +23,11 @@ function failure(type, error) {
   };
 }
 
-function saveMessage(sender, receiver, message, date) {
+function saveMessage(message) {
   return (dispatch) => {
     dispatch(request(chatConstants.MESSAGE_SAVE_REQUEST, null));
     chatService
-      .saveMessage(sender, receiver, message, date)
+      .saveMessage(message)
       .then((data) => {
         dispatch(success(chatConstants.MESSAGE_SAVE_SUCCESS, data));
       })
@@ -53,8 +53,23 @@ function getMessages(sender, receiver) {
   };
 }
 
+function getOnlineUser(username) {
+  return (dispatch) => {
+    dispatch(request(chatConstants.GET_ONLINE_USER_REQUEST, null));
+    chatService
+      .getOnlineUser(username)
+      .then((user) => {
+        dispatch(success(chatConstants.GET_ONLINE_USER_SUCCESS, user));
+      })
+      .catch((error) => {
+        dispatch(failure(chatConstants.GET_ONLINE_USER_FAILURE, error));
+      });
+  };
+}
+
 const chatActions = {
   saveMessage,
-  getMessages
+  getMessages,
+  getOnlineUser
 };
 export default chatActions;
