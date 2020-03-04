@@ -2,7 +2,7 @@
 
 ![Heroku](https://heroku-badge.herokuapp.com/?app=heroku-badge&style=flat&svg=1)
 [![Dependency Status](https://david-dm.org/papuruth/JobPortal.svg)](https://david-dm.org/papuruth/JobPortal)
-[![devDependency Status](https://david-dm.org/papuruth/JobPortal/dev-status.svg)](https://david-dm.org/yourGitHubName/YourRepoName?type=dev)
+[![devDependency Status](https://david-dm.org/papuruth/JobPortal/dev-status.svg)](https://david-dm.org/papuruth/JobPortal?type=dev)
 # JobPortalReactJs
 
 ## What are the features of this App?
