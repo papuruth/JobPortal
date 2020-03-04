@@ -1,0 +1,12 @@
+{
+  "files": {
+    "included": [
+      "client/**/*.js",
+      "server.js",
+      "/*.js"
+    ],
+    "excluded": [
+      
+    ]
+  }
+}
