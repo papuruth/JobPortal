@@ -18,6 +18,7 @@ export default class ChatApp extends React.Component {
       isTyping: [],
       user: JSON.parse(localStorage.getItem('currentUser'))
     };
+    this.props.socket.emit('imonline', this.state.user.name);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -61,6 +62,10 @@ export default class ChatApp extends React.Component {
     // Get all messages for the sender and receiver
     dispatch(chatActions.getMessages(sender, receiver));
 
+    // Check online status bidirectional
+    this.props.socket.on('imonline', (data) => {
+      dispatch(chatActions.getOnlineUser(data))
+    })
     // Get the details of receiver
     dispatch(userActions.getAllUsers(user));
     this.props.socket.on('isonline', (data) => {

@@ -90,6 +90,10 @@ socketIo.on('connection', async (socket) => {
     socket.broadcast.emit('typing', { owner: username, isTyping: data });
   });
 
+  socket.on('imonline', (data) => {
+    socket.broadcast.emit('imonline', data);
+  });
+
   socket.on('disconnect', async () => {
     clients.pop();
     console.log(`${username} disconnected`);
