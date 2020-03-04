@@ -64,7 +64,7 @@ export default class ChatApp extends React.Component {
     // Get the details of receiver
     dispatch(userActions.getAllUsers(user));
     this.props.socket.on('isonline', (data) => {
-      if (data) {
+      if (data === this.props.user) {
         this.onlineTimer = setTimeout(() => {
           dispatch(chatActions.getOnlineUser(this.props.user));
         }, 0);
