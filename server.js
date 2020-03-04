@@ -47,6 +47,10 @@ app.use('/', route);
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
+const nodeBaseUrl =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000'
+    : process.env.nodeBaseUrl;
 const port = 3001;
 server.listen(process.env.PORT || port, () => {
   console.log('Server is running on Port: ', process.env.PORT || port);
@@ -58,7 +62,7 @@ socketIo.on('connection', async (socket) => {
   console.log(`${username} connected`);
   if (username) {
     await axios
-      .post('http://localhost:3001/online-users', {
+      .post(`${nodeBaseUrl}/online-users`, {
         username,
         status: 'Online',
         disconnectTime: ''
@@ -91,7 +95,7 @@ socketIo.on('connection', async (socket) => {
     console.log(`${username} disconnected`);
     if (username) {
       await axios
-        .post('http://localhost:3001/online-users', {
+        .post(`${nodeBaseUrl}/online-users`, {
           username,
           status: 'Offline',
           disconnectTime: moment(new Date(), 'HH:mm')
