@@ -5,6 +5,9 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
+const http = require('http');
+const axios = require('axios');
+const moment = require('moment');
 require('dotenv').config();
 
 mongoose
@@ -23,7 +26,7 @@ mongoose.set('useFindAndModify', false);
 
 // setup server
 const app = express();
-const server = require('http').createServer(app);
+const server = http.createServer(app);
 const socketIo = require('socket.io')(server, { wsEngine: 'ws' });
 const creds = require('./config/mailConfig');
 const route = require('./expressRoutes/routes');
@@ -50,10 +53,22 @@ server.listen(process.env.PORT || port, () => {
 });
 let clients = [];
 // Setup socket.io
-socketIo.on('connection', (socket) => {
+socketIo.on('connection', async (socket) => {
   const { username } = socket.handshake.query;
-
   console.log(`${username} connected`);
+  if (username) {
+    await axios
+      .post('http://localhost:3001/online-users', {
+        username,
+        status: 'Online',
+        disconnectTime: ''
+      })
+      .then(() => {})
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  socket.broadcast.emit('isonline', [username]);
   clients.push({ [username]: socket });
   clients = [...new Set(clients)];
   socket.on('client:message', (data) => {
@@ -68,12 +83,25 @@ socketIo.on('connection', (socket) => {
   });
 
   socket.on('typing', (data) => {
-    socket.broadcast.emit('typing', {owner: username, isTyping: data});
+    socket.broadcast.emit('typing', { owner: username, isTyping: data });
   });
 
-  socket.on('disconnect', () => {
+  socket.on('disconnect', async () => {
     clients.pop();
     console.log(`${username} disconnected`);
+    if (username) {
+      await axios
+        .post('http://localhost:3001/online-users', {
+          username,
+          status: 'Offline',
+          disconnectTime: moment(new Date(), 'HH:mm')
+        })
+        .then(() => {})
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+    socket.broadcast.emit('isoffline', [username]);
   });
 });
 

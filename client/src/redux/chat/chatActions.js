@@ -53,8 +53,23 @@ function getMessages(sender, receiver) {
   };
 }
 
+function getOnlineUser(username) {
+  return (dispatch) => {
+    dispatch(request(chatConstants.GET_ONLINE_USER_REQUEST, null));
+    chatService
+      .getOnlineUser(username)
+      .then((user) => {
+        dispatch(success(chatConstants.GET_ONLINE_USER_SUCCESS, user));
+      })
+      .catch((error) => {
+        dispatch(failure(chatConstants.GET_ONLINE_USER_FAILURE, error));
+      });
+  };
+}
+
 const chatActions = {
   saveMessage,
-  getMessages
+  getMessages,
+  getOnlineUser
 };
 export default chatActions;

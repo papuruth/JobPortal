@@ -8,6 +8,7 @@ import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import io from 'socket.io-client';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -17,6 +18,7 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import ChatApp from '../../redux-containers/chat';
 import jobAction from '../../redux/addJob/jobActions';
+import config from '../../config';
 
 const drawerWidth = 255;
 
@@ -64,7 +66,7 @@ const styles = (theme) => ({
     top: '54px'
   },
   primaryList: {
-      fontSize: '1.5rem'
+    fontSize: '1.5rem'
   }
 });
 
@@ -90,9 +92,25 @@ class ChatContainer extends PureComponent {
   }
 
   componentDidMount() {
+    // Connect to the server
+    this.socket = io.connect(
+      config.nodeBaseUrl,
+      { query: `username=${this.state.currentUser.name}` },
+      { transports: ['websocket'] },
+      {
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        reconnectionAttempts: 99999
+      }
+    );
     const { dispatch } = this.props;
     const { currentUser } = this.state;
     dispatch(jobAction.getAppliedJob(currentUser.name));
+  }
+
+  componentWillUnmount() {
+    this.socket.close();
   }
 
   renderUserList = (props) => {
@@ -119,10 +137,10 @@ class ChatContainer extends PureComponent {
   };
 
   openChat = (props) => {
-    const username = props;
     this.setState({
       active: true,
-      username
+      username: props,
+      chatKey: props
     });
   };
 
@@ -138,7 +156,7 @@ class ChatContainer extends PureComponent {
             this.renderUserList(appliedjobs).map((text, index) => (
               <ListItem button key={text}>
                 <ListItemText
-                  classes={{primary: classes.primaryList}}
+                  classes={{ primary: classes.primaryList }}
                   primary={text}
                   onClick={() => this.openChat(text)}
                 />
@@ -203,9 +221,12 @@ class ChatContainer extends PureComponent {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <section id="chatApp" className="chatApp"></section>
           {active ? (
-            <ChatApp key={this.state.username} username={this.state.username} />
+            <ChatApp
+              key={this.state.chatKey}
+              user={this.state.username}
+              socket={this.socket}
+            />
           ) : null}
         </main>
       </div>

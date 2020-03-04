@@ -29,3 +29,21 @@ export function getMessage(state = {}, action) {
       return state;
   }
 }
+
+export function getOnlineUser(state={
+  onlineUser: []
+}, action) {
+  switch (action.type) {
+    case chatConstants.GET_ONLINE_USER_REQUEST:
+      return {...state};
+    case chatConstants.GET_ONLINE_USER_SUCCESS:
+      return {
+        ...state,
+        onlineUser: action.payload
+      };
+    case chatConstants.GET_ONLINE_USER_FAILURE:
+      return {...state};
+    default:
+      return state;
+  }
+}

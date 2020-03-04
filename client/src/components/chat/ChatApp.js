@@ -3,37 +3,21 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-access-state-in-setstate */
 import React from 'react';
-import io from 'socket.io-client';
-import config from '../../config';
 import chatActions from '../../redux/chat/chatActions';
 import ChatBox from './ChatBox';
 import detectURL from './detectURL';
+import userActions from '../../redux/user/userActions';
 
 export default class ChatApp extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
       chats: [],
+      onlineUser: [],
       messages: [],
       isTyping: [],
       user: JSON.parse(localStorage.getItem('currentUser'))
     };
-    // Connect to the server
-    this.socket = io(
-      config.nodeBaseUrl,
-      { query: `username=${this.state.user.name}` },
-      { transports: ['websocket', 'polling'] }
-    ).connect();
-
-    // Listen for messages from the server
-    this.socket.on('server:message', (message) => {
-      this.addMessage(message);
-    });
-    const { username } = this.props;
-    const sender = this.state.user.name;
-    const receiver = username;
-    const { dispatch } = this.props;
-    dispatch(chatActions.getMessages(sender, receiver));
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -45,11 +29,59 @@ export default class ChatApp extends React.Component {
     return null;
   }
 
+  componentDidMount() {
+    const { user } = this.props;
+    const sender = this.state.user.name;
+    const receiver = user;
+    const { dispatch } = this.props;
+
+    // // Connect to the server
+    // this.socket = io.connect(
+    //   config.nodeBaseUrl,
+    //   { query: `username=${this.state.user.name}` },
+    //   { transports: ['websocket'] },
+    //   {
+    //     reconnection: true,
+    //     reconnectionDelay: 1000,
+    //     reconnectionDelayMax: 5000,
+    //     reconnectionAttempts: 99999
+    //   }
+    // );
+
+    // Listen for messages from the server
+    this.props.socket.on('server:message', (message) => {
+      this.addMessage(message);
+    });
+
+    // Get active status of receiver
+    dispatch(chatActions.getOnlineUser(this.props.user));
+
+    // Get all messages for the sender and receiver
+    dispatch(chatActions.getMessages(sender, receiver));
+
+    // Get the details of receiver
+    dispatch(userActions.getAllUsers(user));
+    this.props.socket.on('isonline', (data) => {
+      if (data) {
+        this.onlineTimer = setTimeout(() => {
+          dispatch(chatActions.getOnlineUser(this.props.user));
+        }, 0);
+      }
+    });
+    this.props.socket.on('isoffline', (data) => {
+      if (data) {
+        this.offlineTimer = setTimeout(() => {
+          dispatch(chatActions.getOnlineUser(this.props.user));
+        }, 0);
+      }
+    });
+  }
+
   componentDidUpdate(prevProps) {
     try {
-      const { chats, username } = this.props;
+      const { chats, user } = this.props;
       const sender = this.state.user.name;
-      const receiver = username;
+      const receiver = user;
       if (prevProps.chats !== chats) {
         chats.forEach((chat, index) => {
           if (
@@ -66,6 +98,16 @@ export default class ChatApp extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    if (this.onlineTimer) {
+      clearTimeout(this.onlineTimer);
+    }
+
+    if (this.offlineTimer) {
+      clearTimeout(this.offlineTimer);
+    }
+  }
+
   /* adds a new message to the chatroom */
   sendMessage = (sender, senderAvatar, message) => {
     setTimeout(() => {
@@ -73,7 +115,7 @@ export default class ChatApp extends React.Component {
       const newMessageItem = {
         id: this.state.messages.length + 1,
         sender,
-        receiver: this.props.username,
+        receiver: this.props.user,
         senderAvatar,
         message: messageFormat,
         date: new Date().toString()
@@ -83,7 +125,7 @@ export default class ChatApp extends React.Component {
       const { dispatch } = this.props;
       dispatch(chatActions.saveMessage(newMessageItem));
       // Emit the message to the server
-      this.socket.emit('client:message', newMessageItem);
+      this.props.socket.emit('client:message', newMessageItem);
       this.resetTyping(sender);
     }, 400);
   };
@@ -93,8 +135,8 @@ export default class ChatApp extends React.Component {
     if (!this.state.isTyping[writer]) {
       const stateTyping = this.state.isTyping;
       stateTyping[writer] = true;
-      this.socket.emit('typing', true);
-      this.socket.on('typing', (data) => {
+      this.props.socket.emit('typing', true);
+      this.props.socket.on('typing', (data) => {
         stateTyping[data.owner] = data.isTyping;
         this.setState({ isTyping: stateTyping });
       });
@@ -114,36 +156,31 @@ export default class ChatApp extends React.Component {
     const stateTyping = this.state.isTyping;
     stateTyping[writer] = false;
     this.setState({ isTyping: stateTyping });
-    this.socket.emit('typing', false);
+    this.props.socket.emit('typing', false);
   };
 
   render() {
     const { user } = this.state;
     const { name, image } = user;
-    const chatBoxes = [];
     const { messages } = this.state;
     const { isTyping } = this.state;
-
-    /* user details - can add as many users as desired */
-    const users = [{ name, avatar: image }];
     /* creation of a chatbox for each user present in the chatroom */
-    this.props.chats &&
-      Object.keys(users).map((key) => {
-        const chatUser = users[key];
-        chatBoxes.push(
+    return (
+      <div className="chatApp__room">
+        {this.props.chats && this.props.users && (
           <ChatBox
-            key={key}
-            owner={chatUser.name}
-            receiver={this.props.username}
-            ownerAvatar={chatUser.avatar}
+            key={name}
+            owner={name}
+            receiver={this.props.user}
+            ownerAvatar={image}
             sendMessage={this.sendMessage}
             typing={this.typing}
             resetTyping={this.resetTyping}
             messages={messages}
             isTyping={isTyping}
           />
-        );
-      });
-    return <div className="chatApp__room">{this.props.chats && chatBoxes}</div>;
+        )}
+      </div>
+    );
   }
 }

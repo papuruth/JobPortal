@@ -1,16 +1,14 @@
 import { connect } from 'react-redux';
-import ChatApp from '../components/chat/ChatApp';
+import Title from '../components/chat/Title';
 
 function mapStateToProps(state) {
-  const { chats } = state.getMessage;
   const { users } = state.Users;
   const { onlineUser } = state.getOnlineUser;
   return {
-    chats,
     users,
     onlineUser
   };
 }
 
-const connectedChatApp = connect(mapStateToProps)(ChatApp);
-export default connectedChatApp;
+const connectedChatTitle = connect(mapStateToProps)(Title);
+export default connectedChatTitle;

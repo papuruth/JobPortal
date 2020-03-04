@@ -7,6 +7,7 @@ const imageController = require('../controllers/imageUpload');
 const mailController = require('../controllers/mailController');
 const messageController = require('../controllers/messageController');
 
+router.get('/onlineusers', messageController.getOnlineUsers);
 router.get('/chats', messageController.getMessages);
 router.post('/register', userController.addUser);
 router.post('/authenticate', userController.login);
@@ -28,5 +29,6 @@ router.post('/maildetails', jobController.mailDetails);
 router.get('/getoneuser/:id', userController.getOneUser);
 router.post('/sendmail', mailController.sendMail);
 router.post('/messages', messageController.saveMessage);
+router.post('/online-users', messageController.updateOnlineUser);
 
 module.exports = router;

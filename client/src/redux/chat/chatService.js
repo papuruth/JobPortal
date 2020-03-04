@@ -20,8 +20,20 @@ async function getMessages(sender, receiver) {
         receiver
       }
     });
-    console.log(response.data);
     return response.data ? response.data : [];
+  } catch (error) {
+    return error;
+  }
+}
+
+async function getOnlineUser(username) {
+  try {
+    const response = await axios.get(`${config.nodeBaseUrl}/onlineusers`, {
+      params: {
+        username
+      }
+    });
+    return response.data;
   } catch (error) {
     return error;
   }
@@ -29,7 +41,8 @@ async function getMessages(sender, receiver) {
 
 const chatService = {
   saveMessage,
-  getMessages
+  getMessages,
+  getOnlineUser
 };
 
 export default chatService;

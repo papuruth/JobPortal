@@ -17,7 +17,7 @@ import {
   updateStatus
 } from './addJob/jobReducer';
 import { sendMail, profileUpdate } from './profile/profileReducer';
-import { saveMessage, getMessage } from './chat/chatReducer';
+import { saveMessage, getMessage, getOnlineUser } from './chat/chatReducer';
 import getNotifications from './notifications/notifReducer';
 import loaderReducer from './loader/loaderReducer';
 
@@ -40,6 +40,7 @@ const rootReducer = combineReducers({
   Users,
   getNotifications,
   Logout,
+  getOnlineUser,
   loaderReducer
 });
 

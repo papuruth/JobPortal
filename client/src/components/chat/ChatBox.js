@@ -1,13 +1,10 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import Title from './Title';
+import Title from '../../redux-containers/chattitle';
 import TypingIndicator from './TypingIndicator';
 import ChatInput from './ChatInput';
 import MessageList from './MessageList';
-
 // import PropTypes from 'prop-types';
-
-/* detect url in a message and add a link tag */
 
 /* ChatBox component - composed of Title, MessageList, TypingIndicator, InputMessage */
 class ChatBox extends React.Component {
@@ -32,7 +29,7 @@ class ChatBox extends React.Component {
   render() {
     return (
       <div className="chatApp__conv">
-        <Title owner={this.props.owner} />
+        <Title receiver={this.props.receiver} />
         <MessageList owner={this.props.owner} messages={this.props.messages} />
         <div className="chatApp__convSendMessage clearfix">
           <TypingIndicator

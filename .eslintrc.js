@@ -15,6 +15,7 @@ module.exports = {
   plugins: ['prettier'],
   rules: {
     "semi": ["error", "always"],
-    "quotes": ["error", "single"]
+    "quotes": ["error", "single"],
+    "consistent-return": "off"
   },
 };
