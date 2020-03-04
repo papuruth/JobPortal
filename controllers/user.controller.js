@@ -23,7 +23,7 @@ exports.addUser = async function addUser(req, res) {
         {
           name: req.body.fullname,
           emailId: req.body.email,
-          password: req.body.password,
+          password: req.body.passwd,
           phone: req.body.phone,
           gender: req.body.gender,
           role,

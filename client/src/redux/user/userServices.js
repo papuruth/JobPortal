@@ -27,10 +27,11 @@ const logout = () =>
 
 async function register(fullname, email, password, phone, gender) {
   try {
+    const passwd = btoa(password)
     const res = await axios.post(`${config.nodeBaseUrl}/register`, {
       fullname,
       email,
-      password,
+      passwd,
       phone,
       gender
     });

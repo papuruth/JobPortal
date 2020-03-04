@@ -53,6 +53,7 @@ class Signup extends React.Component {
 
   register = (event) => {
     event.preventDefault();
+    console.log(navigator.onLine)
     const { fullname, email, password, phone, gender } = this.state;
     const { dispatch } = this.props;
     if (navigator.onLine) {
@@ -357,9 +358,8 @@ class Signup extends React.Component {
             <div className="col-sm-10">
               <Button
                 title="Register"
-                action="submit"
                 className="btn btn-primary"
-                disabled={this.state.signupValid}
+                btnDisabled={this.state.signupValid}
               />
               <Link to="/login" className="btn btn-link">
                 Cancel
