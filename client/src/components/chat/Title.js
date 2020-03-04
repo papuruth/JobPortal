@@ -75,13 +75,13 @@ export default class Title extends React.PureComponent {
 
   lastSeen = () => {
     const {
+      lastSeenHours,
       lastSeenMinutes,
       lastSeenSeconds,
-      lastSeenYears,
-      lastSeenHours,
       lastSeenDays,
-      lastSeenMonths,
       lastSeenWeeks,
+      lastSeenMonths,
+      lastSeenYears,
       lastSeenTime
     } = this.state;
     if (lastSeenHours > 0 && lastSeenMinutes < 59) {

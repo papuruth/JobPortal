@@ -110,7 +110,7 @@ class ChatContainer extends PureComponent {
   }
 
   componentWillUnmount() {
-    this.socket.close();
+    // this.socket.close();
   }
 
   renderUserList = (props) => {

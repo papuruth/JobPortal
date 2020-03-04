@@ -54,7 +54,9 @@ export default class ChatApp extends React.Component {
     });
 
     // Get active status of receiver
-    dispatch(chatActions.getOnlineUser(this.props.user));
+    this.defaultTimer = setTimeout(() => {
+      dispatch(chatActions.getOnlineUser(this.props.user));
+    }, 100);
 
     // Get all messages for the sender and receiver
     dispatch(chatActions.getMessages(sender, receiver));
@@ -105,6 +107,10 @@ export default class ChatApp extends React.Component {
 
     if (this.offlineTimer) {
       clearTimeout(this.offlineTimer);
+    }
+
+    if(this.defaultTimer) {
+      clearTimeout(this.defaultTimer);
     }
   }
 
