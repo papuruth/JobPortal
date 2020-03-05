@@ -75,10 +75,23 @@ class ChatContainer extends PureComponent {
     super(props);
     this.state = {
       appliedjobs: [],
-      currentUser: '',
+      currentUser: props.currentUser,
       active: false,
       mobileOpen: false
     };
+
+    // Connect to the chat server
+    this.socket = io.connect(
+      config.nodeBaseUrl,
+      { query: `username=${this.state.currentUser.name}` },
+      { transports: ['polling', 'websocket'] },
+      {
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        reconnectionAttempts: 99999
+      }
+    );
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -92,18 +105,6 @@ class ChatContainer extends PureComponent {
   }
 
   componentDidMount() {
-    // Connect to the server
-    this.socket = io.connect(
-      config.nodeBaseUrl,
-      { query: `username=${this.state.currentUser.name}` },
-      { transports: ['websocket'] },
-      {
-        reconnection: true,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 5000,
-        reconnectionAttempts: 99999
-      }
-    );
     const { dispatch } = this.props;
     const { currentUser } = this.state;
     dispatch(jobAction.getAppliedJob(currentUser.name));

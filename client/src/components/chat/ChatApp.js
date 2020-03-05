@@ -38,7 +38,9 @@ export default class ChatApp extends React.Component {
 
     // Listen for messages from the server
     this.props.socket.on('server:message', (message) => {
-      this.addMessage(message);
+      if(message.sender === this.props.user) {
+        this.addMessage(message);
+      }
     });
 
     // Get active status of receiver
@@ -118,14 +120,16 @@ export default class ChatApp extends React.Component {
         message: messageFormat,
         date: new Date().toString()
       };
-      this.addMessage(newMessageItem);
       // Dispatch the messages to redux action to be saved into db
       const { dispatch } = this.props;
       dispatch(chatActions.saveMessage(newMessageItem));
       // Emit the message to the server
       this.props.socket.emit('client:message', newMessageItem);
+      // Save the message in state
+      this.addMessage(newMessageItem);
+      // Reset the typing state
       this.resetTyping(sender);
-    }, 0);
+    }, 200);
   };
 
   /* updates the writing indicator if not already displayed */

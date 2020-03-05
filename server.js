@@ -51,7 +51,7 @@ const nodeBaseUrl =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3001'
     : process.env.nodeBaseUrl;
-console.log(nodeBaseUrl)
+console.log(nodeBaseUrl);
 const port = 3001;
 server.listen(process.env.PORT || port, () => {
   console.log('Server is running on Port: ', process.env.PORT || port);
@@ -80,9 +80,9 @@ socketIo.on('connection', async (socket) => {
     console.log('client message', data);
     console.log(`${data.sender}: ${data.message}`);
     // message received from client, now broadcast it to desired user
-    clients.forEach((item, index) => {
-      if (JSON.stringify(Object.keys(item)).indexOf(data.receiver) !== -1) {
-        clients[index][data.receiver].emit('server:message', data);
+    clients.forEach((item) => {
+      if (data.receiver in item) {
+        socket.to(item[data.receiver].id).emit('server:message', data);
       }
     });
   });
@@ -96,7 +96,7 @@ socketIo.on('connection', async (socket) => {
   });
 
   socket.on('disconnect', async () => {
-    clients.pop();
+    clients = clients.filter((soc) => !soc[username]);
     console.log(`${username} disconnected`);
     if (username) {
       await axios
