@@ -61,7 +61,7 @@ export default class NotificationFactory extends Component {
                     in {item.company} for the position of {item.designation}.
                     So, we are pleased to inform you to be prepared for the
                     interview which is going to be held at {item.company},
-                    {item.city} office on {item.date} {count}.
+                    {item.city} office on {item.date}.
                   </p>
                 );
               }
@@ -78,7 +78,7 @@ export default class NotificationFactory extends Component {
                     Hi! {currentUser.name}, your application has been{' '}
                     {`${item.status} `}
                     for the position of {item.designation} in {item.company}.
-                    So, please sit back and wait for further notification. {count}
+                    So, please sit back and wait for further notification
                   </p>
                 );
               }

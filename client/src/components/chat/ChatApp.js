@@ -36,19 +36,6 @@ export default class ChatApp extends React.Component {
     const receiver = user;
     const { dispatch } = this.props;
 
-    // // Connect to the server
-    // this.socket = io.connect(
-    //   config.nodeBaseUrl,
-    //   { query: `username=${this.state.user.name}` },
-    //   { transports: ['websocket'] },
-    //   {
-    //     reconnection: true,
-    //     reconnectionDelay: 1000,
-    //     reconnectionDelayMax: 5000,
-    //     reconnectionAttempts: 99999
-    //   }
-    // );
-
     // Listen for messages from the server
     this.props.socket.on('server:message', (message) => {
       this.addMessage(message);
@@ -64,8 +51,8 @@ export default class ChatApp extends React.Component {
 
     // Check online status bidirectional
     this.props.socket.on('imonline', (data) => {
-      dispatch(chatActions.getOnlineUser(data))
-    })
+      dispatch(chatActions.getOnlineUser(data));
+    });
     // Get the details of receiver
     dispatch(userActions.getAllUsers(user));
     this.props.socket.on('isonline', (data) => {
@@ -114,7 +101,7 @@ export default class ChatApp extends React.Component {
       clearTimeout(this.offlineTimer);
     }
 
-    if(this.defaultTimer) {
+    if (this.defaultTimer) {
       clearTimeout(this.defaultTimer);
     }
   }
@@ -138,7 +125,7 @@ export default class ChatApp extends React.Component {
       // Emit the message to the server
       this.props.socket.emit('client:message', newMessageItem);
       this.resetTyping(sender);
-    }, 400);
+    }, 0);
   };
 
   /* updates the writing indicator if not already displayed */
@@ -156,8 +143,15 @@ export default class ChatApp extends React.Component {
 
   addMessage = (message) => {
     this.setState((state) => {
+      const { messages } = state;
+      const updatedMessage = [...messages, message];
+      const updatedUniqueMessage = updatedMessage
+        .slice()
+        .reverse()
+        .filter((v, i, a) => a.findIndex((t) => t.id === v.id) === i)
+        .reverse();
       return {
-        messages: [...state.messages, message]
+        messages: updatedUniqueMessage
       };
     });
   };

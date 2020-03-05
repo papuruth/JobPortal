@@ -41,7 +41,6 @@ class Header extends React.Component {
   }
 
   notificationCounter = (props) => {
-    console.log(props);
     this.setState({
       lengthMail: props
     });

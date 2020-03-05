@@ -46,7 +46,10 @@ export default class Title extends React.PureComponent {
         const durationInHours = parseInt(duration.hours(), 10);
         const durationInMinutes = parseInt(duration.minutes(), 10);
         const durationInSeconds = parseInt(duration.seconds(), 10);
-        const durationInTime = durationInHours > 1 ? moment(onlineUser[0].disconnectTime).format('HH:mm') : '';
+        const durationInTime =
+          durationInHours > 1
+            ? moment(onlineUser[0].disconnectTime).format('HH:mm')
+            : '';
         this.setState({
           activeTime: moment(onlineUser[0].disconnectTime, 'HH:mm'),
           lastSeenSeconds: durationInSeconds,
@@ -60,7 +63,7 @@ export default class Title extends React.PureComponent {
         });
       }
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   }
 
@@ -84,10 +87,25 @@ export default class Title extends React.PureComponent {
       lastSeenYears,
       lastSeenTime
     } = this.state;
+    console.log(
+      lastSeenHours,
+      lastSeenMinutes,
+      lastSeenSeconds,
+      lastSeenDays,
+      lastSeenWeeks,
+      lastSeenMonths,
+      lastSeenYears,
+      lastSeenTime
+    );
+
+    if(lastSeenDays > 0) {
+      return `last seen ${lastSeenDays} ago at ${lastSeenTime}`
+    }
+
     if (lastSeenHours > 0 && lastSeenMinutes < 59) {
       return `last seen ${
-        lastSeenHours > 1 ? `today at ${lastSeenTime}` : 'an hour'
-      } ago`;
+        lastSeenHours > 1 ? `today at ${lastSeenTime}` : 'an hour ago'
+      }`;
     }
     if (lastSeenMinutes > 0 && lastSeenSeconds < 59) {
       return `last seen ${

@@ -49,8 +49,9 @@ app.get('/', (req, res) => {
 });
 const nodeBaseUrl =
   process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000'
+    ? 'http://localhost:3001'
     : process.env.nodeBaseUrl;
+console.log(nodeBaseUrl)
 const port = 3001;
 server.listen(process.env.PORT || port, () => {
   console.log('Server is running on Port: ', process.env.PORT || port);
