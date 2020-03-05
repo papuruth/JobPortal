@@ -33,9 +33,14 @@ export default class NotificationFactory extends Component {
     dispatch(notifAction.getNotifications());
   }
 
+  updateNotificationCount = (count) => {
+    this.props.updateNotificationCount(count)
+  }
+
   render() {
     const { appliedJobs, mails } = this.state;
     const { currentUser } = this.props;
+    let count = 0;
     return (
       <div>
         {isLoggedIn() &&
@@ -49,13 +54,14 @@ export default class NotificationFactory extends Component {
                 item.jobId === job._id &&
                 item.status === 'Shortlisted'
               ) {
+                count =+ 1;
                 return (
                   <p key={item.toString()} className="mail">
                     Hi! {currentUser.name}, you have been {`${item.status} `}
                     in {item.company} for the position of {item.designation}.
                     So, we are pleased to inform you to be prepared for the
                     interview which is going to be held at {item.company},
-                    {item.city} office on {item.date}.
+                    {item.city} office on {item.date} {count}.
                   </p>
                 );
               }
@@ -65,12 +71,14 @@ export default class NotificationFactory extends Component {
                 item.jobId === job._id &&
                 item.status === 'Selected'
               ) {
+                count =+ 1;
+                this.updateNotificationCount(count)
                 return (
                   <p key={item.toString()} className="mail">
                     Hi! {currentUser.name}, your application has been{' '}
                     {`${item.status} `}
                     for the position of {item.designation} in {item.company}.
-                    So, please sit back and wait for further notification.
+                    So, please sit back and wait for further notification. {count}
                   </p>
                 );
               }
@@ -86,5 +94,6 @@ NotificationFactory.propTypes = {
   dispatch: PropTypes.func.isRequired,
   notifications: PropTypes.oneOfType([PropTypes.object]).isRequired,
   appliedjobs: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  currentUser: PropTypes.oneOfType([PropTypes.object]).isRequired
+  currentUser: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  updateNotificationCount: PropTypes.func.isRequired
 };
