@@ -136,31 +136,31 @@ class Card extends React.Component {
     return (
       <div className="col-sm-12 content">
         <ul className="searchlist">
-          {isLoggedIn() && data.length === 0 && this.user.role === 1 && (
-            <h1 style={{ textAlign: 'center' }}>
-              No jobs posted yet. Please post some jobs!
-            </h1>
-          )}
-          {isLoggedIn() && data.length === 0 && this.user.role === 2 && (
-            <h1 style={{ textAlign: 'center' }}>
-              No jobs posted yet. Please wait for companies!
-            </h1>
-          )}
-          {isLoggedIn() && data.length === 0 && this.user.role === 0 && (
-            <h1 style={{ textAlign: 'center' }}>
-              No jobs posted yet. Please wait for companies or post some jobs!
-            </h1>
-          )}
-          {!isLoggedIn() && data.length === 0 && (
-            <h1 style={{ textAlign: 'center' }}>
-              No jobs posted yet. Please wait for companies!
-            </h1>
-          )}
           <LoadingOverlay
-            active={this.props.loaderStatus}
+            active={data.length === 0 ? true : this.props.loaderStatus}
             spinner={<SyncLoader />}
             text="Loading your content..."
           >
+            {isLoggedIn() && data.length === 0 && this.user.role === 1 && (
+              <h1 style={{ textAlign: 'center' }}>
+                No jobs posted yet. Please post some jobs!
+              </h1>
+            )}
+            {isLoggedIn() && data.length === 0 && this.user.role === 2 && (
+              <h1 style={{ textAlign: 'center' }}>
+                No jobs posted yet. Please wait for companies!
+              </h1>
+            )}
+            {isLoggedIn() && data.length === 0 && this.user.role === 0 && (
+              <h1 style={{ textAlign: 'center' }}>
+                No jobs posted yet. Please wait for companies or post some jobs!
+              </h1>
+            )}
+            {!isLoggedIn() && data.length === 0 && (
+              <h1 style={{ textAlign: 'center' }}>
+                No jobs posted yet. Please wait for companies!
+              </h1>
+            )}
             <InfiniteScroll
               dataLength={data.length} // This is important field to render the next data
               next={this.fetchMoreData}

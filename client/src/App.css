@@ -1484,6 +1484,7 @@ input[type='search']::-webkit-search-decoration {
   position: absolute;
   width: 100%;
   left: 0;
+  top: 0;
   height: auto;
 }
 
@@ -1491,4 +1492,10 @@ input[type='search']::-webkit-search-decoration {
   position: fixed;
   left: 45%;
   top: 40%;
+}
+
+._loading_overlay_overlay {
+  position: fixed!important;
+  height: 110vh!important;
+  top: 0;
 }
