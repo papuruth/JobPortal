@@ -1,14 +1,15 @@
-import Body from './redux-containers/body';
-import Profile from './redux-containers/profile';
-import Signup from './redux-containers/userSignup';
-import Login from './redux-containers/userLogin';
-import ManageUser from './redux-containers/manageuser';
-import JobForm from './redux-containers/addJob';
-import UpdateJobForm from './redux-containers/updateJob';
-import AppliedList from './redux-containers/appliedlist';
-import NotFound from './components/NotFound';
+import Feedback from './components/feedback.component';
 import PrivateRoute from './components/generalComponents/privateRoute';
+import NotFound from './components/NotFound';
+import JobForm from './redux-containers/addJob';
+import AppliedList from './redux-containers/appliedlist';
+import Body from './redux-containers/body';
 import ChatContainer from './redux-containers/chat.container';
+import ManageUser from './redux-containers/manageuser';
+import Profile from './redux-containers/profile';
+import UpdateJobForm from './redux-containers/updateJob';
+import Login from './redux-containers/userLogin';
+import Signup from './redux-containers/userSignup';
 
 const routes = [
   {
@@ -47,6 +48,10 @@ const routes = [
   {
     path: '/appliedlist',
     component: PrivateRoute(AppliedList)
+  },
+  {
+    path: '/feedback',
+    component: PrivateRoute(Feedback)
   },
   {
     path: '/*',

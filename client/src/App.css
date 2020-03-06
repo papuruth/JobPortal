@@ -77,6 +77,10 @@ button:focus {
   border-right: 1px solid rgba(0, 0, 0, 0.2);
 }
 
+.content {
+  margin-top: 80px;
+}
+
 @media only screen and (max-width: 760px) {
   .cross {
     position: inherit;
@@ -338,10 +342,6 @@ a:hover {
   top: 0;
   z-index: 1;
   width: 100%;
-}
-
-.content {
-  margin-top: 55px;
 }
 
 .shift {
@@ -1368,11 +1368,78 @@ input[type='search']::-webkit-search-decoration {
 
 /* ManageUser Styling ends here */
 
-/*Error Page Styling Starts Here */
+/*Loading Overlay */
+._loading_overlay_wrapper {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  height: auto;
+}
+
+._loading_overlay_content {
+  position: fixed;
+  left: 45%;
+  top: 40%;
+}
+
+._loading_overlay_overlay {
+  position: fixed !important;
+  height: 110vh !important;
+  top: 0;
+}
+/* Loading overlay style ends */
+
+/* ErrorBoundary style begins */
+.error-content {
+  margin-top: 70px;
+}
+
+.error_Heading {
+  text-align: center;
+  display: flex;
+  padding: 5px;
+  justify-content: center;
+  height: 50px;
+  background-color: aliceblue;
+}
+
+.error_content_detail {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: cornsilk;
+}
+
+.error_oops {
+  display: inline-block;
+  width: 50%;
+  align-items: center;
+  text-align: center;
+}
+
+.error_details {
+  display: inline-block;
+  width: 360px;
+  align-items: center;
+}
+
+.error_fallback {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 25px;
+}
+/* ErrorBoundary style ends */
+
+/*Not Found Page Styling Starts Here */
 
 #notfound {
-  position: relative;
-  height: 85vh;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  margin-left: -15px;
   overflow-y: hidden;
   background: #030005;
 }
@@ -1477,25 +1544,4 @@ input[type='search']::-webkit-search-decoration {
     font-size: 182px;
   }
 }
-/*Error Page Styling Ends Here */
-
-/*Loading Overlay */
-._loading_overlay_wrapper {
-  position: absolute;
-  width: 100%;
-  left: 0;
-  top: 0;
-  height: auto;
-}
-
-._loading_overlay_content {
-  position: fixed;
-  left: 45%;
-  top: 40%;
-}
-
-._loading_overlay_overlay {
-  position: fixed!important;
-  height: 110vh!important;
-  top: 0;
-}
+/*Not Found Page Styling Ends Here */
