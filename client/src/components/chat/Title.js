@@ -99,7 +99,7 @@ export default class Title extends React.PureComponent {
     );
 
     if(lastSeenDays > 0) {
-      return `last seen ${lastSeenDays} ago at ${lastSeenTime}`
+      return `last seen ${lastSeenDays} day ago at ${lastSeenTime}`
     }
 
     if (lastSeenHours > 0 && lastSeenMinutes < 59) {
