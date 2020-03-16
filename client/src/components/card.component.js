@@ -134,7 +134,7 @@ class Card extends React.Component {
     const { data } = this.props;
     const { hasMore } = this.state;
     return (
-      <div className="col-sm-12 content">
+      <div className="col-sm-12">
         <ul className="searchlist">
           <LoadingOverlay
             active={data.length === 0 ? true : this.props.loaderStatus}

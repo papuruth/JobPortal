@@ -21,16 +21,16 @@ class ErrorBoundary extends React.Component {
     });
   }
 
-  componentWillUnmount() {
-    this.unlisten();
-  }
-
   componentDidCatch(error, errorInfo) {
     // Catch errors in any components below and re-render with error message
     this.setState({
       hasError: true
     });
     // You can also log error messages to an error reporting service here
+  }
+
+  componentWillUnmount() {
+    this.unlisten();
   }
 
   render() {
