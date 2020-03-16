@@ -338,7 +338,8 @@ exports.mailDetails = async function mailDetails(req, res) {
 };
 
 exports.getMailDetails = async function getMailDetails(req, res, next) {
-  await MailsDetails.find({}, (err, data) => {
+  const {name} = req.query;
+  await MailsDetails.find({name}, (err, data) => {
     if (err) {
       return next(err);
     }

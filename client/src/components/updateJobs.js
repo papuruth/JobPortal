@@ -147,9 +147,7 @@ class UpdateJobForm extends React.Component {
           : 'can be a comb. of a-zA-Z0-9.,-_()';
         break;
       case 'status':
-        console.log(value);
         statusValid = !!value;
-        console.log(statusValid)
         fieldValidationErrors.status = statusValid ? '' : 'must be selected atleast one';
         break;
       default:

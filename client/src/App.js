@@ -63,7 +63,7 @@ class App extends React.Component {
 
 App.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  alert: PropTypes.oneOf([PropTypes.any]).isRequired
+  alert: PropTypes.oneOfType([PropTypes.object]).isRequired
 };
 
 export default App;

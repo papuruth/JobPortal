@@ -18,7 +18,6 @@ class Filter extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    console.log(props)
     const { dataFilter } = props;
     const { totalJobs } = dataFilter;
     if (totalJobs !== state.totalJobs) {

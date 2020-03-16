@@ -35,7 +35,6 @@ async function register(fullname, email, password, phone, gender) {
       phone,
       gender
     });
-    console.log(res.data);
     const { isSignup } = res.data;
     if (isSignup === true) {
       return res.data;

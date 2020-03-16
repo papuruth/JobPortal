@@ -305,7 +305,7 @@ Card.propTypes = {
   handleRemove: PropTypes.func,
   dispatch: PropTypes.func,
   history: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  apply: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  apply: PropTypes.oneOfType([PropTypes.bool]),
   pagerData: PropTypes.oneOfType([PropTypes.object]).isRequired,
   loaderStatus: PropTypes.bool.isRequired
 };
@@ -314,7 +314,8 @@ Card.defaultProps = {
   data: [],
   dispatch: PropTypes.func,
   handleRemove: PropTypes.func,
-  appliedjobs: []
+  appliedjobs: [],
+  apply: false
 };
 
 export default withRouter(Card);

@@ -53,7 +53,6 @@ class Signup extends React.Component {
 
   register = (event) => {
     event.preventDefault();
-    console.log(navigator.onLine)
     const { fullname, email, password, phone, gender } = this.state;
     const { dispatch } = this.props;
     if (navigator.onLine) {

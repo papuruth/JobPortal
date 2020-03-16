@@ -112,7 +112,6 @@ class Profile extends React.Component {
     const { updateFlag } = this.state;
     event.preventDefault();
     const tempFlag = !updateFlag;
-    console.log(tempFlag);
     if (tempFlag) {
       document.getElementById('updateDetails').style.display = 'block';
       this.setState((state) => {
@@ -206,7 +205,6 @@ class Profile extends React.Component {
     } catch (error) {
       console.log(error.message);
     }
-    console.log(this.state.userData);
     return (
       <div className="panel panel-primary profile">
         <div className="panel-heading">

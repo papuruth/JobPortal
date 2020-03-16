@@ -38,6 +38,13 @@ class Header extends React.Component {
         currentUser
       };
     }
+    return null;
+  }
+
+  componentDidMount() {
+    this.setState({
+      isMounted: true
+    });
   }
 
   notificationCounter = (props) => {
@@ -66,7 +73,7 @@ class Header extends React.Component {
   };
 
   render() {
-    const { currentUser } = this.state;
+    const { currentUser, isMounted } = this.state;
     const { history } = this.props;
     let imageUrl;
     if (isLoggedIn()) {
@@ -89,7 +96,7 @@ class Header extends React.Component {
               <h3>Notifications</h3>
             </header>
             <div className="w3-container mail">
-              {currentUser && (
+              {currentUser && isMounted && (
                 <NotificationFactory
                   currentUser={currentUser}
                   updateNotificationCount={this.notificationCounter}
@@ -135,7 +142,7 @@ class Header extends React.Component {
                 <ul className="nav navbar-nav">
                   {history.location.pathname !== '/' && (
                     <li>
-                      <Link to="/" title='Home'>
+                      <Link to="/" title="Home">
                         <HomeSharpIcon style={{ fontSize: 25 }} />
                       </Link>
                     </li>
@@ -144,7 +151,10 @@ class Header extends React.Component {
                     this.state.currentUser.role === 1 &&
                     history.location.pathname !== '/appliedlist' && (
                       <li>
-                        <Link to="/appliedlist" title='Toggle applied jobs panel'>
+                        <Link
+                          to="/appliedlist"
+                          title="Toggle applied jobs panel"
+                        >
                           <ListAltIcon style={{ fontSize: 25 }} />
                         </Link>
                       </li>
@@ -152,14 +162,14 @@ class Header extends React.Component {
                   {isLoggedIn() &&
                     this.state.currentUser.role === 2 &&
                     history.location.pathname !== '/appliedlist' && (
-                      <li title='Toggle applied jobs panel'>
+                      <li title="Toggle applied jobs panel">
                         <Link to="/appliedlist">
                           <ListAltIcon style={{ fontSize: 25 }} />
                         </Link>
                       </li>
                     )}
                   {isLoggedIn() && this.state.currentUser.role === 2 && (
-                    <li title='Toggle notification panel'>
+                    <li title="Toggle notification panel">
                       <Link to="#" onClick={this.showMail}>
                         <Badge
                           badgeContent={this.state.lengthMail}
@@ -172,7 +182,7 @@ class Header extends React.Component {
                   )}
                   {isLoggedIn() && history.location.pathname !== '/chat' && (
                     <li>
-                      <Link to="/chat" title='Toggle chat panel'>
+                      <Link to="/chat" title="Toggle chat panel">
                         <ChatIcon style={{ fontSize: 25 }} />
                       </Link>
                     </li>
@@ -180,14 +190,14 @@ class Header extends React.Component {
                 </ul>
                 <ul className="nav navbar-nav navbar-right">
                   {!isLoggedIn() && history.location.pathname !== '/register' && (
-                    <li title='Toggle signup panel'>
+                    <li title="Toggle signup panel">
                       <Link to="/register">
                         <PersonIcon style={{ fontSize: 25 }} />
                       </Link>
                     </li>
                   )}
                   {!isLoggedIn() && history.location.pathname !== '/login' && (
-                    <li title='Toggle login panel'>
+                    <li title="Toggle login panel">
                       <Link to="/login">
                         <LockIcon style={{ fontSize: 25 }} />
                       </Link>
@@ -196,7 +206,7 @@ class Header extends React.Component {
                   {isLoggedIn() &&
                     this.state.currentUser.role !== 2 &&
                     history.location.pathname !== '/addjob' && (
-                      <li id="addjob" title='Toggle add new job panel'>
+                      <li id="addjob" title="Toggle add new job panel">
                         <Link to="/addjob">
                           <AddBoxIcon style={{ fontSize: 25 }} />
                         </Link>
@@ -205,14 +215,14 @@ class Header extends React.Component {
                   {isLoggedIn() &&
                     this.state.currentUser.role === 0 &&
                     history.location.pathname !== '/manageusers' && (
-                      <li id="manageuser" title='Toggle user management panel'>
+                      <li id="manageuser" title="Toggle user management panel">
                         <Link to="/manageusers" onClick={this.fetchAllUser}>
                           <SupervisorAccountIcon style={{ fontSize: 25 }} />
                         </Link>
                       </li>
                     )}
                   {isLoggedIn() && (
-                    <li title='Logout'>
+                    <li title="Logout">
                       <button
                         type="button"
                         className="btn btn-link logout"
@@ -222,8 +232,12 @@ class Header extends React.Component {
                       </button>
                     </li>
                   )}
-                  <li title='Github repository'>
-                    <a href="https://github.com/papuruth/JobPortal" target="_blank" rel="noopener noreferrer">
+                  <li title="Github repository">
+                    <a
+                      href="https://github.com/papuruth/JobPortal"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <GitHubIcon style={{ fontSize: 25 }} />
                     </a>
                   </li>
@@ -268,8 +282,12 @@ class Header extends React.Component {
 
 Header.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  currentUser: PropTypes.objectOf(PropTypes.any).isRequired,
+  currentUser: PropTypes.objectOf(PropTypes.any),
   history: PropTypes.oneOfType([PropTypes.object]).isRequired
+};
+
+Header.defaultProps = {
+  currentUser: {}
 };
 
 export default withRouter(Header);

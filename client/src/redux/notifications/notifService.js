@@ -7,9 +7,13 @@ import config from '../../config';
  * @async
  * @function getNotifications
  */
-async function getNotifications() {
+async function getNotifications(name) {
   try {
-    const mails = await axios.get(`${config.nodeBaseUrl}/mails`);
+    const mails = await axios.get(`${config.nodeBaseUrl}/mails`, {
+      params: {
+        name
+      }
+    });
     localStorage.setItem('mails', JSON.stringify(mails.data));
     return mails.data;
   } catch (error) {

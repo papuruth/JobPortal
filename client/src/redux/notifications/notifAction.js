@@ -23,11 +23,11 @@ function failure(type, payload) {
   };
 }
 
-function getNotifications() {
+function getNotifications(name) {
   return (dispatch) => {
     dispatch(request(notifConstants.GET_NOTIFICATION_REQUEST, null));
     notifService
-      .getNotifications()
+      .getNotifications(name)
       .then((data) => {
         dispatch(success(notifConstants.GET_NOTIFICATION_SUCCESS, data));
       })

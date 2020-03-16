@@ -135,7 +135,6 @@ async function applyJob(id, name, gender) {
 async function getAppliedJob(name) {
   try {
     const res = await axios.get(`${config.nodeBaseUrl}/appliedjobs`);
-    console.log(res.data, name);
     const filteredData = res.data.filter((item) => {
       if (item.jobDetails.company === name) {
         return true;
@@ -146,7 +145,6 @@ async function getAppliedJob(name) {
       return false;
     });
     localStorage.setItem('appliedjobs', JSON.stringify(filteredData));
-    console.log(filteredData);
     return filteredData;
   } catch (error) {
     return error.message;

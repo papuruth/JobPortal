@@ -21,7 +21,6 @@ export default class Body extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(nextProps)
     const { jobs, pager } = nextProps;
     if (jobs !== prevState.jobs && prevState.filter) {
       return {
@@ -122,7 +121,6 @@ export default class Body extends Component {
   };
 
   render() {
-    console.log(this.user, this.state.jobsData.length)
     const { dispatch } = this.props;
     const {
       toFilter,
@@ -191,9 +189,10 @@ Body.propTypes = {
   dispatch: PropTypes.func.isRequired,
   jobs: PropTypes.arrayOf(PropTypes.any),
   pager: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  logoutUser: PropTypes.bool.isRequired,
+  logoutUser: PropTypes.bool,
 };
 
 Body.defaultProps = {
   jobs: [],
+  logoutUser: true
 };
