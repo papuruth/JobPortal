@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { sessionReducer } from 'redux-react-session';
 import alert from './alert/alertReducer';
 import {
   authentication,
@@ -41,7 +42,8 @@ const rootReducer = combineReducers({
   getNotifications,
   Logout,
   getOnlineUser,
-  loaderReducer
+  loaderReducer,
+  session: sessionReducer
 });
 
 export default rootReducer;

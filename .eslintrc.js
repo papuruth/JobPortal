@@ -16,6 +16,8 @@ module.exports = {
   rules: {
     "semi": ["error", "always"],
     "quotes": ["error", "single"],
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "no-console": 0,
+    "no-underscore-dangle": 0
   },
 };

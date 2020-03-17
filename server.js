@@ -1,37 +1,33 @@
 /* eslint-disable no-console */
 const express = require('express');
-const mongoose = require('mongoose');
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const http = require('http');
+const morgan = require('morgan');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const axios = require('axios');
 const moment = require('moment');
-require('dotenv').config();
 
-mongoose
-  .connect(process.env.MongoDbURI || 'mongodb://localhost:27017/JobPortal', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() => {
-    console.log('Database is connected');
-  })
-  .catch((err) => {
-    console.log('Can not connect to the database ', err.message);
-  });
-mongoose.set('useCreateIndex', true);
-mongoose.set('useFindAndModify', false);
+const nodeBaseUrl =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3001'
+    : process.env.nodeBaseUrl;
+const port = 3001;
 
 // setup server
 const app = express();
 const server = http.createServer(app);
 const socketIo = require('socket.io')(server, { wsEngine: 'ws' });
-const creds = require('./config/mailConfig');
+const passport = require('./passport');
+const dbConnection = require('./db'); // loads our connection to the mongo database
 const route = require('./expressRoutes/routes');
 
-// Set constiables
+// ===== Middleware ====
+app.use(morgan('dev'));
 app.set('env', process.env.NODE_ENV || 'production');
 app.use(cors());
 
@@ -40,19 +36,30 @@ app.use(express.static(path.join(__dirname, 'client', 'build')));
 app.use(express.static(path.join(__dirname, 'client/src/images')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(
+  session({
+    secret: process.env.APP_SECRET || 'this is the default passphrase',
+    store: new MongoStore({ mongooseConnection: dbConnection }),
+    resave: false,
+    saveUninitialized: false
+  })
+);
 
+// ===== Passport ====
+app.use(passport.initialize());
+app.use(passport.session()); // will call the deserializeUser
+
+// ===== Express App Routing ====
 app.use('/', route);
-
+console.log(process.env.NODE_ENV)
 // Right before your app.listen(), add this:
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-});
-const nodeBaseUrl =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3001'
-    : process.env.nodeBaseUrl;
-console.log(nodeBaseUrl);
-const port = 3001;
+if (process.env.NODE_ENV === 'production') {
+  console.log('YOU ARE IN THE PRODUCTION ENV');
+  app.get('/', (req, res) => {
+      res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
 server.listen(process.env.PORT || port, () => {
   console.log('Server is running on Port: ', process.env.PORT || port);
 });
@@ -119,8 +126,8 @@ socketIo.on('connection', async (socket) => {
 const transport = {
   host: 'smtp.gmail.com',
   auth: {
-    user: creds.USER,
-    pass: creds.PASS
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS
   }
 };
 

@@ -1,12 +1,14 @@
+import Axios from 'axios';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Footer from './components/footer.component';
+import ErrorBoundary from './components/generalComponents/error.boundary';
 import Header from './redux-containers/header';
 import alertActions from './redux/alert/alertActions';
 import routes from './routes';
 import history from './_helpers/history';
-import ErrorBoundary from './components/generalComponents/error.boundary';
+import config from './config';
 
 class App extends React.Component {
   constructor(props) {
@@ -16,6 +18,17 @@ class App extends React.Component {
       // clear alert on location change
       dispatch(alertActions.clear());
     });
+  }
+
+  componentDidMount() {
+    Axios.get(`${config.nodeBaseUrl}/user`)
+    .then(res => {
+      console.log(res);
+      localStorage.setItem('currentUser', JSON.stringify(res.data.user));
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 
   hideAlert = (e) => {

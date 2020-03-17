@@ -1,6 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
+const passport = require('../passport');
 const jobController = require('../controllers/job.controller');
 const userController = require('../controllers/user.controller');
 const imageController = require('../controllers/imageUpload');
@@ -9,8 +10,23 @@ const messageController = require('../controllers/messageController');
 
 router.get('/onlineusers', messageController.getOnlineUsers);
 router.get('/chats', messageController.getMessages);
+router.get('/user', userController.googleAuthSuccess);
 router.post('/register', userController.addUser);
-router.post('/authenticate', userController.login);
+// ===== Google Auth ====
+router.get(
+  '/google',
+  passport.authenticate('google', { scope: ['openid', 'email', 'profile'] })
+);
+router.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+  })
+);
+// ===== Passport Local Authentication ====
+router.post('/login', passport.authenticate('local'), userController.login);
+router.post('/logout', userController.logout);
 router.get('/users', userController.getUsers);
 router.get('/mails', jobController.getMailDetails);
 router.put('/updateuser/:id', userController.updateUser);

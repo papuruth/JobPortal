@@ -22,26 +22,25 @@ function failure(type, error) {
   };
 }
 
-function login(email, password) {
+function login(username, password) {
   return (dispatch) => {
-    dispatch(request(userConstants.LOGIN_REQUEST, email));
+    dispatch(request(userConstants.LOGIN_REQUEST, username));
     userService
-      .login(email, password)
+      .login(username, password)
       .then((user) => {
-        if (user) {
+        console.log(user, 'login');
+        if (user.status) {
           dispatch(alertActions.success('Login Successful'));
           dispatch(success(userConstants.LOGIN_SUCCESS, user));
           history.push('/');
-        } else if (user === 'null') {
-          dispatch(alertActions.error('Credential not valid'));
+        } else if (user.message) {
+          dispatch(alertActions.error(user.message));
         } else if (user === 'ban') {
           dispatch(
             alertActions.error(
               'You are banned! Please contact admin@jobportal.com'
             )
           );
-        } else {
-          dispatch(alertActions.error('Credential not valid'));
         }
       })
       .catch((error) => {

@@ -6,15 +6,16 @@ import userActions from '../redux/user/userActions';
 import Button from './generalComponents/button.component';
 import Input from './generalComponents/input.component';
 import Label from './generalComponents/label';
+import googleButton from '../images/btn_google_signin_dark_normal_web.png';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
+      username: '',
       password: '',
-      formErrors: { Email: '', Password: '' },
-      emailValid: false,
+      formErrors: { Username: '', Password: '' },
+      usernameValid: false,
       passwordValid: false,
       signinValid: false,
       pswdType: true,
@@ -31,10 +32,10 @@ class Login extends React.Component {
 
   login = (event) => {
     event.preventDefault();
-    const { email, password } = this.state;
+    const { username, password } = this.state;
     const { dispatch } = this.props;
-    if (email && password) {
-      dispatch(userActions.login(email, password));
+    if (username && password) {
+      dispatch(userActions.login(username, password));
     }
   };
 
@@ -62,24 +63,24 @@ class Login extends React.Component {
   };
 
   validateForm() {
-    const { emailValid, passwordValid } = this.state;
-    if (emailValid && passwordValid) {
+    const { usernameValid, passwordValid } = this.state;
+    if (usernameValid && passwordValid) {
       this.setState({
-        signinValid: emailValid && passwordValid
+        signinValid: usernameValid && passwordValid
       });
     }
   }
 
   validateField(fieldName, value) {
-    const { formErrors, emailValid, passwordValid } = this.state;
+    const { formErrors, usernameValid, passwordValid } = this.state;
     const fieldValidationErrors = formErrors;
-    let emailCheck = emailValid;
+    let usernameCheck = usernameValid;
     let passwordCheck = passwordValid;
 
     switch (fieldName) {
-      case 'email':
-        emailCheck = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i.test(value);
-        fieldValidationErrors.Email = emailCheck ? '' : ' is invalid';
+      case 'username':
+        usernameCheck = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i.test(value);
+        fieldValidationErrors.Username = usernameCheck ? '' : ' is invalid';
         break;
       case 'password':
         passwordCheck =
@@ -97,7 +98,7 @@ class Login extends React.Component {
     this.setState(
       {
         formErrors: fieldValidationErrors,
-        emailValid: emailCheck,
+        usernameValid: usernameCheck,
         passwordValid: passwordCheck
       },
       this.validateForm
@@ -117,7 +118,7 @@ class Login extends React.Component {
             <form onSubmit={this.login} method="POST">
               <div
                 className={`form-group row ${this.errorClass(
-                  this.state.formErrors.Email
+                  this.state.formErrors.Username
                 )}`}
               >
                 <Label
@@ -129,10 +130,10 @@ class Login extends React.Component {
                   <Input
                     onChange={this.handleUserInput}
                     className="form-control"
-                    id="email"
+                    id="username"
                     inputType="text"
-                    name="email"
-                    value={this.state.email}
+                    name="username"
+                    value={this.state.username}
                     placeholder="@"
                     required
                   />
@@ -182,6 +183,10 @@ class Login extends React.Component {
                     className="btn btn-primary"
                     btnDisabled={this.state.signinValid}
                   />
+                  <a href="/google">
+                    {/* <GoogleButton /> */}
+                    <img src={googleButton} alt="sign into Google Button" />
+                  </a>
                   <Link to="/register" className="btn btn-link">
                     Register
                   </Link>

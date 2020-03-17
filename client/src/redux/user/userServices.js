@@ -2,19 +2,20 @@ import axios from 'axios';
 import config from '../../config';
 import history from '../../_helpers/history';
 
-async function login(email, password) {
-  const passwd = btoa(password);
-  const user = await axios.post(`${config.nodeBaseUrl}/authenticate`, {
-    email,
-    passwd
+async function login(username, passwd) {
+  const password = btoa(passwd);
+  const user = await axios.post(`${config.nodeBaseUrl}/login`, {
+    username,
+    password
   });
+  console.log(user.data)
   const isLoggedIn = user.data.status;
   if (isLoggedIn) {
     // store user details in local storage to keep user logged in between page refreshes
     localStorage.setItem('currentUser', JSON.stringify(user.data.data));
-    return user.data.data;
+    return user.data;
   }
-  return isLoggedIn;
+  return user.data.data;
 }
 
 const logout = () =>
