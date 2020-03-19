@@ -3,8 +3,10 @@ import JobForm from '../components/job.form';
 
 function mapStateToProps(state) {
   const { users } = state.Users;
+  const { user } = state.session;
   return {
-    users
+    users,
+    user
   };
 }
 

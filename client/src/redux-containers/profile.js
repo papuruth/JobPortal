@@ -3,9 +3,10 @@ import Profile from '../components/profile.component';
 
 function mapStateToProps(state) {
   const { profile } = state.profileUpdate;
+  const { user } = state.session;
   return {
     profile,
-    user: JSON.parse(localStorage.getItem('currentUser'))
+    user
   };
 }
 

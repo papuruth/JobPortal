@@ -8,8 +8,6 @@ import Label from './generalComponents/label';
 import userActions from '../redux/user/userActions';
 
 class JobForm extends React.Component {
-  user = JSON.parse(localStorage.getItem('currentUser'));
-
   constructor(props) {
     super(props);
     this.state = {
@@ -66,7 +64,7 @@ class JobForm extends React.Component {
   }
 
   handleUserInput = (event) => {
-    const { name, value } = e.target;
+    const { name, value } = event.target;
     this.setState({ [name]: value }, () => {
       this.validateField(name, value);
     });
@@ -96,12 +94,13 @@ class JobForm extends React.Component {
   };
 
   addJob = (event) => {
+    const { user } = this.props;
     event.preventDefault();
     let company = '';
-    if (this.user.role === 0) {
+    if (user.role === 0) {
       company = this.state.company.value;
     } else {
-      company = this.user.name;
+      company = user.name;
     }
     const { profile, designation, salary, city } = this.state;
     const data = new FormData();
@@ -135,6 +134,8 @@ class JobForm extends React.Component {
 
   validateField(fieldName, value) {
     const { formErrors } = this.state;
+    const { user } = this.props;
+    console.log(user)
     const fieldValidationErrors = formErrors;
     let {
       profileValid,
@@ -190,7 +191,7 @@ class JobForm extends React.Component {
         break;
     }
 
-    if (this.user.role === 1) {
+    if (user.role === 1) {
       this.setState(
         {
           formErrors: fieldValidationErrors,
@@ -220,16 +221,12 @@ class JobForm extends React.Component {
   }
 
   render() {
-    const { history } = this.props;
-    if (this.user.role === 2) {
-      history.push('/');
-    }
-
+    const { user } = this.props;
     return (
       <div className="col-md-4 col-md-offset-4" id="addJob">
         <h1 className="underline">Add New Job</h1>
         <form onSubmit={this.addJob} method="POST">
-          {this.user.role === 0 && (
+          {user.role === 0 && (
             <div
               className={`form-group row ${this.errorClass(
                 this.state.formErrors.profile
@@ -272,7 +269,7 @@ class JobForm extends React.Component {
                 onChange={this.handleUserInput}
                 className="form-control"
                 id="profile"
-                input_type="text"
+                inputType="text"
                 name="profile"
                 value={this.state.profile}
                 placeholder="IT Service/Sales/Tester"
@@ -300,7 +297,7 @@ class JobForm extends React.Component {
                 onChange={this.handleUserInput}
                 className="form-control"
                 id="designation"
-                input_type="text"
+                inputType="text"
                 name="designation"
                 value={this.state.designation}
                 placeholder="Software Engineer"
@@ -328,7 +325,7 @@ class JobForm extends React.Component {
                 onChange={this.handleUserInput}
                 className="form-control"
                 id="salary"
-                input_type="text"
+                inputType="text"
                 name="salary"
                 value={this.state.salary}
                 placeholder="7 LPA"
@@ -354,7 +351,7 @@ class JobForm extends React.Component {
                 onChange={this.handleUserInput}
                 className="form-control"
                 id="city"
-                input_type="text"
+                inputType="text"
                 name="city"
                 value={this.state.city}
                 placeholder="Delhi"
@@ -382,7 +379,7 @@ class JobForm extends React.Component {
                 onChange={this.handleUserInput}
                 className="form-control"
                 id="photo"
-                input_type="file"
+                inputType="file"
                 name="photo"
                 value={this.state.photo}
                 required
@@ -400,7 +397,7 @@ class JobForm extends React.Component {
                 title="Add"
                 action="submit"
                 className="btn btn-success"
-                disabled={this.state.addJobValid}
+                btnDisabled={this.state.addJobValid}
               />
             </div>
           </div>
@@ -413,7 +410,7 @@ class JobForm extends React.Component {
 JobForm.propTypes = {
   dispatch: PropTypes.func.isRequired,
   users: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  history: PropTypes.oneOfType([PropTypes.object]).isRequired
+  user: PropTypes.oneOfType([PropTypes.object]).isRequired
 };
 
 export default JobForm;
