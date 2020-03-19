@@ -117,7 +117,7 @@ export default class Title extends React.PureComponent {
         lastSeenSeconds > 1 ? `today ${lastSeenSeconds} seconds` : 'a second'
       } ago`;
     }
-    return 'last seen recently';
+    return 'Offline';
   };
 
   render() {

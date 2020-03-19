@@ -2,12 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { appliedStatusComp } from '../enum/appliedStatus';
 import jobAction from '../redux/addJob/jobActions';
-import isLoggedIn from '../isLoggedIn';
 import config from '../config';
 
 class AppliedList extends React.Component {
-  userData = JSON.parse(localStorage.getItem('currentUser'));
-
   constructor(props) {
     super(props);
     this.state = {
@@ -27,8 +24,8 @@ class AppliedList extends React.Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(jobAction.getAppliedJob(this.userData.name));
+    const { dispatch, user } = this.props;
+    dispatch(jobAction.getAppliedJob(user.name));
   }
 
   // componentDidUpdate(prevProps, prevState) {
@@ -69,17 +66,18 @@ class AppliedList extends React.Component {
   };
 
   render() {
-    const imageUrl = config.firebase_url.concat(this.userData.image);
+    const {user, authenticated} = this.props;
+    const imageUrl = config.firebase_url.concat(user.image);
     const { appliedjobs } = this.state;
     const statusIndex = [0, 1, 2, 3, 4];
     return (
       <div className="">
-        {this.userData.role === 1 && appliedjobs.length === 0 && (
+        {user.role === 1 && appliedjobs.length === 0 && (
           <h1 className="applyList">
             No candidate has applied for any jobs yet.
           </h1>
         )}
-        {this.userData.role === 2 && appliedjobs.length === 0 && (
+        {user.role === 2 && appliedjobs.length === 0 && (
           <h1 className="applyList">
             You haven&apos;t applied for any jobs yet. Please apply one:)
           </h1>
@@ -92,14 +90,14 @@ class AppliedList extends React.Component {
             <div className="panel-body">
               <div className="row">
                 <div className="col-md-3 col-lg-2">
-                  {this.userData.image && this.userData.role === 2 && (
+                  {user.image && user.role === 2 && (
                     <img
                       className="img-circle"
                       src={`${imageUrl}?alt=media`}
                       alt="Upload Pic"
                     />
                   )}
-                  {this.userData.role === 1 &&
+                  {user.role === 1 &&
                     item.userDetails.gender === 'Male' && (
                       <img
                         className="img-circle"
@@ -109,7 +107,7 @@ class AppliedList extends React.Component {
                         alt="Upload Pic"
                       />
                     )}
-                  {this.userData.role === 1 &&
+                  {user.role === 1 &&
                     item.userDetails.gender === 'Female' && (
                       <img
                         className="img-circle"
@@ -143,7 +141,7 @@ class AppliedList extends React.Component {
                   </div>
                 </div>
                 <div className="col-md-2 col-lg-2">
-                  {this.userData.image && this.userData.role === 1 && (
+                  {user.image && user.role === 1 && (
                     <img
                       className="img-circle"
                       src={`${imageUrl}?alt=media`}
@@ -175,11 +173,11 @@ class AppliedList extends React.Component {
                       <dt>City:</dt>
                       <dd>{item.jobDetails.city}</dd>
                     </dl>
-                    {isLoggedIn() && this.userData.role === 1 && (
+                    {authenticated && user.role === 1 && (
                       <dl>
                         <dt>Status:</dt>
                         {item.statusComp}
-                        {this.userData.role === 1 && (
+                        {user.role === 1 && (
                           <button
                             type="button"
                             className="btn btn-link"
@@ -217,7 +215,9 @@ class AppliedList extends React.Component {
 
 AppliedList.propTypes = {
   appliedjobs: PropTypes.arrayOf(PropTypes.any),
-  dispatch: PropTypes.func
+  dispatch: PropTypes.func,
+  user: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  authenticated: PropTypes.bool.isRequired
 };
 
 AppliedList.defaultProps = {

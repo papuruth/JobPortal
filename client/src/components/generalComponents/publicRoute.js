@@ -1,19 +1,23 @@
 import React from 'react';
 import { isValidElementType } from 'react-is';
+import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import { Redirect } from 'react-router';
-import PropTypes from 'prop-types';
 
-const PrivateRoute = ({ component: Component, authenticated, ...rest }) => {
+const PublicRoute = ({ component: Component, restricted, authenticated, ...rest }) => {
   return (
+    // restricted = false meaning public route
+    // restricted = true meaning restricted route
     <Route
       {...rest}
-      render={(props) => authenticated ? <Component {...props} /> : <Redirect to="/" />}
+      render={(props) =>
+        restricted && authenticated ? <Redirect to="/" /> : <Component {...props} />}
     />
   );
 };
 
-PrivateRoute.propTypes = {
+PublicRoute.propTypes = {
+  restricted: PropTypes.bool.isRequired,
   authenticated: PropTypes.bool.isRequired,
   component: (props, propName) => {
     if (props[propName] && !isValidElementType(props[propName])) {
@@ -24,8 +28,8 @@ PrivateRoute.propTypes = {
   }
 };
 
-PrivateRoute.defaultProps = {
+PublicRoute.defaultProps = {
   component: null
 };
 
-export default PrivateRoute;
+export default PublicRoute;

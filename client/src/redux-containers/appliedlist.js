@@ -4,9 +4,12 @@ import AppliedList from '../components/appliedList';
 function mapStateToProps(state) {
   const appliedjobs = JSON.parse(localStorage.getItem('appliedjobs'));
   const { mails } = state.updateStatus;
+  const { authenticated, user } = state.session;
   return {
     appliedjobs,
-    mails
+    mails,
+    authenticated,
+    user
   };
 }
 

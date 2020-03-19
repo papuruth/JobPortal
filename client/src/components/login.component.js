@@ -1,12 +1,12 @@
 import PropsTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import isLoggedIn from '../isLoggedIn';
 import userActions from '../redux/user/userActions';
 import Button from './generalComponents/button.component';
 import Input from './generalComponents/input.component';
 import Label from './generalComponents/label';
 import googleButton from '../images/btn_google_signin_dark_normal_web.png';
+import config from '../config';
 
 class Login extends React.Component {
   constructor(props) {
@@ -106,10 +106,6 @@ class Login extends React.Component {
   }
 
   render() {
-    const { history } = this.props;
-    if (isLoggedIn()) {
-      history.push('/');
-    }
     return (
       <div className="row justify-content-center">
         <div className="col-sm-12">
@@ -183,7 +179,7 @@ class Login extends React.Component {
                     className="btn btn-primary"
                     btnDisabled={this.state.signinValid}
                   />
-                  <a href="/google">
+                  <a href={`${config.nodeBaseUrl}/google`}>
                     {/* <GoogleButton /> */}
                     <img src={googleButton} alt="sign into Google Button" />
                   </a>
@@ -201,7 +197,6 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  history: PropsTypes.oneOfType([PropsTypes.object]).isRequired,
   dispatch: PropsTypes.func.isRequired
 };
 

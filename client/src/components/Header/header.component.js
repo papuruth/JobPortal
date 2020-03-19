@@ -16,7 +16,6 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import config from '../../config';
 import female from '../../images/female.png';
 import male from '../../images/male.jpg';
-import isLoggedIn from '../../isLoggedIn';
 import NotificationFactory from '../../redux-containers/notificationFactory';
 import userActions from '../../redux/user/userActions';
 
@@ -74,9 +73,9 @@ class Header extends React.Component {
 
   render() {
     const { currentUser, isMounted } = this.state;
-    const { history } = this.props;
+    const { history, authenticated } = this.props;
     let imageUrl;
-    if (isLoggedIn()) {
+    if (authenticated) {
       imageUrl = config.firebase_url.concat(currentUser.image);
     }
     return (
@@ -96,9 +95,8 @@ class Header extends React.Component {
               <h3>Notifications</h3>
             </header>
             <div className="w3-container mail">
-              {currentUser && isMounted && (
+              {Object.keys(currentUser).length && isMounted && (
                 <NotificationFactory
-                  currentUser={currentUser}
                   updateNotificationCount={this.notificationCounter}
                 />
               )}
@@ -147,7 +145,7 @@ class Header extends React.Component {
                       </Link>
                     </li>
                   )}
-                  {isLoggedIn() &&
+                  {authenticated &&
                     this.state.currentUser.role === 1 &&
                     history.location.pathname !== '/appliedlist' && (
                       <li>
@@ -159,7 +157,7 @@ class Header extends React.Component {
                         </Link>
                       </li>
                     )}
-                  {isLoggedIn() &&
+                  {authenticated &&
                     this.state.currentUser.role === 2 &&
                     history.location.pathname !== '/appliedlist' && (
                       <li title="Toggle applied jobs panel">
@@ -168,7 +166,7 @@ class Header extends React.Component {
                         </Link>
                       </li>
                     )}
-                  {isLoggedIn() && this.state.currentUser.role === 2 && (
+                  {authenticated && this.state.currentUser.role === 2 && (
                     <li title="Toggle notification panel">
                       <Link to="#" onClick={this.showMail}>
                         <Badge
@@ -180,7 +178,7 @@ class Header extends React.Component {
                       </Link>
                     </li>
                   )}
-                  {isLoggedIn() && history.location.pathname !== '/chat' && (
+                  {authenticated && history.location.pathname !== '/chat' && (
                     <li>
                       <Link to="/chat" title="Toggle chat panel">
                         <ChatIcon style={{ fontSize: 25 }} />
@@ -189,21 +187,21 @@ class Header extends React.Component {
                   )}
                 </ul>
                 <ul className="nav navbar-nav navbar-right">
-                  {!isLoggedIn() && history.location.pathname !== '/register' && (
+                  {!authenticated && history.location.pathname !== '/register' && (
                     <li title="Toggle signup panel">
                       <Link to="/register">
                         <PersonIcon style={{ fontSize: 25 }} />
                       </Link>
                     </li>
                   )}
-                  {!isLoggedIn() && history.location.pathname !== '/login' && (
+                  {!authenticated && history.location.pathname !== '/login' && (
                     <li title="Toggle login panel">
                       <Link to="/login">
                         <LockIcon style={{ fontSize: 25 }} />
                       </Link>
                     </li>
                   )}
-                  {isLoggedIn() &&
+                  {authenticated &&
                     this.state.currentUser.role !== 2 &&
                     history.location.pathname !== '/addjob' && (
                       <li id="addjob" title="Toggle add new job panel">
@@ -212,7 +210,7 @@ class Header extends React.Component {
                         </Link>
                       </li>
                     )}
-                  {isLoggedIn() &&
+                  {authenticated &&
                     this.state.currentUser.role === 0 &&
                     history.location.pathname !== '/manageusers' && (
                       <li id="manageuser" title="Toggle user management panel">
@@ -221,7 +219,7 @@ class Header extends React.Component {
                         </Link>
                       </li>
                     )}
-                  {isLoggedIn() && (
+                  {authenticated && (
                     <li title="Logout">
                       <button
                         type="button"
@@ -241,7 +239,7 @@ class Header extends React.Component {
                       <GitHubIcon style={{ fontSize: 25 }} />
                     </a>
                   </li>
-                  {isLoggedIn() && (
+                  {authenticated && (
                     <li title={`${this.state.currentUser.name} profile`}>
                       <Link to="/profile">
                         {!this.state.currentUser.image &&
@@ -283,7 +281,8 @@ class Header extends React.Component {
 Header.propTypes = {
   dispatch: PropTypes.func.isRequired,
   currentUser: PropTypes.objectOf(PropTypes.any),
-  history: PropTypes.oneOfType([PropTypes.object]).isRequired
+  history: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  authenticated: PropTypes.bool.isRequired
 };
 
 Header.defaultProps = {

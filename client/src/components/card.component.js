@@ -6,14 +6,11 @@ import { withRouter } from 'react-router';
 import { SyncLoader } from 'react-spinners';
 import '../App.css';
 import config from '../config';
-import isLoggedIn from '../isLoggedIn';
 import jobAction from '../redux/addJob/jobActions';
 import bodyActions from '../redux/body/bodyActions';
 import loader from '../redux/loader/loaderAction';
 
 class Card extends React.Component {
-  user = JSON.parse(localStorage.getItem('currentUser'));
-
   constructor(props) {
     super(props);
     this.state = {
@@ -40,21 +37,21 @@ class Card extends React.Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    if (this.user) {
-      dispatch(jobAction.getAppliedJob(this.user.name));
+    const { dispatch, user } = this.props;
+    if (user) {
+      dispatch(jobAction.getAppliedJob(user.name));
     }
   }
 
   componentDidUpdate() {
-    const { data, appliedjobs, apply } = this.props;
-    if (isLoggedIn() && appliedjobs) {
+    const { data, appliedjobs, apply, user, authenticated } = this.props;
+    if (authenticated && appliedjobs) {
       appliedjobs.map((job) => {
         data.map((item, innerIndex) => {
           if (
             job.jobDetails.company === item.company &&
             job.jobDetails.designation === item.designation &&
-            job.userDetails.name === this.user.name
+            job.userDetails.name === user.name
           ) {
             try {
               document.getElementById(`btn${innerIndex}`).innerHTML = 'Applied';
@@ -72,7 +69,7 @@ class Card extends React.Component {
 
     if (apply) {
       const { dispatch } = this.props;
-      dispatch(jobAction.getAppliedJob(this.user.name));
+      dispatch(jobAction.getAppliedJob(user.name));
     }
   }
 
@@ -85,11 +82,11 @@ class Card extends React.Component {
 
   apply = (e) => {
     e.preventDefault();
-    const { history } = this.props;
+    const { history, authenticated } = this.props;
     const id = e.target.name;
-    if (isLoggedIn()) {
-      const { dispatch } = this.props;
-      const { name, gender } = this.user;
+    if (authenticated) {
+      const { dispatch, user } = this.props;
+      const { name, gender } = user;
       dispatch(jobAction.applyJob(id, name, gender));
     } else {
       history.push('/login');
@@ -106,7 +103,7 @@ class Card extends React.Component {
   };
 
   fetchMoreData = () => {
-    const { pagerData } = this.props;
+    const { pagerData, user } = this.props;
     if (pagerData.currentPage === pagerData.pages - 1 || !pagerData.pages) {
       this.setState({
         hasMore: false
@@ -114,9 +111,9 @@ class Card extends React.Component {
     } else if (Object.keys(pagerData).length > 0) {
       const page = pagerData.currentPage ? pagerData.currentPage + 1 : 0 + 1;
       const { dispatch } = this.props;
-      if (this.user) {
-        const { role, name } = this.user;
-        if (this.user.role === 1) {
+      if (user) {
+        const { role, name } = user;
+        if (role === 1) {
           dispatch(bodyActions.getJobs(page, role, name));
           dispatch(loader(true));
         } else {
@@ -131,7 +128,7 @@ class Card extends React.Component {
   };
 
   render() {
-    const { data } = this.props;
+    const { data, user, authenticated } = this.props;
     const { hasMore } = this.state;
     return (
       <div className="col-sm-12">
@@ -141,22 +138,22 @@ class Card extends React.Component {
             spinner={<SyncLoader />}
             text="Loading your content..."
           >
-            {isLoggedIn() && data.length === 0 && this.user.role === 1 && (
+            {authenticated && data.length === 0 && user.role === 1 && (
               <h1 style={{ textAlign: 'center' }}>
                 No jobs posted yet. Please post some jobs!
               </h1>
             )}
-            {isLoggedIn() && data.length === 0 && this.user.role === 2 && (
+            {authenticated && data.length === 0 && user.role === 2 && (
               <h1 style={{ textAlign: 'center' }}>
                 No jobs posted yet. Please wait for companies!
               </h1>
             )}
-            {isLoggedIn() && data.length === 0 && this.user.role === 0 && (
+            {authenticated && data.length === 0 && user.role === 0 && (
               <h1 style={{ textAlign: 'center' }}>
                 No jobs posted yet. Please wait for companies or post some jobs!
               </h1>
             )}
-            {!isLoggedIn() && data.length === 0 && (
+            {!authenticated && data.length === 0 && (
               <h1 style={{ textAlign: 'center' }}>
                 No jobs posted yet. Please wait for companies!
               </h1>
@@ -217,7 +214,7 @@ class Card extends React.Component {
                           </div>
                         </div>
                         <div className="col-sm-4 col-lg-4 col-4">
-                          {isLoggedIn() && this.user.role !== 2 && (
+                          {authenticated && user.role !== 2 && (
                             <i
                               className="fa fa-times cross"
                               id={job._id}
@@ -228,7 +225,7 @@ class Card extends React.Component {
                               aria-label="Remove Job"
                             />
                           )}
-                          {isLoggedIn() && this.user.role !== 2 && (
+                          {authenticated && user.role !== 2 && (
                             <i
                               className="fa fa-edit cross"
                               onClick={this.editJob}
@@ -260,7 +257,7 @@ class Card extends React.Component {
                             </div>
                           )}
                         </div>
-                        {isLoggedIn() && this.user.role === 2 && (
+                        {authenticated && user.role === 2 && (
                           <button
                             type="button"
                             className={
@@ -274,7 +271,7 @@ class Card extends React.Component {
                             Apply
                           </button>
                         )}
-                        {!isLoggedIn() && (
+                        {!authenticated && (
                           <button
                             type="button"
                             className={
@@ -307,7 +304,9 @@ Card.propTypes = {
   history: PropTypes.oneOfType([PropTypes.object]).isRequired,
   apply: PropTypes.oneOfType([PropTypes.bool]),
   pagerData: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  loaderStatus: PropTypes.bool.isRequired
+  loaderStatus: PropTypes.bool.isRequired,
+  user: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  authenticated: PropTypes.bool.isRequired
 };
 
 Card.defaultProps = {

@@ -12,12 +12,7 @@ const MongoStore = require('connect-mongo')(session);
 const axios = require('axios');
 const moment = require('moment');
 
-const nodeBaseUrl =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3001'
-    : process.env.nodeBaseUrl;
 const port = 3001;
-
 // setup server
 const app = express();
 const server = http.createServer(app);
@@ -25,6 +20,7 @@ const socketIo = require('socket.io')(server, { wsEngine: 'ws' });
 const passport = require('./passport');
 const dbConnection = require('./db'); // loads our connection to the mongo database
 const route = require('./expressRoutes/routes');
+const config = require('./config');
 
 // ===== Middleware ====
 app.use(morgan('dev'));
@@ -51,12 +47,12 @@ app.use(passport.session()); // will call the deserializeUser
 
 // ===== Express App Routing ====
 app.use('/', route);
-console.log(process.env.NODE_ENV)
+
 // Right before your app.listen(), add this:
 if (process.env.NODE_ENV === 'production') {
   console.log('YOU ARE IN THE PRODUCTION ENV');
   app.get('/', (req, res) => {
-      res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
   });
 }
 
@@ -70,7 +66,7 @@ socketIo.on('connection', async (socket) => {
   console.log(`${username} connected`);
   if (username) {
     await axios
-      .post(`${nodeBaseUrl}/online-users`, {
+      .post(`${config.nodeBaseUrl}/online-users`, {
         username,
         status: 'Online',
         disconnectTime: ''
@@ -107,7 +103,7 @@ socketIo.on('connection', async (socket) => {
     console.log(`${username} disconnected`);
     if (username) {
       await axios
-        .post(`${nodeBaseUrl}/online-users`, {
+        .post(`${config.nodeBaseUrl}/online-users`, {
           username,
           status: 'Offline',
           disconnectTime: moment(new Date(), 'HH:mm')

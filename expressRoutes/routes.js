@@ -25,7 +25,7 @@ router.get(
   })
 );
 // ===== Passport Local Authentication ====
-router.post('/login', passport.authenticate('local'), userController.login);
+router.post('/authenticate', passport.authenticate('local'), userController.login);
 router.post('/logout', userController.logout);
 router.get('/users', userController.getUsers);
 router.get('/mails', jobController.getMailDetails);

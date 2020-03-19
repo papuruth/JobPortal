@@ -1,3 +1,4 @@
+import { sessionService } from 'redux-react-session';
 import userConstants from './userConstants';
 import userService from './userServices';
 import alertActions from '../alert/alertActions';
@@ -27,12 +28,21 @@ function login(username, password) {
     dispatch(request(userConstants.LOGIN_REQUEST, username));
     userService
       .login(username, password)
-      .then((user) => {
-        console.log(user, 'login');
-        if (user.status) {
+      .then((response) => {
+        console.log(response);
+        if (response.status) {
           dispatch(alertActions.success('Login Successful'));
-          dispatch(success(userConstants.LOGIN_SUCCESS, user));
-          history.push('/');
+          dispatch(success(userConstants.LOGIN_SUCCESS, response.data.data));
+          // store user details in redux-session to keep user logged in between page refreshes
+          sessionService
+            .saveSession(response.data.data)
+            .then(() => {
+              sessionService.saveUser(response.data.data);
+            })
+            .then(() => {
+              history.push('/');
+            })
+            .catch((err) => console.error(err));
         } else if (user.message) {
           dispatch(alertActions.error(user.message));
         } else if (user === 'ban') {
@@ -52,13 +62,13 @@ function login(username, password) {
 
 function logout() {
   return (dispatch) => {
-    dispatch(request(userConstants.USERS_LOGOUT_REQUEST, null));
+    // dispatch(request(userConstants.USERS_LOGOUT_REQUEST, null));
     userService
       .logout()
       .then((res) => {
         if (res) {
           dispatch(success(userConstants.USERS_LOGOUT_SUCCESS, res));
-          history.push('/');
+          history.push('/')
         }
       })
       .catch((error) => {

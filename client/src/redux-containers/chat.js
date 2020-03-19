@@ -4,10 +4,12 @@ import ChatApp from '../components/chat/ChatApp';
 function mapStateToProps(state) {
   const { chats } = state.getMessage;
   const { users } = state.Users;
+  const { user } = state.session;
   const { onlineUser } = state.getOnlineUser;
   return {
     chats,
     users,
+    user,
     onlineUser
   };
 }

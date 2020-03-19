@@ -2,11 +2,12 @@ import { connect } from 'react-redux';
 import NotificationFactory from '../components/generalComponents/notification.factory';
 
 function mapStateToProps(state) {
-  const appliedjobs = JSON.parse(localStorage.getItem('appliedjobs'));
   const { notifications } = state.getNotifications;
+  const { user, authenticated } = state.session;
   return {
-    appliedjobs,
-    notifications
+    notifications,
+    user,
+    authenticated
   };
 }
 

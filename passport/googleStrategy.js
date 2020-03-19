@@ -1,6 +1,10 @@
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const request = require('request');
+const fs = require('fs');
 const User = require('../models/user');
 const roles = require('../enum/userRoles');
+const Download = require('../helpers/download');
+const config = require('../config');
 
 const strategy = new GoogleStrategy(
   {
@@ -24,7 +28,7 @@ const strategy = new GoogleStrategy(
       }
       // if there is already someone with that googleId
       if (userMatch) {
-        return done(null, { data: userMatch, status: true });
+        return done(null, { data: userMatch });
       }
       // if no user in our db, create a new user with that googleId
       console.log('====== PRE SAVE =======');
@@ -34,13 +38,33 @@ const strategy = new GoogleStrategy(
       const newGoogleUser = new User({
         'google.googleId': id,
         name: displayName,
-        image: photos[0].value,
+        image: '/'.concat(emails[0].value).concat('.jpg'),
         role: roles[2].value,
         emailId: emails[0].value,
         userStatus: 1,
         phone: null,
         gender: gender || null
       });
+      // Download the user profile image
+      Download(emails[0].value, photos[0].value, (error, dest) => {
+        if (error) console.log('error in downloading dp');
+        else {
+          const filename = `${emails[0].value}`;
+          console.log('Profile Picture downloaded');
+          request.post(
+            `${config.nodeBaseUrl}/upload`,
+            { formData: { filename, file: fs.createReadStream(dest) } },
+            (errUpload, response) => {
+              if (errUpload) {
+                console.log(errUpload.message);
+              } else {
+                console.log(response.body);
+              }
+            }
+          );
+        }
+      });
+
       // save this user
       newGoogleUser.save((err1, savedUser) => {
         if (err1) {
@@ -48,7 +72,7 @@ const strategy = new GoogleStrategy(
           console.log(err1);
           return done(null, false);
         }
-        return done(null, { data: savedUser, status: true });
+        return done(null, { data: savedUser });
       }); // closes newGoogleUser.save
     }); // closes User.findONe
   }

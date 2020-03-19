@@ -1,34 +1,34 @@
 import axios from 'axios';
+import { sessionService } from 'redux-react-session';
 import config from '../../config';
-import history from '../../_helpers/history';
 
 async function login(username, passwd) {
   const password = btoa(passwd);
-  const user = await axios.post(`${config.nodeBaseUrl}/login`, {
+  const response = await axios.post(`${config.nodeBaseUrl}/authenticate`, {
     username,
     password
   });
-  console.log(user.data)
-  const isLoggedIn = user.data.status;
-  if (isLoggedIn) {
-    // store user details in local storage to keep user logged in between page refreshes
-    localStorage.setItem('currentUser', JSON.stringify(user.data.data));
-    return user.data;
-  }
-  return user.data.data;
+  console.log(response.data);
+  return response;
 }
 
-const logout = () =>
-  new Promise((resolve, reject) => {
-    // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
-    resolve(true);
-    history.push('/')
-  });
+async function logout() {
+  axios
+    .post(`${config.nodeBaseUrl}/logout`)
+    .then(async (res) => {
+      console.log(res.data);
+      await sessionService.deleteSession();
+      await sessionService.deleteUser();
+      return true;
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+}
 
 async function register(fullname, email, password, phone, gender) {
   try {
-    const passwd = btoa(password)
+    const passwd = btoa(password);
     const res = await axios.post(`${config.nodeBaseUrl}/register`, {
       fullname,
       email,

@@ -15,10 +15,9 @@ export default class ChatApp extends React.Component {
       chats: [],
       onlineUser: [],
       messages: [],
-      isTyping: [],
-      user: JSON.parse(localStorage.getItem('currentUser'))
+      isTyping: []
     };
-    this.props.socket.emit('imonline', this.state.user.name);
+    this.props.socket.emit('imonline', this.props.user.name);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -31,21 +30,20 @@ export default class ChatApp extends React.Component {
   }
 
   componentDidMount() {
-    const { user } = this.props;
-    const sender = this.state.user.name;
-    const receiver = user;
+    const { receiver } = this.props;
+    const sender = this.props.user.name;
     const { dispatch } = this.props;
 
     // Listen for messages from the server
     this.props.socket.on('server:message', (message) => {
-      if(message.sender === this.props.user) {
+      if(message.sender === receiver) {
         this.addMessage(message);
       }
     });
 
     // Get active status of receiver
     this.defaultTimer = setTimeout(() => {
-      dispatch(chatActions.getOnlineUser(this.props.user));
+      dispatch(chatActions.getOnlineUser(receiver));
     }, 100);
 
     // Get all messages for the sender and receiver
@@ -56,18 +54,18 @@ export default class ChatApp extends React.Component {
       dispatch(chatActions.getOnlineUser(data));
     });
     // Get the details of receiver
-    dispatch(userActions.getAllUsers(user));
+    dispatch(userActions.getAllUsers(receiver));
     this.props.socket.on('isonline', (data) => {
-      if (data === this.props.user) {
+      if (data === receiver) {
         this.onlineTimer = setTimeout(() => {
-          dispatch(chatActions.getOnlineUser(this.props.user));
+          dispatch(chatActions.getOnlineUser(receiver));
         }, 0);
       }
     });
     this.props.socket.on('isoffline', (data) => {
       if (data) {
         this.offlineTimer = setTimeout(() => {
-          dispatch(chatActions.getOnlineUser(this.props.user));
+          dispatch(chatActions.getOnlineUser(receiver));
         }, 0);
       }
     });
@@ -75,9 +73,8 @@ export default class ChatApp extends React.Component {
 
   componentDidUpdate(prevProps) {
     try {
-      const { chats, user } = this.props;
-      const sender = this.state.user.name;
-      const receiver = user;
+      const { chats, receiver, user } = this.props;
+      const sender = user.name;
       if (prevProps.chats !== chats) {
         chats.forEach((chat, index) => {
           if (
@@ -115,7 +112,7 @@ export default class ChatApp extends React.Component {
       const newMessageItem = {
         id: this.state.messages.length + 1,
         sender,
-        receiver: this.props.user,
+        receiver: this.props.receiver,
         senderAvatar,
         message: messageFormat,
         date: new Date().toString()
@@ -169,10 +166,9 @@ export default class ChatApp extends React.Component {
   };
 
   render() {
-    const { user } = this.state;
+    const { user, receiver } = this.props;
     const { name, image } = user;
-    const { messages } = this.state;
-    const { isTyping } = this.state;
+    const { messages, isTyping } = this.state;
     /* creation of a chatbox for each user present in the chatroom */
     return (
       <div className="chatApp__room">
@@ -180,7 +176,7 @@ export default class ChatApp extends React.Component {
           <ChatBox
             key={name}
             owner={name}
-            receiver={this.props.user}
+            receiver={receiver}
             ownerAvatar={image}
             sendMessage={this.sendMessage}
             typing={this.typing}

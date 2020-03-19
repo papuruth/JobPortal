@@ -1,14 +1,15 @@
 import Axios from 'axios';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { sessionService } from 'redux-react-session';
+import { Switch } from 'react-router-dom';
 import Footer from './components/footer.component';
 import ErrorBoundary from './components/generalComponents/error.boundary';
+import config from './config';
 import Header from './redux-containers/header';
 import alertActions from './redux/alert/alertActions';
 import routes from './routes';
 import history from './_helpers/history';
-import config from './config';
 
 class App extends React.Component {
   constructor(props) {
@@ -21,14 +22,23 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    Axios.get(`${config.nodeBaseUrl}/user`)
-    .then(res => {
-      console.log(res);
-      localStorage.setItem('currentUser', JSON.stringify(res.data.user));
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    console.log(this.props);
+    // Axios.get(`${config.nodeBaseUrl}/user`)
+    //   .then((response) => {
+    //     console.log(response);
+    //     if (response.data.user) {
+    //       console.log(response.data.user);
+    //       sessionService
+    //         .saveSession(response.data.user)
+    //         .then(() => {
+    //           sessionService.saveUser(response.data.user);
+    //         })
+    //         .catch((err) => console.error(err));
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }
 
   hideAlert = (e) => {
@@ -63,7 +73,7 @@ class App extends React.Component {
             </div>
             <Switch>
               {routes.map((route, index) => (
-                <Route {...route} key={`route${Math.random()}`} />
+                route
               ))}
             </Switch>
           </div>

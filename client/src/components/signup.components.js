@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import isLoggedIn from '../isLoggedIn';
 import alertActions from '../redux/alert/alertActions';
 import userActions from '../redux/user/userActions';
 import Button from './generalComponents/button.component';
@@ -163,10 +162,6 @@ class Signup extends React.Component {
   }
 
   render() {
-    const { history } = this.props;
-    if (isLoggedIn()) {
-      history.push('/');
-    }
     return (
       <div className="col-md-4 col-md-offset-4">
         <h1 className="underline">Register</h1>
@@ -373,7 +368,6 @@ class Signup extends React.Component {
 
 Signup.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  history: PropTypes.oneOfType([PropTypes.object]).isRequired
 }
 
 export default Signup;

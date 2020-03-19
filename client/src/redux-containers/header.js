@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
 import Header from '../components/Header/header.component';
 
-function mapStateToProps(state) {
-  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  return {
-    currentUser
-  };
-}
+const mapStateToProps= ({ session }) => ({
+  currentUser: session.user,
+  checked: session.checked,
+  authenticated: session.authenticated
+});
 
 const connectedHeader = connect(mapStateToProps)(Header);
 export default connectedHeader;

@@ -15,7 +15,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import ChatApp from '../../redux-containers/chat';
 import jobAction from '../../redux/addJob/jobActions';
 import config from '../../config';
@@ -54,7 +54,7 @@ const styles = (theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: '5px',
+    padding: '10px',
     height: 'calc(100vh - 60px)',
     margin: 0,
     background:
@@ -63,19 +63,18 @@ const styles = (theme) => ({
     letterSpacing: '-0.23px'
   },
   appBarFixed: {
-    top: '54px'
+    top: '50px'
   },
   primaryList: {
     fontSize: '1.5rem'
   }
 });
 
-class ChatContainer extends PureComponent {
+class ChatContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       appliedjobs: [],
-      currentUser: props.currentUser,
       active: false,
       mobileOpen: false
     };
@@ -83,7 +82,7 @@ class ChatContainer extends PureComponent {
     // Connect to the chat server
     this.socket = io.connect(
       config.nodeBaseUrl,
-      { query: `username=${this.state.currentUser.name}` },
+      { query: `username=${this.props.user.name}` },
       { transports: ['polling', 'websocket'] },
       {
         reconnection: true,
@@ -105,19 +104,14 @@ class ChatContainer extends PureComponent {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    const { currentUser } = this.state;
-    dispatch(jobAction.getAppliedJob(currentUser.name));
-  }
-
-  componentWillUnmount() {
-    // this.socket.close();
+    const { dispatch, user } = this.props;
+    dispatch(jobAction.getAppliedJob(user.name));
   }
 
   renderUserList = (props) => {
     let usersArray = [];
-    const { currentUser } = this.state;
-    const { name } = currentUser;
+    const { user } = this.props;
+    const { name } = user;
     props.forEach((job) => {
       if (job.userDetails.name === name) {
         usersArray.push(job.jobDetails.company);
@@ -225,7 +219,7 @@ class ChatContainer extends PureComponent {
           {active ? (
             <ChatApp
               key={this.state.chatKey}
-              user={this.state.username}
+              receiver={this.state.username}
               socket={this.socket}
             />
           ) : null}

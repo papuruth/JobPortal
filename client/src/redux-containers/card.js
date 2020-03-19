@@ -5,10 +5,13 @@ function mapStateToProps(state) {
   const { appliedjobs } = state.getAppliedJobs;
   const { apply } = state.applyJob;
   const { loaderStatus } = state.loaderReducer;
+  const { user, authenticated } = state.session;
   return {
     appliedjobs,
     apply,
-    loaderStatus
+    loaderStatus,
+    user,
+    authenticated
   };
 }
 

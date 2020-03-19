@@ -4,10 +4,13 @@ import Body from '../components/body.component';
 function mapStateToProps(state) {
   const { jobs, pager } = state.jobs;
   const { logoutUser } = state.Logout;
+  const { user, authenticated } = state.session;
   return {
     jobs,
     pager,
-    logoutUser
+    logoutUser,
+    user,
+    authenticated
   };
 }
 

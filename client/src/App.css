@@ -844,8 +844,7 @@ input[type='search']::-webkit-search-decoration {
 .chatApp__room {
   display: flex;
   align-content: flex-start;
-  justify-content: center;
-  margin-top: 50px;
+  margin-top: 0px;
   animation: fadeChatApp 0.6s ease-in-out;
   animation-fill-mode: forwards;
 }

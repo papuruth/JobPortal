@@ -3,10 +3,10 @@ import ChatContainer from '../components/chat/chat.container';
 
 function mapStatToProps(state) {
   const { appliedjobs } = state.getAppliedJobs;
-  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  const {user} = state.session;
   return {
     appliedjobs,
-    currentUser
+    user
   };
 }
 

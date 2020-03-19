@@ -2,41 +2,44 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Card from '../redux-containers/card';
-import isLoggedIn from '../isLoggedIn';
 import bodyActions from '../redux/body/bodyActions';
 import Filter from './filter.component';
 import loader from '../redux/loader/loaderAction';
 
 export default class Body extends Component {
-  user = JSON.parse(localStorage.getItem('currentUser'));
-
   constructor(props) {
     super(props);
     this.state = {
       jobsData: [],
       pager: {},
       roleBasedJobs: [],
-      filterFlag: true
+      filterFlag: true,
+      user: {}
     };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { jobs, pager } = nextProps;
-    if (jobs !== prevState.jobs && prevState.filter) {
+  static getDerivedStateFromProps(props, state) {
+    const { jobs, pager, user } = props;
+    if (jobs !== state.jobs && state.filter) {
       return {
         jobsData: jobs,
         pager
+      };
+    }
+    if (user !== state.user) {
+      return {
+        user
       };
     }
     return null;
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    if (this.user) {
+    const { dispatch, user } = this.props;
+    if (user) {
       const page = 0;
-      const { role, name } = this.user;
-      if (this.user.role === 1) {
+      const { role, name } = user;
+      if (role === 1) {
         dispatch(loader(true));
         dispatch(bodyActions.getJobs(page, role, name));
       } else {
@@ -50,7 +53,7 @@ export default class Body extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { jobs, pager, dispatch, logoutUser } = this.props;
+    const { jobs, pager, dispatch, logoutUser, user } = this.props;
     dispatch(loader(false));
     if (logoutUser) {
       dispatch(bodyActions.getJobs(0));
@@ -58,7 +61,7 @@ export default class Body extends Component {
     if (prevProps.jobs !== jobs) {
       try {
         const filterJobsByComp = jobs.filter((ele) => {
-          if (this.user.name === ele.company) {
+          if (user.name === ele.company) {
             return true;
           }
           return false;
@@ -90,8 +93,9 @@ export default class Body extends Component {
   }
 
   filterMachine = (filterJob) => {
+    const { user } = this.state;
     try {
-      if (this.user.role === 1) {
+      if (user.role === 1) {
         this.setState({
           roleBasedJobs: filterJob,
           filterFlag: false
@@ -121,47 +125,48 @@ export default class Body extends Component {
   };
 
   render() {
-    const { dispatch } = this.props;
+    const { dispatch, authenticated } = this.props;
     const {
       toFilter,
       roleBasedFilter,
       roleBasedJobs,
       jobsData,
-      pager
+      pager,
+      user
     } = this.state;
     return (
       <div>
-        {!isLoggedIn() && jobsData.length > 0 && (
+        {!authenticated && jobsData.length > 0 && (
           <Filter
             filteredData={this.filterMachine}
             clearFilter={this.clearFilter}
             dataFilter={{ filterData: toFilter, totalJobs: jobsData }}
           />
         )}
-        {isLoggedIn() && this.user.role === 2 && jobsData.length > 0 && (
+        {authenticated && user.role === 2 && jobsData.length > 0 && (
           <Filter
             filteredData={this.filterMachine}
             clearFilter={this.clearFilter}
             dataFilter={{ filterData: toFilter, totalJobs: jobsData }}
           />
         )}
-        {isLoggedIn() && this.user.role === 0 && jobsData.length > 0 && (
+        {authenticated && user.role === 0 && jobsData.length > 0 && (
           <Filter
             filteredData={this.filterMachine}
             clearFilter={this.clearFilter}
             dataFilter={{ filterData: toFilter, totalJobs: jobsData }}
           />
         )}
-        {isLoggedIn() && this.user.role === 1 && jobsData.length > 0 && (
+        {authenticated && user.role === 1 && jobsData.length > 0 && (
           <Filter
             filteredData={this.filterMachine}
             dataFilter={roleBasedFilter}
           />
         )}
-        {jobsData && pager && !isLoggedIn() && (
+        {jobsData && pager && !authenticated && (
           <Card data={jobsData} pagerData={pager} dispatch={dispatch} />
         )}
-        {jobsData && pager && isLoggedIn() && this.user.role === 1 && (
+        {jobsData && pager && authenticated && user.role === 1 && (
           <Card
             data={roleBasedJobs}
             handleRemove={this.handleRemoveLogic}
@@ -169,10 +174,10 @@ export default class Body extends Component {
             dispatch={dispatch}
           />
         )}
-        {jobsData && pager && isLoggedIn() && this.user.role === 2 && (
+        {jobsData && pager && authenticated && user.role === 2 && (
           <Card data={jobsData} pagerData={pager} dispatch={dispatch} />
         )}
-        {jobsData && pager && isLoggedIn() && this.user.role === 0 && (
+        {jobsData && pager && authenticated && user.role === 0 && (
           <Card
             data={jobsData}
             pagerData={pager}
@@ -190,6 +195,8 @@ Body.propTypes = {
   jobs: PropTypes.arrayOf(PropTypes.any),
   pager: PropTypes.oneOfType([PropTypes.object]).isRequired,
   logoutUser: PropTypes.bool,
+  user: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  authenticated: PropTypes.bool.isRequired
 };
 
 Body.defaultProps = {
