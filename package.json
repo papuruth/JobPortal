@@ -37,7 +37,7 @@
     "client": "cd client && npm start",
     "build": "cd client && npm run build",
     "prod": "set NODE_ENV=\"production\" && nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"npm run start\" \"npm run client\"",
+    "dev": "set NODE_ENV=\"development\" && concurrently --kill-others-on-fail \"npm run start\" \"npm run client\"",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "browserslist": {
