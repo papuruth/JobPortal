@@ -23,22 +23,22 @@ class App extends React.Component {
 
   componentDidMount() {
     console.log(this.props);
-    // Axios.get(`${config.nodeBaseUrl}/user`)
-    //   .then((response) => {
-    //     console.log(response);
-    //     if (response.data.user) {
-    //       console.log(response.data.user);
-    //       sessionService
-    //         .saveSession(response.data.user)
-    //         .then(() => {
-    //           sessionService.saveUser(response.data.user);
-    //         })
-    //         .catch((err) => console.error(err));
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    Axios.get(`${config.nodeBaseUrl}/user`)
+      .then((response) => {
+        console.log(response);
+        if (response.data.user) {
+          console.log(response.data.user);
+          sessionService
+            .saveSession(response.data.user)
+            .then(() => {
+              sessionService.saveUser(response.data.user);
+            })
+            .catch((err) => console.error(err));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   hideAlert = (e) => {
