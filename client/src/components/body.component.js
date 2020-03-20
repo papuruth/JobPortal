@@ -39,7 +39,6 @@ export default class Body extends Component {
     if (Object.keys(user).length) {
       const page = 0;
       const { role, name } = user;
-      console.log(user, role, name)
       if (role === 1) {
         dispatch(loader(true));
         dispatch(bodyActions.getJobs(page, role, name));
@@ -53,7 +52,6 @@ export default class Body extends Component {
   componentDidUpdate(prevProps) {
     const { jobs, pager, dispatch, logoutUser, user } = this.props;
     dispatch(loader(false));
-    console.log(logoutUser)
     if (logoutUser) {
       dispatch(bodyActions.getJobs(0));
     }

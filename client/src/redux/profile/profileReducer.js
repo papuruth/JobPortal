@@ -1,15 +1,15 @@
 import profileConstants from './profileConstants';
 
-export function profileUpdate(state = {}, action) {
+export function profileUpdate(state = { profile: {} }, action) {
   switch (action.type) {
     case profileConstants.PROFILE_UPDATE_REQUEST:
-      return {};
+      return { ...state };
     case profileConstants.PROFILE_UPDATE_SUCCESS:
       return {
         profile: action.payload
       };
     case profileConstants.PROFILE_UPDATE_FAILURE:
-      return {};
+      return { ...state };
     default:
       return state;
   }

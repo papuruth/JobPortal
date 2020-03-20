@@ -66,9 +66,7 @@ function logout() {
     userService
       .logout()
       .then((res) => {
-        console.log(res)
         if (res) {
-          console.log(res);
           sessionService.deleteUser().then(() => {
             dispatch(success(userConstants.USERS_LOGOUT_SUCCESS, res));
             sessionService

@@ -22,12 +22,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     Axios.get(`${config.nodeBaseUrl}/user`)
       .then((response) => {
-        console.log(response);
         if (response.data.user) {
-          console.log(response.data.user);
           sessionService
             .saveSession(response.data.user)
             .then(() => {

@@ -186,6 +186,16 @@ p {
   display: none;
 }
 
+.panel-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
 .btn1 {
   font-weight: 500;
   float: right;

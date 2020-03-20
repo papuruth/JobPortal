@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { sessionService } from 'redux-react-session';
 import config from '../../config';
 
 async function updateProfile(id, data, emailId) {
@@ -11,9 +12,9 @@ async function updateProfile(id, data, emailId) {
       .then(async () => {
         await axios
           .get(`${config.nodeBaseUrl}/getoneuser/`.concat(id))
-          .then((user) => {
+          .then(async (user) => {
             if (user.data !== null) {
-              localStorage.setItem('currentUser', JSON.stringify(user.data));
+              await sessionService.saveUser(user.data);
               updatedData = user.data;
             }
           });

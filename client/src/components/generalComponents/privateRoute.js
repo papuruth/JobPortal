@@ -56,7 +56,7 @@ const PrivateRoute = ({
 
 PrivateRoute.propTypes = {
   authenticated: PropTypes.bool.isRequired,
-  restricted: PropTypes.bool.isRequired,
+  restricted: PropTypes.bool,
   component: (props, propName) => {
     if (props[propName] && !isValidElementType(props[propName])) {
       return new Error(
@@ -64,14 +64,19 @@ PrivateRoute.propTypes = {
       );
     }
   },
-  all: PropTypes.bool.isRequired,
-  notAdmin: PropTypes.bool.isRequired,
-  user: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  role: PropTypes.number.isRequired
+  all: PropTypes.bool,
+  notAdmin: PropTypes.bool,
+  user: PropTypes.oneOfType([PropTypes.object]),
+  role: PropTypes.number
 };
 
 PrivateRoute.defaultProps = {
-  component: null
+  component: null,
+  restricted: null,
+  all: null,
+  notAdmin: null,
+  user: {},
+  role: null
 };
 
 export default PrivateRoute;
