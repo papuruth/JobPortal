@@ -2,9 +2,10 @@ import { connect } from 'react-redux';
 import PrivateRoute from '../components/generalComponents/privateRoute';
 
 const mapStateToProps = (state) => {
-  const { authenticated } = state.session;
+  const { authenticated, user } = state.session;
   return {
-    authenticated
+    authenticated,
+    user
   };
 };
 

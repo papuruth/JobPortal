@@ -29,18 +29,18 @@ function login(username, password) {
     userService
       .login(username, password)
       .then((response) => {
-        console.log(response);
         if (response.status) {
-          dispatch(alertActions.success('Login Successful'));
-          dispatch(success(userConstants.LOGIN_SUCCESS, response.data.data));
           // store user details in redux-session to keep user logged in between page refreshes
           sessionService
-            .saveSession(response.data.data)
+            .saveUser(response.data.data)
             .then(() => {
-              sessionService.saveUser(response.data.data);
-            })
-            .then(() => {
-              history.push('/');
+              dispatch(alertActions.success('Login Successful'));
+              dispatch(
+                success(userConstants.LOGIN_SUCCESS, response.data.data)
+              );
+              sessionService.saveSession(response.data.data).then(() => {
+                history.push('/');
+              });
             })
             .catch((err) => console.error(err));
         } else if (user.message) {
@@ -66,9 +66,22 @@ function logout() {
     userService
       .logout()
       .then((res) => {
+        console.log(res)
         if (res) {
-          dispatch(success(userConstants.USERS_LOGOUT_SUCCESS, res));
-          history.push('/')
+          console.log(res);
+          sessionService.deleteUser().then(() => {
+            dispatch(success(userConstants.USERS_LOGOUT_SUCCESS, res));
+            sessionService
+              .deleteSession()
+              .then(() => {
+                history.push('/');
+              })
+              .catch((err) => {
+                dispatch(
+                  alertActions.error(userConstants.USERS_LOGOUT_FAILURE, error)
+                );
+              });
+          });
         }
       })
       .catch((error) => {

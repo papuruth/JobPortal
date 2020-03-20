@@ -8,12 +8,48 @@ const PrivateRoute = ({
   component: Component,
   authenticated,
   restricted,
+  notAdmin,
+  all,
+  user,
+  role,
   ...rest
 }) => {
+  if(user.role === role && authenticated) {
+    return (
+      <Route
+        {...rest}
+        render={(props) => <Component {...props} />}
+      />
+    );
+  }
+  if(restricted && (user.role === 1 || user.role === 0) && authenticated) {
+    return (
+      <Route
+        {...rest}
+        render={(props) => <Component {...props} />}
+      />
+    );
+  }
+  if(notAdmin && (user.role === 1 || user.role === 2) && authenticated) {
+    return (
+      <Route
+        {...rest}
+        render={(props) => <Component {...props} />}
+      />
+    );
+  }
+  if(all && authenticated) {
+    return (
+      <Route
+        {...rest}
+        render={(props) => <Component {...props} />}
+      />
+    );
+  }
   return (
     <Route
       {...rest}
-      render={(props) => authenticated && restricted ? <Redirect to="/" /> : <Component {...props} />}
+      render={(props) => <Redirect to="/" />}
     />
   );
 };
@@ -27,7 +63,11 @@ PrivateRoute.propTypes = {
         'Invalid prop componentsu pplied to publicRoute: the prop is not a valid React component'
       );
     }
-  }
+  },
+  all: PropTypes.bool.isRequired,
+  notAdmin: PropTypes.bool.isRequired,
+  user: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  role: PropTypes.number.isRequired
 };
 
 PrivateRoute.defaultProps = {

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Skeleton from '@material-ui/lab/Skeleton';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingOverlay from 'react-loading-overlay';
 import { withRouter } from 'react-router';
@@ -181,7 +182,7 @@ class Card extends React.Component {
                 data.map((job, index) => {
                   const src = config.firebase_url.concat(
                     `${job.imageURL}?alt=media`
-                  );
+                  ) || null;
                   return (
                     <li
                       className={job.status === 'New' ? 'active1' : 'closed'}
@@ -190,13 +191,22 @@ class Card extends React.Component {
                       <div className="row">
                         <div className="col-sm-4 col-lg-2 col-4">
                           <div className="doc-image rounded-circle">
-                            <img
-                              src={src}
-                              className="img-fluid image"
-                              width="78"
-                              height="78"
-                              alt={job.company}
-                            />
+                            {src ? (
+                              <img
+                                src={src}
+                                className="img-fluid image"
+                                width="78"
+                                height="78"
+                                alt={job.company}
+                              />
+                            ) : (
+                              <Skeleton
+                                variant="circle"
+                                width={78}
+                                height={78}
+                                animation="wave"
+                              />
+                            )}
                           </div>
                         </div>
                         <div className="col-sm-4 col-lg-6 col-4 cardBorder">
