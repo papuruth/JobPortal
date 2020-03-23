@@ -2,9 +2,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user');
 
 const strategy = new LocalStrategy((username, password, done) => {
-  console.log(username, password);
   User.findOne({ emailId: username }, (err, userMatch) => {
-    console.log('test', userMatch);
     if (err) {
       return done(err);
     }
