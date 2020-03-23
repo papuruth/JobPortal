@@ -16,8 +16,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      alert: { type: null, message: null },
-      authUser: false
+      alert: { type: null, message: null }
     };
     const { dispatch } = this.props;
     dispatch(userActions.authUser());
@@ -29,19 +28,16 @@ class App extends React.Component {
         alert: props.alert
       };
     }
-
-    if (props.authUser !== state.authUser) {
-      return {
-        authUser: props.authUser
-      };
-    }
+    return {
+      alert: { type: null, message: null }
+    };
   }
 
   componentDidMount() {
     const { dispatch } = this.props;
     history.listen((location, action) => {
       // clear alert on location change
-        dispatch(alertActions.clear());
+      dispatch(alertActions.clear());
     });
   }
 
@@ -51,7 +47,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { alert, authUser } = this.props;
+    const { alert } = this.props;
     return (
       <ErrorBoundary>
         <div className="container-fluid mobile-container-fluid">
@@ -86,8 +82,7 @@ class App extends React.Component {
 
 App.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  alert: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  authUser: PropTypes.bool.isRequired
+  alert: PropTypes.oneOfType([PropTypes.object]).isRequired
 };
 
 export default App;
