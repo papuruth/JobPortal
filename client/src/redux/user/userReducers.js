@@ -1,5 +1,20 @@
 import userConstants from './userConstants';
 
+export function authUser(state = { authUser: false }, action) {
+  switch (action.type) {
+    case userConstants.GET_AUTH_USER_REQUEST:
+      return state;
+    case userConstants.GET_AUTH_USER_SUCCESS:
+      return {
+        authUser: true
+      };
+    case userConstants.GET_AUTH_USER_FAILURE:
+      return state;
+    default:
+      return state;
+  }
+}
+
 export function authentication(state = {}, action) {
   switch (action.type) {
     case userConstants.LOGIN_REQUEST:

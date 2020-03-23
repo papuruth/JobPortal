@@ -3,8 +3,10 @@ import App from '../App';
 
 function mapStateToProps(state) {
   const { alert } = state;
+  const { authUser } = state.authUser;
   return {
-    alert
+    alert,
+    authUser
   };
 }
 

@@ -23,6 +23,29 @@ function failure(type, error) {
   };
 }
 
+function authUser() {
+  return (dispatch) => {
+    dispatch(request(userConstants.GET_AUTH_USER_REQUEST, 'requesting'));
+    userService
+      .authUser()
+      .then((response) => {
+        if (response.data.user) {
+          console.log(response.data);
+          sessionService
+            .saveUser(response.data.user)
+            .then(() => {
+              sessionService.saveSession(response.data.user);
+              dispatch(success(userConstants.GET_AUTH_USER_SUCCESS, true));
+            })
+            .catch((err) => console.error(err));
+        }
+      })
+      .catch((err) => {
+        dispatch(failure(userConstants.GET_AUTH_USER_FAILURE, err));
+      });
+  };
+}
+
 function login(username, password) {
   return (dispatch) => {
     dispatch(request(userConstants.LOGIN_REQUEST, username));
@@ -76,7 +99,7 @@ function logout() {
               })
               .catch((err) => {
                 dispatch(
-                  alertActions.error(userConstants.USERS_LOGOUT_FAILURE, error)
+                  alertActions.error(userConstants.USERS_LOGOUT_FAILURE, err)
                 );
               });
           });
@@ -197,7 +220,8 @@ const userActions = {
   getAllUsers,
   editUser,
   deleteUser,
-  banUser
+  banUser,
+  authUser
 };
 
 export default userActions;
