@@ -3,9 +3,7 @@ const Users = require('../models/user');
 const roles = require('../enum/userRoles');
 const jobController = require('./job.controller');
 
-exports.googleAuthSuccess = (req, res) => {
-  console.log('===== user!!======');
-  console.log(req.user);
+exports.authUser = (req, res) => {
   if (req.user) {
     return res.json({ user: req.user });
   }
@@ -62,7 +60,6 @@ exports.login = async (req, res) => {
     res.json({ data: user, status: false });
   }
   if (user.status) {
-    console.log(`Deleting ${cleanUser.password}`);
     delete cleanUser.password;
     res.json({ data: cleanUser, status: true });
   }
@@ -72,9 +69,9 @@ exports.logout = (req, res) => {
   if (req.user) {
     req.session.destroy();
     res.clearCookie('connect.sid'); // clean up!
-    return res.json({ msg: 'logging you out' });
+    res.json({ status: true });
   }
-  return res.json({ msg: 'no user to log out!' });
+  res.json({ status: false });
 };
 
 exports.getUsers = function getUsers(req, res, next) {

@@ -13,10 +13,6 @@ const strategy = new GoogleStrategy(
     callbackURL: '/google/callback'
   },
   (token, tokenSecret, profile, done) => {
-    // testing
-    console.log('===== GOOGLE PROFILE =======');
-    console.log(profile);
-    console.log('======== END ===========');
     // code
     const { id, displayName, photos, emails, gender } = profile;
     User.findOne({ 'google.googleId': id }, (err, userMatch) => {
@@ -31,10 +27,6 @@ const strategy = new GoogleStrategy(
         return done(null, { data: userMatch });
       }
       // if no user in our db, create a new user with that googleId
-      console.log('====== PRE SAVE =======');
-      console.log(id);
-      console.log(profile);
-      console.log('====== post save ....');
       const newGoogleUser = new User({
         'google.googleId': id,
         name: displayName,
@@ -50,7 +42,6 @@ const strategy = new GoogleStrategy(
         if (error) console.log('error in downloading dp');
         else {
           const filename = `${emails[0].value}`;
-          console.log('Profile Picture downloaded');
           request.post(
             `${config.nodeBaseUrl}/upload`,
             { formData: { filename, file: fs.createReadStream(dest) } },
@@ -69,7 +60,6 @@ const strategy = new GoogleStrategy(
       newGoogleUser.save((err1, savedUser) => {
         if (err1) {
           console.log('Error!! saving the new google user');
-          console.log(err1);
           return done(null, false);
         }
         return done(null, { data: savedUser });
