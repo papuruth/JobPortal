@@ -8,7 +8,6 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  console.log('DEserialize ... called');
   User.findOne({ _id: id }, (err, user) => {
     done(null, user);
   });
