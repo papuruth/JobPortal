@@ -35,18 +35,21 @@ export default class Body extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, user } = this.props;
-    if (Object.keys(user).length) {
-      const page = 0;
-      const { role, name } = user;
-      if (role === 1) {
-        dispatch(loader(true));
-        dispatch(bodyActions.getJobs(page, role, name));
-      } else {
-        dispatch(loader(true));
-        dispatch(bodyActions.getJobs(0));
+    setTimeout(() => {
+      const { dispatch, user } = this.props;
+      console.log(user)
+      if (Object.keys(user).length) {
+        const page = 0;
+        const { role, name } = user;
+        if (role === 1) {
+          dispatch(loader(true));
+          dispatch(bodyActions.getJobs(page, role, name));
+        } else {
+          dispatch(loader(true));
+          dispatch(bodyActions.getJobs(0));
+        }
       }
-    }
+    },0);
   }
 
   componentDidUpdate(prevProps) {
