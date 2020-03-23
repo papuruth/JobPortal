@@ -1,13 +1,25 @@
 import axios from 'axios';
 import config from '../../config';
 
+async function authUser() {
+  try {
+    const response = await axios.get(`${config.nodeBaseUrl}/user`);
+    return response;
+  } catch (error) {
+    return error;
+  }
+}
 async function login(username, passwd) {
-  const password = btoa(passwd);
-  const response = await axios.post(`${config.nodeBaseUrl}/authenticate`, {
-    username,
-    password
-  });
-  return response;
+  try {
+    const password = btoa(passwd);
+    const response = await axios.post(`${config.nodeBaseUrl}/authenticate`, {
+      username,
+      password
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
 }
 
 async function logout() {
@@ -101,7 +113,8 @@ const userService = {
   getAllUsers,
   editUser,
   deleteUser,
-  banUser
+  banUser,
+  authUser
 };
 
 export default userService;
