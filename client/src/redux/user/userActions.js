@@ -30,7 +30,6 @@ function authUser() {
       .authUser()
       .then((response) => {
         if (response.data.user) {
-          console.log(response.data);
           sessionService
             .saveUser(response.data.user)
             .then(() => {

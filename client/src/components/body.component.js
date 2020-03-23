@@ -37,7 +37,6 @@ export default class Body extends Component {
   componentDidMount() {
     setTimeout(() => {
       const { dispatch, user } = this.props;
-      console.log(user)
       if (Object.keys(user).length) {
         const page = 0;
         const { role, name } = user;
