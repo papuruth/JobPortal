@@ -3,7 +3,6 @@
 const mongoose = require('mongoose');
 const Users = require('../models/user');
 const job = require('../models/jobs');
-const page = require('../models/page');
 const apply = require('../models/appliedJobs');
 const MailsDetails = require('../models/mailsDetails');
 const status = require('../enum/jobeStatus');
@@ -33,11 +32,8 @@ exports.postJobs = async function postJobs(req, res) {
     const checkDuplicateJobs = await job.AddJobs.findOne({
       $and: [{ designation }, { company }]
     });
-    const checkDuplicatePage = await page.Pages.findOne({
-      $and: [{ designation }, { company }]
-    });
-
-    if (checkDuplicateJobs !== null && checkDuplicatePage !== null) {
+    
+    if (checkDuplicateJobs !== null) {
       throw new Error('Job already exists. Please add new jobs');
     }
     const data = new job.AddJobs({
@@ -50,19 +46,6 @@ exports.postJobs = async function postJobs(req, res) {
       venue: req.body.company,
       status: status[0].value
     });
-
-    const pageData = new page.Pages({
-      company: req.body.company,
-      profileType: req.body.profile,
-      designation: req.body.designation,
-      annualSalary: req.body.salary,
-      imageURL: req.body.imageURL,
-      city: req.body.city,
-      venue: req.body.company,
-      status: status[0].value
-    });
-
-    await pageData.save();
 
     await data
       .save()
@@ -158,14 +141,6 @@ exports.updateJobs = function updateJobs(req, res, next) {
 };
 
 exports.deleteJobs = function deleteJobs(req, res) {
-  page.Pages.findByIdAndRemove(req.params.id)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.send(err.message);
-    });
-
   job.AddJobs.findByIdAndRemove(req.params.id)
     .then((data) => {
       res.send(data);
