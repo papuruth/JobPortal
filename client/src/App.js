@@ -10,35 +10,35 @@ import Header from './redux-containers/header';
 import alertActions from './redux/alert/alertActions';
 import routes from './routes';
 import history from './_helpers/history';
+import userActions from './redux/user/userActions';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      alert: { type: null, message: null }
+    };
+    const { dispatch } = this.props;
+    dispatch(userActions.authUser());
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.alert !== state.alert) {
+      return {
+        alert: props.alert
+      };
+    }
+    return {
+      alert: { type: null, message: null }
+    };
+  }
+
+  componentDidMount() {
     const { dispatch } = this.props;
     history.listen((location, action) => {
       // clear alert on location change
       dispatch(alertActions.clear());
     });
-  }
-
-  componentDidMount() {
-    console.log(this.props);
-    // Axios.get(`${config.nodeBaseUrl}/user`)
-    //   .then((response) => {
-    //     console.log(response);
-    //     if (response.data.user) {
-    //       console.log(response.data.user);
-    //       sessionService
-    //         .saveSession(response.data.user)
-    //         .then(() => {
-    //           sessionService.saveUser(response.data.user);
-    //         })
-    //         .catch((err) => console.error(err));
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   }
 
   hideAlert = (e) => {
@@ -71,11 +71,7 @@ class App extends React.Component {
                 )}
               </div>
             </div>
-            <Switch>
-              {routes.map((route, index) => (
-                route
-              ))}
-            </Switch>
+            <Switch>{routes.map((route, index) => route)}</Switch>
           </div>
           <Footer />
         </div>

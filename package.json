@@ -18,7 +18,7 @@
     "firebase-admin": "^8.10.0",
     "http": "0.0.0",
     "moment": "^2.24.0",
-    "mongoose": "^5.5.4",
+    "mongoose": "^5.7.5",
     "morgan": "^1.8.2",
     "multer": "^1.4.1",
     "nodemailer": "^6.4.5",
@@ -37,7 +37,7 @@
     "client": "cd client && npm start",
     "build": "cd client && npm run build",
     "prod": "set NODE_ENV=\"production\" && nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"npm run start\" \"npm run client\"",
+    "dev": "set NODE_ENV=\"development\" && concurrently --kill-others-on-fail \"npm run start\" \"npm run client\"",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "browserslist": {

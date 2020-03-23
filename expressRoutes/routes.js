@@ -10,7 +10,7 @@ const messageController = require('../controllers/messageController');
 
 router.get('/onlineusers', messageController.getOnlineUsers);
 router.get('/chats', messageController.getMessages);
-router.get('/user', userController.googleAuthSuccess);
+router.get('/user', userController.authUser);
 router.post('/register', userController.addUser);
 // ===== Google Auth ====
 router.get(

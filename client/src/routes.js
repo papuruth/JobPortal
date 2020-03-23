@@ -15,13 +15,13 @@ import PrivateRoute from './redux-containers/privateRoute';
 
 const routes = [
   <PublicRoute key="BodyComponent" restricted={false} path="/" component={Body} exact />,
-  <PrivateRoute key="ChatComponent" path="/chat" component={ChatContainer} exact />,
-  <PrivateRoute key="ProfileComponent" path="/profile" component={Profile} exact />,
-  <PrivateRoute key="ManageUserComponent" path="/manageusers" component={ManageUser} exact />,
-  <PrivateRoute key="AddJobComponent" path="/addjob" component={JobForm} exact />,
-  <PrivateRoute key="UpdateJobComponent" path="/updatejob" component={UpdateJobForm} exact />,
-  <PrivateRoute key="AppliedListComponent" path="/appliedlist" component={AppliedList} exact />,
-  <PrivateRoute key="FeedbackComponent" path="/feedback" component={Feedback} exact />,
+  <PrivateRoute key="ChatComponent" notAdmin path="/chat" component={ChatContainer} exact />,
+  <PrivateRoute key="ProfileComponent" all path="/profile" component={Profile} exact />,
+  <PrivateRoute key="ManageUserComponent" role={0} path="/manageusers" component={ManageUser} exact />,
+  <PrivateRoute key="AddJobComponent" restricted path="/addjob" component={JobForm} exact />,
+  <PrivateRoute key="UpdateJobComponent" role={1} path="/updatejob" component={UpdateJobForm} exact />,
+  <PrivateRoute key="AppliedListComponent" notAdmin path="/appliedlist" component={AppliedList} exact />,
+  <PrivateRoute key="FeedbackComponent" role={2} path="/feedback" component={Feedback} exact />,
   <PublicRoute key="SignupComponent" restricted path="/register" component={Signup} exact />,
   <PublicRoute key="LoginComponent" restricted path="/login" component={Login} exact />,
   <PublicRoute key="NotFoundComponent" restricted={false} path="/*" component={NotFound} />

@@ -178,7 +178,7 @@ class Header extends React.Component {
                       </Link>
                     </li>
                   )}
-                  {authenticated && history.location.pathname !== '/chat' && (
+                  {authenticated && history.location.pathname !== '/chat' && currentUser.role !== 0 && (
                     <li>
                       <Link to="/chat" title="Toggle chat panel">
                         <ChatIcon style={{ fontSize: 25 }} />

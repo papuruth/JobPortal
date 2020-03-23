@@ -1,29 +1,30 @@
 import axios from 'axios';
-import { sessionService } from 'redux-react-session';
 import config from '../../config';
 
+async function authUser() {
+  try {
+    const response = await axios.get(`${config.nodeBaseUrl}/user`);
+    return response;
+  } catch (error) {
+    return error;
+  }
+}
 async function login(username, passwd) {
-  const password = btoa(passwd);
-  const response = await axios.post(`${config.nodeBaseUrl}/authenticate`, {
-    username,
-    password
-  });
-  console.log(response.data);
-  return response;
+  try {
+    const password = btoa(passwd);
+    const response = await axios.post(`${config.nodeBaseUrl}/authenticate`, {
+      username,
+      password
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
 }
 
 async function logout() {
-  axios
-    .post(`${config.nodeBaseUrl}/logout`)
-    .then(async (res) => {
-      console.log(res.data);
-      await sessionService.deleteSession();
-      await sessionService.deleteUser();
-      return true;
-    })
-    .catch((err) => {
-      console.log(err.message);
-    });
+  const res = await axios.post(`${config.nodeBaseUrl}/logout`);
+  return res;
 }
 
 async function register(fullname, email, password, phone, gender) {
@@ -112,7 +113,8 @@ const userService = {
   getAllUsers,
   editUser,
   deleteUser,
-  banUser
+  banUser,
+  authUser
 };
 
 export default userService;

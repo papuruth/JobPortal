@@ -23,24 +23,46 @@ function failure(type, error) {
   };
 }
 
+function authUser() {
+  return (dispatch) => {
+    dispatch(request(userConstants.GET_AUTH_USER_REQUEST, 'requesting'));
+    userService
+      .authUser()
+      .then((response) => {
+        if (response.data.user) {
+          sessionService
+            .saveUser(response.data.user)
+            .then(() => {
+              sessionService.saveSession(response.data.user);
+              dispatch(success(userConstants.GET_AUTH_USER_SUCCESS, true));
+            })
+            .catch((err) => console.error(err));
+        }
+      })
+      .catch((err) => {
+        dispatch(failure(userConstants.GET_AUTH_USER_FAILURE, err));
+      });
+  };
+}
+
 function login(username, password) {
   return (dispatch) => {
     dispatch(request(userConstants.LOGIN_REQUEST, username));
     userService
       .login(username, password)
       .then((response) => {
-        console.log(response);
         if (response.status) {
-          dispatch(alertActions.success('Login Successful'));
-          dispatch(success(userConstants.LOGIN_SUCCESS, response.data.data));
           // store user details in redux-session to keep user logged in between page refreshes
           sessionService
-            .saveSession(response.data.data)
+            .saveUser(response.data.data)
             .then(() => {
-              sessionService.saveUser(response.data.data);
-            })
-            .then(() => {
-              history.push('/');
+              dispatch(alertActions.success('Login Successful'));
+              dispatch(
+                success(userConstants.LOGIN_SUCCESS, response.data.data)
+              );
+              sessionService.saveSession(response.data.data).then(() => {
+                history.push('/');
+              });
             })
             .catch((err) => console.error(err));
         } else if (user.message) {
@@ -67,8 +89,19 @@ function logout() {
       .logout()
       .then((res) => {
         if (res) {
-          dispatch(success(userConstants.USERS_LOGOUT_SUCCESS, res));
-          history.push('/')
+          sessionService.deleteUser().then(() => {
+            dispatch(success(userConstants.USERS_LOGOUT_SUCCESS, res));
+            sessionService
+              .deleteSession()
+              .then(() => {
+                history.push('/');
+              })
+              .catch((err) => {
+                dispatch(
+                  alertActions.error(userConstants.USERS_LOGOUT_FAILURE, err)
+                );
+              });
+          });
         }
       })
       .catch((error) => {
@@ -186,7 +219,8 @@ const userActions = {
   getAllUsers,
   editUser,
   deleteUser,
-  banUser
+  banUser,
+  authUser
 };
 
 export default userActions;

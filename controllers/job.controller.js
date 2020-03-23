@@ -3,16 +3,20 @@
 const mongoose = require('mongoose');
 const Users = require('../models/user');
 const job = require('../models/jobs');
-const page = require('../models/page');
 const apply = require('../models/appliedJobs');
 const MailsDetails = require('../models/mailsDetails');
 const status = require('../enum/jobeStatus');
-const { appliedStatusComp, appliedStatusUser } = require('../enum/appliedStatus');
+const {
+  appliedStatusComp,
+  appliedStatusUser
+} = require('../enum/appliedStatus');
 
 exports.validateJobs = async (req, res) => {
   try {
     const { designation, company } = req.body;
-    const jobs = await job.AddJobs.findOne({ $and: [{ designation }, { company }] });
+    const jobs = await job.AddJobs.findOne({
+      $and: [{ designation }, { company }]
+    });
     if (jobs !== null) {
       res.json(false);
     } else {
@@ -25,45 +29,30 @@ exports.validateJobs = async (req, res) => {
 exports.postJobs = async function postJobs(req, res) {
   try {
     const { designation, company } = req.body;
-    const checkDuplicateJobs = await job.AddJobs.findOne({ $and: [{ designation }, { company }] });
-    const checkDuplicatePage = await page.Pages.findOne({ $and: [{ designation }, { company }] });
-
-    if (checkDuplicateJobs !== null && checkDuplicatePage !== null) {
+    const checkDuplicateJobs = await job.AddJobs.findOne({
+      $and: [{ designation }, { company }]
+    });
+    
+    if (checkDuplicateJobs !== null) {
       throw new Error('Job already exists. Please add new jobs');
     }
-    const data = new job.AddJobs(
-      {
-        company: req.body.company,
-        profileType: req.body.profile,
-        designation: req.body.designation,
-        annualSalary: req.body.salary,
-        imageURL: req.body.imageURL,
-        city: req.body.city,
-        venue: req.body.company,
-        status: status[0].value,
-      },
-    );
+    const data = new job.AddJobs({
+      company: req.body.company,
+      profileType: req.body.profile,
+      designation: req.body.designation,
+      annualSalary: req.body.salary,
+      imageURL: req.body.imageURL,
+      city: req.body.city,
+      venue: req.body.company,
+      status: status[0].value
+    });
 
-    const pageData = new page.Pages(
-      {
-        company: req.body.company,
-        profileType: req.body.profile,
-        designation: req.body.designation,
-        annualSalary: req.body.salary,
-        imageURL: req.body.imageURL,
-        city: req.body.city,
-        venue: req.body.company,
-        status: status[0].value,
-      },
-    );
-
-    await pageData.save();
-
-    await data.save()
+    await data
+      .save()
       .then(() => {
         res.json({
           title: 'Successful',
-          detail: 'Job posted Successfully',
+          detail: 'Job posted Successfully'
         });
       })
       .catch((err) => {
@@ -72,7 +61,7 @@ exports.postJobs = async function postJobs(req, res) {
   } catch (error) {
     res.json({
       title: 'Error',
-      detail: error.message,
+      detail: error.message
     });
   }
 };
@@ -91,19 +80,20 @@ exports.getJobs = async function getJobs(req, res, next) {
 
     job.AddJobs.find({ company: name }, (err, data) => {
       if (err) return next(err);
-      res.json({
-        jobs: data,
-        pager: {
-          currentPage: Number(page),
-          pages: totalPages,
-          totalItems: totalJobs.length,
-        },
-      });
-      return true;
+      setTimeout(() => {
+        res.json({
+          jobs: data,
+          pager: {
+            currentPage: Number(page),
+            pages: totalPages,
+            totalItems: totalJobs.length
+          }
+        });
+      }, 500);
     })
       .sort({ updatedAt: -1 })
       .limit(4)
-      .skip(4 * (Number(page)));
+      .skip(4 * Number(page));
   } else {
     // Get all jobs
     const totalJobs = await job.AddJobs.find({});
@@ -114,19 +104,20 @@ exports.getJobs = async function getJobs(req, res, next) {
     }
     job.AddJobs.find({}, (err, data) => {
       if (err) return next(err);
-      res.json({
-        jobs: data,
-        pager: {
-          currentPage: Number(page),
-          pages: totalPages,
-          totalItems: totalJobs.length,
-        },
-      });
-      return true;
+      setTimeout(() => {
+        res.json({
+          jobs: data,
+          pager: {
+            currentPage: Number(page),
+            pages: totalPages,
+            totalItems: totalJobs.length
+          }
+        });
+      }, 500);
     })
       .sort({ updatedAt: -1 })
       .limit(4)
-      .skip(4 * (Number(page)));
+      .skip(4 * Number(page));
   }
 };
 
@@ -150,14 +141,6 @@ exports.updateJobs = function updateJobs(req, res, next) {
 };
 
 exports.deleteJobs = function deleteJobs(req, res) {
-  page.Pages.findByIdAndRemove(req.params.id)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.send(err.message);
-    });
-
   job.AddJobs.findByIdAndRemove(req.params.id)
     .then((data) => {
       res.send(data);
@@ -173,8 +156,11 @@ exports.applyJobs = async function applyJobs(req, res) {
     const checkUser = await Users.findOne({ name });
     const checkJobs = await job.AddJobs.findOne({ _id: id });
     const checkDuplicateApply = await apply.AppliedJobs.findOne({
-      $and: [{ 'userDetails.name': checkUser.name }, { 'jobDetails.designation': checkJobs.designation },
-        { 'jobDetails.company': checkJobs.company }],
+      $and: [
+        { 'userDetails.name': checkUser.name },
+        { 'jobDetails.designation': checkJobs.designation },
+        { 'jobDetails.company': checkJobs.company }
+      ]
     });
     if (checkDuplicateApply !== null) {
       throw new Error('You have already applied. Please wait, for result!');
@@ -229,7 +215,7 @@ exports.applyJobs = async function applyJobs(req, res) {
         gender: req.body.gender,
         emailId: checkUser.emailId,
         phone: checkUser.phone,
-        role: checkUser.role,
+        role: checkUser.role
       },
       jobDetails: {
         company: checkJobs.company,
@@ -238,16 +224,17 @@ exports.applyJobs = async function applyJobs(req, res) {
         annualSalary: checkJobs.annualSalary,
         city: checkJobs.city,
         venue: checkJobs.venue,
-        status: checkJobs.status,
+        status: checkJobs.status
       },
       statusUser: appliedStatusUser[0].value,
-      statusComp: appliedStatusComp[0].value,
+      statusComp: appliedStatusComp[0].value
     });
-    await applyData.save()
+    await applyData
+      .save()
       .then(() => {
         res.json({
           title: 'Successful',
-          detail: 'Job Applied Successfully',
+          detail: 'Job Applied Successfully'
         });
       })
       .catch((err) => {
@@ -258,9 +245,9 @@ exports.applyJobs = async function applyJobs(req, res) {
       errors: [
         {
           title: 'Error',
-          errorMessage: err.message,
-        },
-      ],
+          errorMessage: err.message
+        }
+      ]
     });
   }
 };
@@ -284,35 +271,47 @@ exports.getAppliedJobs = async function getAppliedJobs(req, res) {
 exports.updateJobStatus = async function updateJobStatus(req, res, next) {
   const { status, id } = req.body;
   const job = await apply.AppliedJobs.findById(id);
-  await apply.AppliedJobs
-    .findByIdAndUpdate(id, { $set: { statusComp: status, statusUser: status } }, (err) => {
+  await apply.AppliedJobs.findByIdAndUpdate(
+    id,
+    { $set: { statusComp: status, statusUser: status } },
+    (err) => {
       if (err) {
         return next(err);
       }
       res.json({
         data: JSON.stringify(job),
-        statusResponse: status,
+        statusResponse: status
       });
       return true;
-    });
+    }
+  );
 };
-
 
 // Posting Mail Details
 exports.mailDetails = async function mailDetails(req, res) {
   const {
-    jobId, name, company, designation, city, date, status,
+    jobId,
+    name,
+    company,
+    designation,
+    city,
+    date,
+    status
   } = req.body.mailDetails;
   try {
     const checkDuplicate = await MailsDetails.findOne({ jobId });
     if (checkDuplicate !== null) {
-      await MailsDetails.findOneAndUpdate({ jobId }, { $set: { status } }, (err, data) => {
-        if (err) {
-          throw new Error(err);
-        } else {
-          res.json(data);
+      await MailsDetails.findOneAndUpdate(
+        { jobId },
+        { $set: { status } },
+        (err, data) => {
+          if (err) {
+            throw new Error(err);
+          } else {
+            res.json(data);
+          }
         }
-      });
+      );
     } else {
       const mailData = new MailsDetails({
         jobId,
@@ -321,10 +320,11 @@ exports.mailDetails = async function mailDetails(req, res) {
         designation,
         city,
         date,
-        status,
+        status
       });
 
-      await mailData.save()
+      await mailData
+        .save()
         .then((data) => {
           res.json(data);
         })
@@ -338,8 +338,8 @@ exports.mailDetails = async function mailDetails(req, res) {
 };
 
 exports.getMailDetails = async function getMailDetails(req, res, next) {
-  const {name} = req.query;
-  await MailsDetails.find({name}, (err, data) => {
+  const { name } = req.query;
+  await MailsDetails.find({ name }, (err, data) => {
     if (err) {
       return next(err);
     }
@@ -349,10 +349,15 @@ exports.getMailDetails = async function getMailDetails(req, res, next) {
 };
 
 exports.updateAppliedJobs = async function updateAppliedJobs(req, data, next) {
-  await apply.AppliedJobs.updateMany({ 'userDetails.userId': mongoose.Types.ObjectId(req.params.id) }, { $set: { userDetails: data } }, { multi: true }, (err, res) => {
-    if (err) {
-      return next(err);
+  await apply.AppliedJobs.updateMany(
+    { 'userDetails.userId': mongoose.Types.ObjectId(req.params.id) },
+    { $set: { userDetails: data } },
+    { multi: true },
+    (err, res) => {
+      if (err) {
+        return next(err);
+      }
+      return res;
     }
-    return res;
-  });
+  );
 };

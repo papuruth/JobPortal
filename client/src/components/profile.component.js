@@ -17,7 +17,7 @@ class Profile extends React.Component {
       subject: '',
       message: '',
       userData: '',
-      profile: '',
+      profile: {},
       formErrors: {
         photo: '',
         fullname: '',
@@ -197,7 +197,7 @@ class Profile extends React.Component {
   render() {
     let imageUrl = '';
     try {
-      if (this.state.profile) {
+      if (Object.keys(this.state.profile).length) {
         imageUrl = config.firebase_url.concat(this.state.profile.image);
       } else {
         imageUrl = config.firebase_url.concat(this.state.userData.image);
@@ -401,26 +401,26 @@ class Profile extends React.Component {
           </form>
         </div>
         <div className="panel-footer">
-          <button
-            onClick={this.mailForm}
-            className="btn btn-sm btn-primary"
-            type="button"
-            data-toggle="tooltip"
-            data-original-title="Send message to user"
-          >
-            <i className="glyphicon glyphicon-envelope"></i>
-          </button>
-          <span className="pull-right">
+          {this.state.userData.role !== 0 && (
             <button
-              onClick={this.updateDetails}
-              className="btn btn-sm btn-warning"
+              onClick={this.mailForm}
+              className="btn btn-sm btn-primary"
               type="button"
               data-toggle="tooltip"
-              data-original-title="Edit this user"
+              data-original-title="Send message to user"
             >
-              <i className="glyphicon glyphicon-edit"></i>
+              <i className="glyphicon glyphicon-envelope"></i>
             </button>
-          </span>
+          )}
+          <button
+            onClick={this.updateDetails}
+            className="btn btn-sm btn-warning"
+            type="button"
+            data-toggle="tooltip"
+            data-original-title="Edit this user"
+          >
+            <i className="glyphicon glyphicon-edit"></i>
+          </button>
         </div>
       </div>
     );

@@ -5,6 +5,6 @@
 // use a publicly accessible version of this API. Storing the address in the config
 // file allows us to easily create different settings for various environments.
 export default {
-  nodeBaseUrl: process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'http://localhost:3001',
+  nodeBaseUrl: process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : 'https://jobportalmern.herokuapp.com',
   firebase_url: 'https://firebasestorage.googleapis.com/v0/b/job-portal-mern.appspot.com/o',
 };
