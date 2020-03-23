@@ -5,7 +5,8 @@ import {
   authentication,
   registration,
   Users,
-  Logout
+  Logout,
+  authUser
 } from './user/userReducers';
 import jobs from './body/bodyReducer';
 import {
@@ -24,6 +25,7 @@ import loaderReducer from './loader/loaderReducer';
 
 const rootReducer = combineReducers({
   authentication,
+  authUser,
   alert,
   jobs,
   registration,
