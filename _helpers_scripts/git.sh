@@ -14,7 +14,7 @@ if [[ $1 && $2 ]]; then
     git commit -m "$1"
 
     # Push the changes to remote branch
-    git push origin $2
+    git push -u origin $2
 else
     echo "Please enter a commit message and branch name"
     exit 128
