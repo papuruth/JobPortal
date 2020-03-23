@@ -39,7 +39,7 @@ class JobForm extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(userActions.getAllUsers());
+    dispatch(userActions.getAllUsers(null));
   }
 
   componentWillReceiveProps(props) {
@@ -162,7 +162,7 @@ class JobForm extends React.Component {
           : ' is invalid';
         break;
       case 'salary':
-        salaryValid = value.match(/^[0-9]+( [a-zA-Z]+)*$/);
+        salaryValid = value.match(/^([0-9]{1}\s[A-Z]{3})(\s-\s(\d+)\s[A-Z]{3})|(?<!\s|\d+|-|\s)([0-9]{1}\s[A-Z]{3})$/);
         fieldValidationErrors.salary = salaryValid ? '' : 'must be valid';
         break;
       case 'city':

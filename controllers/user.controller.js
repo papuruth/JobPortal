@@ -79,7 +79,7 @@ exports.logout = (req, res) => {
 
 exports.getUsers = function getUsers(req, res, next) {
   const { user } = req.query;
-  if (req.query) {
+  if (user) {
     Users.find({ name: user }, (err, data) => {
       if (err) return next(err);
       res.send(data);
