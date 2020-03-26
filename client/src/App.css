@@ -227,6 +227,68 @@ p {
   border-radius: 0.25rem;
 }
 
+.loginBtn {
+  width: 191px;
+  border-radius: 0px;
+  font-size: 20px;
+  height: 43px;
+  margin-bottom: 10px;
+}
+
+.login_regSec {
+  text-align: center;
+}
+.login_orSec {
+  margin: 15px auto;
+  width: 300px;
+  border-bottom: 1px solid #cecece;
+  position: relative;
+}
+
+.login_orSec .login_ortextNew {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  margin-left: -14px;
+  line-height: 20px;
+  font-size: 12px;
+  padding: 4px 0;
+  background: #fff;
+}
+
+.signupBtn {
+  width: 191px;
+  border-radius: 0px;
+  font-size: 20px;
+  height: 43px;
+  margin-bottom: 10px;
+}
+
+.signup_loginSec {
+  text-align: center;
+}
+.signup_orSec {
+  margin: 15px auto;
+  width: 300px;
+  border-bottom: 1px solid #cecece;
+  position: relative;
+}
+
+.signup_orSec .signup_ortextNew {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  margin-left: -14px;
+  line-height: 20px;
+  font-size: 12px;
+  padding: 4px 0;
+  background: #fff;
+}
+
 .h51 {
   font-weight: bold;
 }

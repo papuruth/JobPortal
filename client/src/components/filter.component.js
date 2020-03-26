@@ -7,7 +7,7 @@ class Filter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      totalJobs: [],
+      filterData: [],
       city: '',
       designation: '',
       company: '',
@@ -19,13 +19,13 @@ class Filter extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     const { dataFilter } = props;
-    const { totalJobs } = dataFilter;
-    if (totalJobs !== state.totalJobs) {
+    const { filterData } = dataFilter;
+    if (filterData !== state.filterData) {
       try {
         let cityList = [];
         let desigList = [];
         let compList = [];
-        totalJobs.filter((item) => {
+        filterData.filter((item) => {
           cityList.push(item.city);
           desigList.push(item.designation);
           compList.push(item.company);
@@ -51,8 +51,8 @@ class Filter extends React.Component {
           optionsComp,
           optionsCity,
           optionsDesig,
-          totalJobs
-        }
+          filterData
+        };
       } catch (error) {
         console.log(error.message);
       }
@@ -85,19 +85,15 @@ class Filter extends React.Component {
     const { filterData } = dataFilter;
     const jobData = filterData;
     let data;
-    if (
-      (city === '' || city === null) &&
-      (designation === '' || designation === null) &&
-      (company === '' || company === null)
-    ) {
+    if (city === '' && designation === '' && company === '') {
       data = jobData;
     } else {
       try {
         data = jobData;
         const condition = {
-          city: city.value || '',
-          company: company.value || '',
-          designation: designation.value || ''
+          city: city ? city.value : '',
+          company: company ? company.value : '',
+          designation: designation ? designation.value : ''
         };
         // Calling filter function with condition and original data
         data = multiFilter(jobData, condition);
@@ -191,7 +187,6 @@ class Filter extends React.Component {
 }
 
 Filter.propTypes = {
-  totalJobs: PropTypes.arrayOf(PropTypes.any),
   dataFilter: PropTypes.shape({
     filterData: PropTypes.array,
     totalJobs: PropTypes.array
@@ -200,8 +195,6 @@ Filter.propTypes = {
   clearFilter: PropTypes.func.isRequired
 };
 
-Filter.defaultProps = {
-  totalJobs: []
-};
+Filter.defaultProps = {};
 
 export default Filter;

@@ -1,22 +1,21 @@
-import Axios from 'axios';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { sessionService } from 'redux-react-session';
 import { Switch } from 'react-router-dom';
 import Footer from './components/footer.component';
 import ErrorBoundary from './components/generalComponents/error.boundary';
-import config from './config';
 import Header from './redux-containers/header';
 import alertActions from './redux/alert/alertActions';
 import routes from './routes';
 import history from './_helpers/history';
 import userActions from './redux/user/userActions';
+import DemoAppWarning from './components/generalComponents/demoAppWarning';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      alert: { type: null, message: null }
+      alert: { type: null, message: null },
+      openWarningDialog: false
     };
     const { dispatch } = this.props;
     dispatch(userActions.authUser());
@@ -39,6 +38,10 @@ class App extends React.Component {
       // clear alert on location change
       dispatch(alertActions.clear());
     });
+    console.log('in app')
+    this.setState({
+      openWarningDialog: true
+    });
   }
 
   hideAlert = (e) => {
@@ -48,11 +51,14 @@ class App extends React.Component {
 
   render() {
     const { alert } = this.props;
+    const { openWarningDialog } = this.state;
+    console.log(openWarningDialog)
     return (
       <ErrorBoundary>
         <div className="container-fluid mobile-container-fluid">
           <Header />
           <div className="content">
+            {openWarningDialog && <DemoAppWarning />}
             <div className="">
               <div className="">
                 {alert.message && (

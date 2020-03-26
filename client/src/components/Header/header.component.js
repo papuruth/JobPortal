@@ -18,6 +18,8 @@ import female from '../../images/female.png';
 import male from '../../images/male.jpg';
 import NotificationFactory from '../../redux-containers/notificationFactory';
 import userActions from '../../redux/user/userActions';
+import Login from '../../redux-containers/userLogin';
+import Signup from '../../redux-containers/userSignup';
 
 const { $ } = window;
 
@@ -26,7 +28,9 @@ class Header extends React.Component {
     super(props);
     this.state = {
       currentUser: '',
-      lengthMail: 0
+      lengthMail: 0,
+      openLogin: false,
+      openSignup: false
     };
   }
 
@@ -52,6 +56,36 @@ class Header extends React.Component {
     });
   };
 
+  openLoginComponent = () => {
+    this.setState(state =>{
+      return {
+        openLogin: !state.openLogin,
+        openSignup: false
+      }
+    });
+  };
+
+  handleLoginComponent = (props) => {
+    this.setState({
+      openLogin: props
+    });
+  }
+
+  openSignupComponent = () => {
+    this.setState(state =>{
+      return {
+        openSignup: !state.openSignup,
+        openLogin: false
+      }
+    });
+  };
+
+  handleSignupComponent = (props) => {
+    this.setState({
+      openSignup: props
+    });
+  }
+
   hideCollapse = () => {
     $('.collapse').collapse('hide');
   };
@@ -72,7 +106,7 @@ class Header extends React.Component {
   };
 
   render() {
-    const { currentUser, isMounted } = this.state;
+    const { currentUser, isMounted, openLogin, openSignup } = this.state;
     const { history, authenticated } = this.props;
     let imageUrl;
     if (authenticated) {
@@ -106,6 +140,8 @@ class Header extends React.Component {
             </footer>
           </div>
         </div>
+        {!authenticated && openLogin && <Login handleLoginComponent={this.handleLoginComponent} handleSignupComponent={this.handleSignupComponent} mount={openLogin} />}
+        {!authenticated && openSignup && <Signup handleSignupComponent={this.handleSignupComponent} handleLoginComponent={this.handleLoginComponent} mount={openSignup} />}
         <div className="container-fluid mobile-container-fluid">
           <div>
             <div>
@@ -178,25 +214,27 @@ class Header extends React.Component {
                       </Link>
                     </li>
                   )}
-                  {authenticated && history.location.pathname !== '/chat' && currentUser.role !== 0 && (
-                    <li>
-                      <Link to="/chat" title="Toggle chat panel">
-                        <ChatIcon style={{ fontSize: 25 }} />
-                      </Link>
-                    </li>
-                  )}
+                  {authenticated &&
+                    history.location.pathname !== '/chat' &&
+                    currentUser.role !== 0 && (
+                      <li>
+                        <Link to="/chat" title="Toggle chat panel">
+                          <ChatIcon style={{ fontSize: 25 }} />
+                        </Link>
+                      </li>
+                    )}
                 </ul>
                 <ul className="nav navbar-nav navbar-right">
                   {!authenticated && history.location.pathname !== '/register' && (
                     <li title="Toggle signup panel">
-                      <Link to="/register">
+                      <Link to="#" onClick={this.openSignupComponent}>
                         <PersonIcon style={{ fontSize: 25 }} />
                       </Link>
                     </li>
                   )}
                   {!authenticated && history.location.pathname !== '/login' && (
                     <li title="Toggle login panel">
-                      <Link to="/login">
+                      <Link to="#" onClick={this.openLoginComponent}>
                         <LockIcon style={{ fontSize: 25 }} />
                       </Link>
                     </li>

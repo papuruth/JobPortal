@@ -41,6 +41,9 @@ const userSchema = new UserSchema({
   },
   google: {
     googleId: { type: String, required: false }
+  },
+  facebook: {
+    fbId: { type: String, required: false }
   }
 });
 
