@@ -8,8 +8,6 @@ import ChatContainer from './redux-containers/chat.container';
 import ManageUser from './redux-containers/manageuser';
 import Profile from './redux-containers/profile';
 import UpdateJobForm from './redux-containers/updateJob';
-import Login from './redux-containers/userLogin';
-import Signup from './redux-containers/userSignup';
 import PublicRoute from './redux-containers/publicRoute';
 import PrivateRoute from './redux-containers/privateRoute';
 
@@ -22,8 +20,6 @@ const routes = [
   <PrivateRoute key="UpdateJobComponent" role={1} path="/updatejob" component={UpdateJobForm} exact />,
   <PrivateRoute key="AppliedListComponent" notAdmin path="/appliedlist" component={AppliedList} exact />,
   <PrivateRoute key="FeedbackComponent" role={2} path="/feedback" component={Feedback} exact />,
-  <PublicRoute key="SignupComponent" restricted path="/register" component={Signup} exact />,
-  <PublicRoute key="LoginComponent" restricted path="/login" component={Login} exact />,
   <PublicRoute key="NotFoundComponent" restricted={false} path="/*" component={NotFound} />
 ];
 

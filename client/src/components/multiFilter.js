@@ -7,10 +7,10 @@ const multiFilter = (item, condition) => {
       }
       // Checking for case and as well as matching the filter condition with items
       // if matches returns true else false
-      return condition[eachKey]
+      return !condition[eachKey]
         .toString()
         .toLowerCase()
-        .includes(eachObj[eachKey].toString().toLowerCase());
+        .indexOf(eachObj[eachKey].toString().toLowerCase());
     })
   );
 };

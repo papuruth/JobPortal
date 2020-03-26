@@ -1,17 +1,28 @@
 import PropsTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+import { Divider } from '@material-ui/core';
 import userActions from '../redux/user/userActions';
-import Button from './generalComponents/button.component';
+import GeneralButton from './generalComponents/button.component';
 import Input from './generalComponents/input.component';
 import Label from './generalComponents/label';
-import googleButton from '../images/btn_google_signin_dark_normal_web.png';
+import googleButton from '../images/loginGoogle.png';
+import facebookButton from '../images/loginFb.png';
 import config from '../config';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      open: props.mount,
       username: '',
       password: '',
       formErrors: { Username: '', Password: '' },
@@ -29,6 +40,27 @@ class Login extends React.Component {
       this.validateField(name, value);
     });
   };
+
+  handleClose = () => {
+    this.setState({
+      open: false
+    }, () => {
+      setTimeout(() => {
+        this.props.handleLoginComponent(false);
+      }, 200);
+    });
+  };
+
+  handleSignupComponent = () => {
+    this.setState({
+      open: false
+    }, () => {
+      setTimeout(() => {
+        this.props.handleLoginComponent(false);
+        this.props.handleSignupComponent(true);
+      }, 200);
+    });
+  }
 
   login = (event) => {
     event.preventDefault();
@@ -106,11 +138,42 @@ class Login extends React.Component {
   }
 
   render() {
+    const {open} = this.state;
     return (
-      <div className="row justify-content-center">
-        <div className="col-sm-12">
-          <div className="col-md-4 col-md-offset-4">
-            <h1>Login</h1>
+      <div>
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle id="alert-dialog-slide-title">
+            LOGIN TO EXPLORE MORE
+            <Divider />
+          </DialogTitle>
+          <DialogContent>
+            <div className="login_Social">
+              <a href={`${config.nodeBaseUrl}/google`}>
+                {/* <GoogleButton /> */}
+                <img
+                  src={googleButton}
+                  alt="Sign in with Google"
+                  title="Sign in with Google"
+                />
+              </a>
+              <a href={`${config.nodeBaseUrl}/facebook`}>
+                <img
+                  src={facebookButton}
+                  alt="Sign in with Facebook"
+                  title="Sign in with Facebook"
+                />
+              </a>
+            </div>
+            <div className="login_orSec">
+              <span className="login_ortextNew">or</span>
+            </div>
             <form onSubmit={this.login} method="POST">
               <div
                 className={`form-group row ${this.errorClass(
@@ -118,11 +181,11 @@ class Login extends React.Component {
                 )}`}
               >
                 <Label
-                  className="col-sm-2 col-form-label"
+                  className="col-sm-12 col-form-label"
                   htmlFor="email"
                   title="Email"
                 />
-                <div className="col-sm-10">
+                <div className="col-sm-12">
                   <Input
                     onChange={this.handleUserInput}
                     className="form-control"
@@ -146,11 +209,11 @@ class Login extends React.Component {
                 )}`}
               >
                 <Label
-                  className="col-sm-2 col-form-label"
+                  className="col-sm-12 col-form-label"
                   htmlFor="password"
                   title="Password"
                 />
-                <div className="input-group col-sm-10">
+                <div className="input-group col-sm-12">
                   <Input
                     onChange={this.handleUserInput}
                     className="form-control"
@@ -173,31 +236,36 @@ class Login extends React.Component {
                 </div>
               </div>
               <div className="form-group row">
-                <div className="col-sm-10">
-                  <Button
-                    title="Login"
-                    className="btn btn-primary"
-                    btnDisabled={this.state.signinValid}
-                  />
-                  <a href={`${config.nodeBaseUrl}/google`}>
-                    {/* <GoogleButton /> */}
-                    <img src={googleButton} alt="sign into Google Button" />
-                  </a>
-                  <Link to="/register" className="btn btn-link">
-                    Register
-                  </Link>
+                <div className="col-sm-12">
+                  <div className="login_Default">
+                    <GeneralButton
+                      title="Login"
+                      className="btn btn-primary loginBtn"
+                      btnDisabled={this.state.signinValid}
+                    />
+                  </div>
+                  <div className="login_orSec">
+                    <span className="login_ortextNew">or</span>
+                  </div>
+                  <div className="login_regSec">
+                    Not a member as yet?
+                    <Link to="#" onClick={this.handleSignupComponent}> Register</Link>
+                  </div>
                 </div>
               </div>
             </form>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       </div>
     );
   }
 }
 
 Login.propTypes = {
-  dispatch: PropsTypes.func.isRequired
+  dispatch: PropsTypes.func.isRequired,
+  mount: PropsTypes.bool.isRequired,
+  handleLoginComponent: PropsTypes.func.isRequired,
+  handleSignupComponent: PropsTypes.func.isRequired
 };
 
 export default Login;

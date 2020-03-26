@@ -24,8 +24,27 @@ router.get(
     failureRedirect: '/login'
   })
 );
+// ===== Facebook Auth ====
+router.get(
+  '/facebook',
+  passport.authenticate('facebook', {
+    scope: ['public_profile','email']
+  })
+);
+
+router.get(
+  '/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+  })
+);
 // ===== Passport Local Authentication ====
-router.post('/authenticate', passport.authenticate('local'), userController.login);
+router.post(
+  '/authenticate',
+  passport.authenticate('local'),
+  userController.login
+);
 router.post('/logout', userController.logout);
 router.get('/users', userController.getUsers);
 router.get('/mails', jobController.getMailDetails);

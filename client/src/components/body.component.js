@@ -35,6 +35,7 @@ export default class Body extends Component {
   }
 
   componentDidMount() {
+    console.log('in cdm body');
     setTimeout(() => {
       const { dispatch, user } = this.props;
       if (Object.keys(user).length) {
@@ -48,7 +49,7 @@ export default class Body extends Component {
           dispatch(bodyActions.getJobs(0));
         }
       }
-    },0);
+    }, 0);
   }
 
   componentDidUpdate(prevProps) {
@@ -99,14 +100,15 @@ export default class Body extends Component {
           roleBasedJobs: filterJob,
           filterFlag: false
         });
+      } else {
+        this.setState({
+          jobsData: filterJob,
+          filterFlag: false
+        });
       }
     } catch (error) {
       console.log('Not a company');
     }
-    this.setState({
-      jobsData: filterJob,
-      filterFlag: false
-    });
   };
 
   handleRemoveLogic = (value) => {

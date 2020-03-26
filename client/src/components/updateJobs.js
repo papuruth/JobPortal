@@ -5,10 +5,6 @@ import Button from './generalComponents/button.component';
 import jobAction from '../redux/addJob/jobActions';
 
 class UpdateJobForm extends React.Component {
-  editjob = JSON.parse(localStorage.getItem('editjob'));
-
-  user = JSON.parse(localStorage.getItem('currentUser'));
-
   constructor(props) {
     super(props);
     this.state = {
@@ -167,7 +163,6 @@ class UpdateJobForm extends React.Component {
   };
 
   render() {
-    const { history } = this.props;
     const {
       city,
       designation,
@@ -177,9 +172,6 @@ class UpdateJobForm extends React.Component {
       addJobValid,
       status
     } = this.state;
-    if (this.user.role === 2) {
-      history.push('/');
-    }
     return (
       <div className="col-md-4 col-md-offset-4">
         <h1 className="underline">Update Job</h1>
@@ -268,7 +260,7 @@ class UpdateJobForm extends React.Component {
           </div>
           <div className="form-group">
             <Button
-              title="Add"
+              title="Save Changes"
               action="submit"
               className="btn btn-success"
               btnDisabled={addJobValid}
@@ -282,8 +274,7 @@ class UpdateJobForm extends React.Component {
 
 UpdateJobForm.propTypes = {
   editjobs: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  history: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default UpdateJobForm;
