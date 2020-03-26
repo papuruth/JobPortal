@@ -10,13 +10,17 @@ import config from '../config';
 import jobAction from '../redux/addJob/jobActions';
 import bodyActions from '../redux/body/bodyActions';
 import loader from '../redux/loader/loaderAction';
+import Login from '../redux-containers/userLogin';
+import Signup from '../redux-containers/userSignup';
 
 class Card extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       hasMore: true,
-      appliedjobs: []
+      appliedjobs: [],
+      openLogin: false,
+      openSignup: false
     };
   }
 
@@ -74,6 +78,36 @@ class Card extends React.Component {
     }
   }
 
+  openLoginComponent = () => {
+    this.setState(state =>{
+      return {
+        openLogin: !state.openLogin,
+        openSignup: false
+      }
+    });
+  };
+
+  handleLoginComponent = (props) => {
+    this.setState({
+      openLogin: props
+    });
+  }
+
+  openSignupComponent = () => {
+    this.setState(state =>{
+      return {
+        openSignup: !state.openSignup,
+        openLogin: false
+      }
+    });
+  };
+
+  handleSignupComponent = (props) => {
+    this.setState({
+      openSignup: props
+    });
+  }
+
   editJob = (event) => {
     event.preventDefault();
     const { id } = event.target;
@@ -90,7 +124,7 @@ class Card extends React.Component {
       const { name, gender } = user;
       dispatch(jobAction.applyJob(id, name, gender));
     } else {
-      history.push('/login');
+      this.openLoginComponent();
     }
   };
 
@@ -130,9 +164,11 @@ class Card extends React.Component {
 
   render() {
     const { data, user, authenticated } = this.props;
-    const { hasMore } = this.state;
+    const { hasMore, openLogin, openSignup } = this.state;
     return (
       <div className="col-sm-12">
+        {!authenticated && openLogin && <Login handleLoginComponent={this.handleLoginComponent} handleSignupComponent={this.handleSignupComponent} mount={openLogin} />}
+        {!authenticated && openSignup && <Signup handleSignupComponent={this.handleSignupComponent} handleLoginComponent={this.handleLoginComponent} mount={openSignup} />}
         <ul className="searchlist">
           <LoadingOverlay
             active={data.length === 0 ? true : this.props.loaderStatus}
