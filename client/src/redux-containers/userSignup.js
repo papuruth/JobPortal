@@ -2,9 +2,9 @@ import { connect } from 'react-redux';
 import Signup from '../components/signup.components';
 
 function mapStateToProps(state) {
-  const { registered } = state.registration;
+  const { isSignup } = state.registration;
   return {
-    registered
+    isSignup
   };
 }
 

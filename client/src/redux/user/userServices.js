@@ -38,7 +38,7 @@ async function register(fullname, email, password, phone, gender) {
       gender
     });
     const { isSignup } = res.data;
-    if (isSignup === true) {
+    if (isSignup) {
       return res.data;
     }
     return 'User exists';

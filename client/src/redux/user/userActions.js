@@ -121,7 +121,6 @@ function register(fullname, email, password, phone, gender) {
         } else {
           dispatch(alertActions.success('Registration successful'));
           dispatch(success(userConstants.REGISTER_SUCCESS, user));
-          history.push('/login');
         }
       })
       .catch((error) => {

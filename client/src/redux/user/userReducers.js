@@ -37,16 +37,14 @@ export function authentication(
   }
 }
 
-export function registration(state = {}, action) {
+export function registration(state = { isSignup: false }, action) {
   switch (action.type) {
     case userConstants.REGISTER_REQUEST:
-      return {};
+      return state;
     case userConstants.REGISTER_SUCCESS:
-      return {
-        registering: true
-      };
+      return { isSignup: true };
     case userConstants.REGISTER_FAILURE:
-      return {};
+      return state;
     default:
       return state;
   }

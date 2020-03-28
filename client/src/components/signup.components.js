@@ -17,8 +17,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 class Signup extends React.Component {
-  isLoggedIn;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -44,6 +42,14 @@ class Signup extends React.Component {
       pswdClass: 'fa fa-eye-slash',
       open: props.mount
     };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if(props.isSignup && state.open) {
+      return {
+        open: false
+      }
+    }
   }
 
   componentDidMount() {
@@ -429,7 +435,8 @@ Signup.propTypes = {
   dispatch: PropTypes.func.isRequired,
   mount: PropTypes.bool.isRequired,
   handleSignupComponent: PropTypes.func.isRequired,
-  handleLoginComponent: PropTypes.func.isRequired
+  handleLoginComponent: PropTypes.func.isRequired,
+  isSignup: PropTypes.bool.isRequired
 };
 
 export default Signup;
