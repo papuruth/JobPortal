@@ -21,8 +21,8 @@ import {
 import { sendMail, profileUpdate } from './profile/profileReducer';
 import { saveMessage, getMessage, getOnlineUser } from './chat/chatReducer';
 import getNotifications from './notifications/notifReducer';
-import loaderReducer from './loader/loaderReducer';
 import fetchJobByCompanyReducer from './fetchJobByCompany/fetchJobByCompanyReducer';
+import loaderReducer from './loader/loaderReducer';
 
 const rootReducer = combineReducers({
   authentication,
