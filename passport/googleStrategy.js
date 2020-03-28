@@ -10,7 +10,7 @@ const strategy = new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: `${config.nodeBaseUrl}/google/callback`
+    callbackURL: '/google/callback'
   },
   (token, tokenSecret, profile, done) => {
     // code
