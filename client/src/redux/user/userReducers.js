@@ -15,17 +15,23 @@ export function authUser(state = { authUser: false }, action) {
   }
 }
 
-export function authentication(state = {}, action) {
+export function authentication(
+  state = {
+    loggedIn: false,
+    currentUser: null
+  },
+  action
+) {
   switch (action.type) {
     case userConstants.LOGIN_REQUEST:
-      return {};
+      return { ...state };
     case userConstants.LOGIN_SUCCESS:
       return {
         loggedIn: true,
         currentUser: action.payload
       };
     case userConstants.LOGIN_FAILURE:
-      return {};
+      return { ...state };
     default:
       return state;
   }

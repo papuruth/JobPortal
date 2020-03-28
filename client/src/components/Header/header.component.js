@@ -57,11 +57,11 @@ class Header extends React.Component {
   };
 
   openLoginComponent = () => {
-    this.setState(state =>{
+    this.setState((state) => {
       return {
         openLogin: !state.openLogin,
         openSignup: false
-      }
+      };
     });
   };
 
@@ -69,14 +69,14 @@ class Header extends React.Component {
     this.setState({
       openLogin: props
     });
-  }
+  };
 
   openSignupComponent = () => {
-    this.setState(state =>{
+    this.setState((state) => {
       return {
         openSignup: !state.openSignup,
         openLogin: false
-      }
+      };
     });
   };
 
@@ -84,15 +84,23 @@ class Header extends React.Component {
     this.setState({
       openSignup: props
     });
-  }
+  };
 
   hideCollapse = () => {
     $('.collapse').collapse('hide');
   };
 
   logout = () => {
-    const { dispatch } = this.props;
-    dispatch(userActions.logout());
+    this.setState(
+      {
+        openLogin: false,
+        openSignup: false
+      },
+      () => {
+        const { dispatch } = this.props;
+        dispatch(userActions.logout());
+      }
+    );
   };
 
   showMail = (e) => {
@@ -140,8 +148,20 @@ class Header extends React.Component {
             </footer>
           </div>
         </div>
-        {!authenticated && openLogin && <Login handleLoginComponent={this.handleLoginComponent} handleSignupComponent={this.handleSignupComponent} mount={openLogin} />}
-        {!authenticated && openSignup && <Signup handleSignupComponent={this.handleSignupComponent} handleLoginComponent={this.handleLoginComponent} mount={openSignup} />}
+        {!authenticated && openLogin && (
+          <Login
+            handleLoginComponent={this.handleLoginComponent}
+            handleSignupComponent={this.handleSignupComponent}
+            mount={openLogin}
+          />
+        )}
+        {!authenticated && openSignup && (
+          <Signup
+            handleSignupComponent={this.handleSignupComponent}
+            handleLoginComponent={this.handleLoginComponent}
+            mount={openSignup}
+          />
+        )}
         <div className="container-fluid mobile-container-fluid">
           <div>
             <div>

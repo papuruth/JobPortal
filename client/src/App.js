@@ -38,7 +38,6 @@ class App extends React.Component {
       // clear alert on location change
       dispatch(alertActions.clear());
     });
-    console.log('in app')
     this.setState({
       openWarningDialog: true
     });
@@ -52,7 +51,6 @@ class App extends React.Component {
   render() {
     const { alert } = this.props;
     const { openWarningDialog } = this.state;
-    console.log(openWarningDialog)
     return (
       <ErrorBoundary>
         <div className="container-fluid mobile-container-fluid">

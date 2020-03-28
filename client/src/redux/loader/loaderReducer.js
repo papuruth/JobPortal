@@ -9,12 +9,12 @@ export default function loaderReducer(state = initialState, action) {
     case loaderConstant.LOADER_REQUEST:
       return {
         ...state,
-        loaderStatus: action.payload
+        loaderStatus: action.payload,
       };
     case loaderConstant.LOADER_SUCCESS:
       return {
         ...state,
-        loaderStatus: action.payload
+        loaderStatus: action.payload,
       };
     default:
       return state;
