@@ -5,12 +5,16 @@ function mapStateToProps(state) {
   const { jobs, pager } = state.jobs;
   const { logoutUser } = state.Logout;
   const { user, authenticated } = state.session;
+  const { loaderStatus } = state.loaderReducer;
+  const {fetchJobByCompany} = state.fetchJobByCompanyReducer;
   return {
     jobs,
     pager,
     logoutUser,
     user,
-    authenticated
+    authenticated,
+    loaderStatus,
+    fetchJobByCompany
   };
 }
 

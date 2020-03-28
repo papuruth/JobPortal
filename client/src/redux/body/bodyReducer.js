@@ -19,7 +19,8 @@ export default function jobs(state = initialState, action) {
         ? {
             ...state,
             jobs: action.payload.jobs,
-            pager: action.payload.pager
+            pager: action.payload.pager,
+            fetchJobByCompany: false
           }
         : {
             ...state,

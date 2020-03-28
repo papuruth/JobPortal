@@ -1,10 +1,11 @@
-/* eslint-disable react/jsx-no-undef */
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Card from '../redux-containers/card';
 import bodyActions from '../redux/body/bodyActions';
 import Filter from './filter.component';
 import loader from '../redux/loader/loaderAction';
+import fetchJobByCompanyAction from '../redux/fetchJobByCompany/fetchJobByCompanyAction';
+import alertActions from '../redux/alert/alertActions';
 
 export default class Body extends Component {
   constructor(props) {
@@ -35,7 +36,6 @@ export default class Body extends Component {
   }
 
   componentDidMount() {
-    console.log('in cdm body');
     setTimeout(() => {
       const { dispatch, user } = this.props;
       if (Object.keys(user).length) {
@@ -53,8 +53,35 @@ export default class Body extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { jobs, pager, dispatch, logoutUser, user } = this.props;
-    dispatch(loader(false));
+    const {
+      jobs,
+      pager,
+      dispatch,
+      logoutUser,
+      user,
+      loaderStatus,
+      fetchJobByCompany
+    } = this.props;
+    if (fetchJobByCompany) {
+      if (Object.keys(user).length) {
+        const page = 0;
+        const { role, name } = user;
+        if (role === 1) {
+          dispatch(fetchJobByCompanyAction(false));
+          dispatch(bodyActions.getJobs(page, role, name));
+          dispatch(loader(true));
+          dispatch(alertActions.clear());
+        } else {
+          dispatch(fetchJobByCompanyAction(false));
+          dispatch(bodyActions.getJobs(0));
+          dispatch(loader(true));
+          dispatch(alertActions.clear());
+        }
+      }
+    }
+    if (loaderStatus) {
+      dispatch(loader(false));
+    }
     if (logoutUser) {
       dispatch(bodyActions.getJobs(0));
     }
@@ -197,7 +224,9 @@ Body.propTypes = {
   pager: PropTypes.oneOfType([PropTypes.object]).isRequired,
   logoutUser: PropTypes.bool,
   user: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  authenticated: PropTypes.bool.isRequired
+  authenticated: PropTypes.bool.isRequired,
+  loaderStatus: PropTypes.bool.isRequired,
+  fetchJobByCompany: PropTypes.bool.isRequired
 };
 
 Body.defaultProps = {
