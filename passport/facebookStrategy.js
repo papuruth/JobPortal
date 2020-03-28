@@ -10,7 +10,7 @@ const facebookStrategy = new FacebookStrategy(
   {
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: '/facebook/callback',
+    callbackURL: `${config.nodeBaseUrl}/facebook/callback`,
     profileFields: ['id', 'displayName', 'name', 'emails', 'photos']
   },
   (accessToken, refreshToken, profile, done) => {
