@@ -51,7 +51,7 @@ const DemoAppWarning = () => {
           >
             This is a demo application intended for development process only and
             not a real job portal. Suggestions are welcomed, if any please feel
-            free to share at{' '}
+            free to share at github repo{' '}
             <a
               href="https://github.com/papuruth/JobPortal/issues"
               target="_blank"

@@ -13,6 +13,7 @@ import Label from './generalComponents/label';
 import googleButton from '../images/loginGoogle.png';
 import facebookButton from '../images/loginFb.png';
 import config from '../config';
+import fetchJobByCompany from '../redux/fetchJobByCompany/fetchJobByCompanyAction';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -68,6 +69,9 @@ class Login extends React.Component {
     const { dispatch } = this.props;
     if (username && password) {
       dispatch(userActions.login(username, password));
+      setTimeout(() => {
+        dispatch(fetchJobByCompany(true));
+      }, 1000);
     }
   };
 

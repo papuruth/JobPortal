@@ -54,14 +54,13 @@ function login(username, password) {
         if (response.status) {
           // store user details in redux-session to keep user logged in between page refreshes
           sessionService
-            .saveUser(response.data.data)
+            .saveSession(response.data.data)
             .then(() => {
-              dispatch(alertActions.success('Login Successful'));
-              dispatch(
-                success(userConstants.LOGIN_SUCCESS, response.data.data)
-              );
-              sessionService.saveSession(response.data.data).then(() => {
-                history.push('/');
+              sessionService.saveUser(response.data.data).then(() => {
+                dispatch(alertActions.success('Login Successful'));
+                dispatch(
+                  success(userConstants.LOGIN_SUCCESS, response.data.data)
+                );
               });
             })
             .catch((err) => console.error(err));
