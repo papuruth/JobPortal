@@ -25,7 +25,7 @@ const config = require('./config');
 app.use(morgan('dev'));
 app.set('env', process.env.NODE_ENV || 'production');
 app.use(cors());
-
+app.enable('trust proxy');
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 app.use(express.static(path.join(__dirname, 'client/src/images')));
