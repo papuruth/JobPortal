@@ -9,7 +9,7 @@ import '../App.css';
 import config from '../config';
 import jobAction from '../redux/addJob/jobActions';
 import bodyActions from '../redux/body/bodyActions';
-import loader from '../redux/loader/loaderAction';
+import loader from '../redux/fetchJobByCompany/fetchJobByCompanyAction';
 import Login from '../redux-containers/userLogin';
 import Signup from '../redux-containers/userSignup';
 
