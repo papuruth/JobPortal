@@ -70,8 +70,9 @@ exports.logout = (req, res) => {
     req.session.destroy();
     res.clearCookie('connect.sid'); // clean up!
     res.json({ status: true });
+  } else {
+    res.json({ status: false });
   }
-  res.json({ status: false });
 };
 
 exports.getUsers = function getUsers(req, res, next) {
