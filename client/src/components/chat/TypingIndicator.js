@@ -9,13 +9,13 @@ export default class TypingIndicator extends React.Component {
     let typersDisplay = '';
     let countTypers = 0;
     /* for each user writing messages in chatroom */
-    for (const key in this.props.isTyping) {
-      /* retrieve the name if it isn't the owner of the chatbox */
-      if (key !== this.props.owner && this.props.isTyping[key]) {
+    Object.keys(this.props.isTyping).forEach((key) => {
+       /* retrieve the name if it isn't the owner of the chatbox */
+       if (key !== this.props.owner && this.props.isTyping[key]) {
         typersDisplay += `, ${key}`;
         countTypers++;
       }
-    }
+    })
     /* formatting text */
     typersDisplay = typersDisplay.substr(1);
     typersDisplay += countTypers > 1 ? ' are ' : ' is ';
