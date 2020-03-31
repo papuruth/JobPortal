@@ -30,9 +30,9 @@ class Server {
     app.set('env', process.env.NODE_ENV || 'production');
     app.use(cors());
     app.enable('trust proxy');
-    app.use(express.static(path.join(__dirname, 'client', 'build')));
+    app.use(express.static(path.resolve('client', 'build')));
 
-    app.use(express.static(path.join(__dirname, 'client/src/images')));
+    app.use(express.static(path.resolve('client', 'src', 'images')));
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
     app.use(
@@ -60,7 +60,7 @@ class Server {
         }
       });
     }
-console.log(path.resolve('client', 'build', 'index.html'))
+console.log(path.resolve('client', 'build'))
     // ===== Handling production mode:
     if (process.env.NODE_ENV === 'production') {
       console.log('YOU ARE IN THE PRODUCTION ENV');
