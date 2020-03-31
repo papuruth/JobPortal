@@ -60,12 +60,12 @@ class Server {
         }
       });
     }
-
+console.log(path.resolve('client', 'build', 'index.html'))
     // ===== Handling production mode:
     if (process.env.NODE_ENV === 'production') {
       console.log('YOU ARE IN THE PRODUCTION ENV');
       app.get('/', (req, res) => {
-        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+        res.sendFile(path.resolve('client', 'build', 'index.html'));
       });
     }
 
