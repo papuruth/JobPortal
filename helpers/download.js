@@ -1,7 +1,7 @@
-const https = require('https');
-const fs = require('fs');
+import https from 'https';
+import fs from 'fs';
 
-module.exports = (filename, url, cb) => {
+const download = (filename, url, cb) => {
   const dest = `./client/src/images/${filename}.jpg`;
   const file = fs.createWriteStream(dest);
   https
@@ -17,3 +17,5 @@ module.exports = (filename, url, cb) => {
       if (cb) cb(err.message, null);
     });
 };
+
+export default download;

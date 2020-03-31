@@ -1,4 +1,4 @@
-const Enum = require('enum');
+import Enum from 'enum';
 
 const role = new Enum({ 0: 0, 1: 1, 2: 2 }, { freez: true });
-module.exports = role;
+export default role;

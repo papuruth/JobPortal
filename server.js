@@ -9,7 +9,7 @@ import morgan from 'morgan';
 import passport from 'passport';
 import path from 'path';
 import socketConfig from './config/socket';
-import dbConnection from './db'; // loads our connection to the mongo database
+import DbConnection from './db'; // loads our connection to the mongo database
 import route from './expressRoutes/routes';
 import nodeMailerConfig from './config/nodeMailer';
 // import passport from './passport';
@@ -38,7 +38,7 @@ class Server {
     app.use(
       session({
         secret: process.env.APP_SECRET || 'this is the default passphrase',
-        store: new MongoStore({ mongooseConnection: dbConnection }),
+        store: new MongoStore({ mongooseConnection: DbConnection() }),
         resave: false,
         saveUninitialized: false
       })

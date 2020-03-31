@@ -1,7 +1,7 @@
-const path = require('path');
-const multer = require('multer');
-const { format } = require('util');
-const { Storage } = require('@google-cloud/storage');
+import path from 'path';
+import multer from 'multer';
+import { format } from 'util';
+import { Storage } from '@google-cloud/storage';
 
 export default class ImageController {
   /**
@@ -13,15 +13,17 @@ export default class ImageController {
       const fileUpload = bucket.file(filename);
       const blobStream = fileUpload.createWriteStream({
         metadata: {
-          contentType: file.mimetype,
-        },
+          contentType: file.mimetype
+        }
       });
       blobStream.on('error', (error) => {
         reject(error);
       });
       blobStream.on('finish', () => {
         // The public URL can be used to directly access the file via HTTP.
-        const url = format(`https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${fileUpload.name}?alt=media`);
+        const url = format(
+          `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${fileUpload.name}?alt=media`
+        );
         resolve(url);
       });
       blobStream.end(file.buffer);
@@ -32,22 +34,22 @@ export default class ImageController {
     try {
       const gcs = new Storage({
         projectId: 'job-portal-mern',
-        keyFilename: './config/firebase_key.json',
+        keyFilename: './config/firebase_key.json'
       });
-      const bucketName ='job-portal-mern.appspot.com';
+      const bucketName = 'job-portal-mern.appspot.com';
 
       const bucket = gcs.bucket(bucketName);
       // ===== Multer storage
       const storage = multer.memoryStorage({
         destination: './client/src/images',
         limits: {
-          fileSize: 10 * 1024 * 1024, // no larger than 5mb
-        },
+          fileSize: 10 * 1024 * 1024 // no larger than 5mb
+        }
       });
 
       // ===== Upload image function
       const uploadImage = multer({
-        storage,
+        storage
       }).single('file');
 
       uploadImage(req, res, (err) => {
@@ -56,7 +58,7 @@ export default class ImageController {
           const filename = req.body.filename + path.extname(file.originalname);
           console.log(filename);
           if (file) {
-              this.uploadImageToStorage(file, filename, bucket)
+            this.uploadImageToStorage(file, filename, bucket)
               .then(() => res.send(filename))
               .catch((error) => {
                 throw new Error(error);
@@ -71,5 +73,4 @@ export default class ImageController {
       res.send(error.message);
     }
   };
-
 }
