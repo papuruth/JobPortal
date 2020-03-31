@@ -9,7 +9,7 @@ import '../App.css';
 import config from '../config';
 import jobAction from '../redux/addJob/jobActions';
 import bodyActions from '../redux/body/bodyActions';
-import loader from '../redux/fetchJobByCompany/fetchJobByCompanyAction';
+import loader from '../redux/loader/loaderAction';
 import Login from '../redux-containers/userLogin';
 import Signup from '../redux-containers/userSignup';
 
@@ -163,7 +163,7 @@ class Card extends React.Component {
   };
 
   render() {
-    const { data, user, authenticated } = this.props;
+    const { data, user, authenticated, loaderStatus} = this.props;
     const { hasMore, openLogin, openSignup } = this.state;
     return (
       <div className="col-sm-12">
@@ -171,7 +171,7 @@ class Card extends React.Component {
         {!authenticated && openSignup && <Signup handleSignupComponent={this.handleSignupComponent} handleLoginComponent={this.handleLoginComponent} mount={openSignup} />}
         <ul className="searchlist">
           <LoadingOverlay
-            active={data.length === 0 ? true : this.props.loaderStatus}
+            active={loaderStatus}
             spinner={<SyncLoader />}
             text="Loading your content..."
           >

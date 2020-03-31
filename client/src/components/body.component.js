@@ -36,6 +36,7 @@ export default class Body extends Component {
   }
 
   componentDidMount() {
+    console.log('in cdm')
     setTimeout(() => {
       const { dispatch, user } = this.props;
       if (Object.keys(user).length) {
@@ -63,18 +64,19 @@ export default class Body extends Component {
       fetchJobByCompany
     } = this.props;
     if (fetchJobByCompany) {
+      console.log('in fjbc')
       if (Object.keys(user).length) {
         const page = 0;
         const { role, name } = user;
         if (role === 1) {
+          dispatch(loader(true));
           dispatch(fetchJobByCompanyAction(false));
           dispatch(bodyActions.getJobs(page, role, name));
-          dispatch(loader(true));
           dispatch(alertActions.clear());
         } else {
+          dispatch(loader(true));
           dispatch(fetchJobByCompanyAction(false));
           dispatch(bodyActions.getJobs(0));
-          dispatch(loader(true));
           dispatch(alertActions.clear());
         }
       }
@@ -107,7 +109,9 @@ export default class Body extends Component {
             pager
           });
         }
-        dispatch(loader(false));
+        if (loaderStatus) {
+          dispatch(loader(false));
+        }
       } catch (error) {
         console.log(error.message);
       }

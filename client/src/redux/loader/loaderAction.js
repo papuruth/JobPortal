@@ -23,8 +23,13 @@ function failure(type, payload) {
 
 function loader(param) {
   return (dispatch) => {
-    dispatch(request(loaderConstant.LOADER_REQUEST, null));
-    dispatch(success(loaderConstant.LOADER_SUCCESS, param));
+    if(!param) {
+      setTimeout(() => {
+        dispatch(success(loaderConstant.LOADER_SUCCESS, param));
+      }, 1000);
+    } else {
+      dispatch(success(loaderConstant.LOADER_SUCCESS, param));
+    }
   };
 }
 
