@@ -8,11 +8,11 @@ import http from 'http';
 import morgan from 'morgan';
 import passport from 'passport';
 import path from 'path';
+import fs from 'fs';
 import socketConfig from './config/socket';
 import DbConnection from './db'; // loads our connection to the mongo database
 import route from './expressRoutes/routes';
 import nodeMailerConfig from './config/nodeMailer';
-// import passport from './passport';
 
 class Server {
   static startApp() {
@@ -55,17 +55,15 @@ class Server {
       app.get('/', (req, res) => {
         if (req.url === '/') {
           res.redirect('http://localhost:3000');
-        } else {
-          app.use('/', route);
         }
       });
     }
-console.log(path.resolve('client', 'build'))
     // ===== Handling production mode:
     if (process.env.NODE_ENV === 'production') {
       console.log('YOU ARE IN THE PRODUCTION ENV');
-      app.get('/', (req, res) => {
-        res.sendFile(path.resolve('client', 'build', 'index.html'));
+      app.get('*', (req, res) => {
+        console.log(req.path);
+        res.sendFile('index.html', { root: path.resolve('client', 'build') });
       });
     }
 

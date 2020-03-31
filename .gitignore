@@ -12,6 +12,9 @@
 /build
 /server-build
 
+# certs
+client-1.local.key
+client-1.localcrt
 # misc
 .DS_Store
 .env

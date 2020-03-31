@@ -16,19 +16,19 @@ import config from '../../config';
 async function addJob(company, profile, designation, salary, city, data) {
   // Calls jobsValidate api to check for duplication
   try {
-    const res = await axios.post(`${config.nodeBaseUrl}/getjobsvalidate`, {
+    const res = await axios.post(`${config.nodeBaseUrl}/api/v1/getjobsvalidate`, {
       company,
       designation
     });
     if (res.data) {
       // Calls image upload api to upload the image and return the image url
       await axios
-        .post(`${config.nodeBaseUrl}/upload`, data)
+        .post(`${config.nodeBaseUrl}/api/v1/upload`, data)
         .then(async (url) => {
           const imageURL = `/${url.data}`;
           // Calls the job api to save the job into db
           await axios
-            .post(`${config.nodeBaseUrl}/jobs`, {
+            .post(`${config.nodeBaseUrl}/api/v1/jobs`, {
               company,
               profile,
               designation,
@@ -56,7 +56,7 @@ async function addJob(company, profile, designation, salary, city, data) {
  */
 async function editJob(id) {
   try {
-    const res = await axios.get(`${config.nodeBaseUrl}/`.concat(id));
+    const res = await axios.get(`${config.nodeBaseUrl}/api/v1/`.concat(id));
     return res.data;
   } catch (err) {
     return err;
@@ -85,7 +85,7 @@ async function updateJob(
   status
 ) {
   try {
-    const res = await axios.put(`${config.nodeBaseUrl}/updatejob/`.concat(id), {
+    const res = await axios.put(`${config.nodeBaseUrl}/api/v1/updatejob/`.concat(id), {
       company,
       profileType,
       designation,
@@ -110,7 +110,7 @@ async function updateJob(
  */
 async function applyJob(id, name, gender) {
   try {
-    const res = await axios.post(`${config.nodeBaseUrl}/apply`, {
+    const res = await axios.post(`${config.nodeBaseUrl}/api/v1/apply`, {
       id,
       name,
       gender
@@ -134,7 +134,7 @@ async function applyJob(id, name, gender) {
  */
 async function getAppliedJob(name) {
   try {
-    const res = await axios.get(`${config.nodeBaseUrl}/appliedjobs`);
+    const res = await axios.get(`${config.nodeBaseUrl}/api/v1/appliedjobs`);
     const filteredData = res.data.filter((item) => {
       if (item.jobDetails.company === name) {
         return true;
@@ -160,7 +160,7 @@ async function getAppliedJob(name) {
  */
 async function removeJob(id) {
   try {
-    const res = await axios.post(`${config.nodeBaseUrl}/deletejob/`.concat(id));
+    const res = await axios.post(`${config.nodeBaseUrl}/api/v1/deletejob/`.concat(id));
     return res.data;
   } catch (error) {
     return error;
@@ -182,7 +182,7 @@ async function updateStatus(id, status) {
     ).toString();
   }
   try {
-    const res = await axios.put(`${config.nodeBaseUrl}/updatejobstatus`, {
+    const res = await axios.put(`${config.nodeBaseUrl}/api/v1/updatejobstatus`, {
       id,
       status
     });
@@ -199,7 +199,7 @@ async function updateStatus(id, status) {
         date: randomDate(new Date(2019, 7, 1), new Date())
       };
       return axios
-        .post(`${config.nodeBaseUrl}/maildetails`, { mailDetails })
+        .post(`${config.nodeBaseUrl}/api/v1/maildetails`, { mailDetails })
         .then((mails) => mails)
         .catch((error) => error.message);
     }

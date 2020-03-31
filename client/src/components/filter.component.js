@@ -106,13 +106,13 @@ class Filter extends React.Component {
 
   reset = () => {
     const { dataFilter, clearFilter } = this.props;
-    const { filterData } = dataFilter;
+    const { filterData, totalJobs } = dataFilter;
     this.setState({
       city: '',
       designation: '',
       company: ''
     });
-    clearFilter(filterData);
+    clearFilter(totalJobs);
   };
 
   render() {

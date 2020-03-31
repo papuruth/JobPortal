@@ -12,7 +12,7 @@ const socketConfig = (server) => {
       console.log(`${username} connected`);
       if (username) {
         await axios
-          .post(`${config.nodeBaseUrl}/online-users`, {
+          .post(`${config.nodeBaseUrl}/api/v1/online-users`, {
             username,
             status: 'Online',
             disconnectTime: ''
@@ -49,7 +49,7 @@ const socketConfig = (server) => {
         console.log(`${username} disconnected`);
         if (username) {
           await axios
-            .post(`${config.nodeBaseUrl}/online-users`, {
+            .post(`${config.nodeBaseUrl}/api/v1/online-users`, {
               username,
               status: 'Offline',
               disconnectTime: moment(new Date(), 'HH:mm')

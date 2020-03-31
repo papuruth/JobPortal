@@ -38,9 +38,11 @@ class App extends React.Component {
       // clear alert on location change
       dispatch(alertActions.clear());
     });
-    this.setState({
-      openWarningDialog: true
-    });
+    if(history.location.pathname === '/') {
+      this.setState({
+        openWarningDialog: true
+      })
+    }
   }
 
   componentDidUpdate() {
@@ -53,8 +55,8 @@ class App extends React.Component {
   }
 
   hideAlert = (e) => {
-    e.preventDefault();
-    document.getElementById('alert').style.display = 'none';
+    const { dispatch } = this.props;
+    dispatch(alertActions.clear());
   };
 
   render() {

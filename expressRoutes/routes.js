@@ -13,10 +13,10 @@ router.use(function timeLog(req, res, next) {
   next();
 });
 // ===== Routing ====
-router.get('/onlineusers', MessageController.getOnlineUsers);
-router.get('/chats', MessageController.getMessages);
-router.get('/user', UserController.authUser);
-router.post('/register', UserController.addUser);
+router.get('/api/v1/onlineusers', MessageController.getOnlineUsers);
+router.get('/api/v1/chats', MessageController.getMessages);
+router.get('/api/v1/user', UserController.authUser);
+router.post('/api/v1/register', UserController.addUser);
 // ===== Google Auth ====
 router.get(
   '/google',
@@ -46,29 +46,29 @@ router.get(
 );
 // ===== Passport Local Authentication ====
 router.post(
-  '/authenticate',
+  '/api/v1/authenticate',
   passport.authenticate('local'),
   UserController.login
 );
-router.post('/logout', UserController.logout);
-router.get('/users', UserController.getUsers);
-router.get('/mails', JobController.getMailDetails);
-router.put('/updateuser/:id', UserController.updateUser);
-router.delete('/deleteuser/:id', UserController.deleteUser);
-router.post('/jobs', JobController.postJobs);
-router.get('/appliedjobs', JobController.getAppliedJobs);
-router.get('/jobs', JobController.getJobs);
-router.get('/:id', JobController.getOneJobs);
-router.put('/updatejob/:id', JobController.updateJobs);
-router.post('/deletejob/:id', JobController.deleteJobs);
-router.post('/apply', JobController.applyJobs);
-router.put('/updatejobstatus', JobController.updateJobStatus);
-router.post('/upload', ImageController.upload);
-router.post('/getjobsvalidate', JobController.validateJobs);
-router.post('/maildetails', JobController.mailDetails);
-router.get('/getoneuser/:id', UserController.getOneUser);
-router.post('/sendmail', MailController.sendMail);
-router.post('/messages', MessageController.saveMessage);
-router.post('/online-users', MessageController.updateOnlineUser);
+router.post('/api/v1/logout', UserController.logout);
+router.get('/api/v1/users', UserController.getUsers);
+router.get('/api/v1/mails', JobController.getMailDetails);
+router.put('/api/v1/updateuser/:id', UserController.updateUser);
+router.delete('/api/v1/deleteuser/:id', UserController.deleteUser);
+router.post('/api/v1/jobs', JobController.postJobs);
+router.get('/api/v1/appliedjobs', JobController.getAppliedJobs);
+router.get('/api/v1/jobs', JobController.getJobs);
+router.get('/api/v1/:id', JobController.getOneJobs);
+router.put('/api/v1/updatejob/:id', JobController.updateJobs);
+router.post('/api/v1/deletejob/:id', JobController.deleteJobs);
+router.post('/api/v1/apply', JobController.applyJobs);
+router.put('/api/v1/updatejobstatus', JobController.updateJobStatus);
+router.post('/api/v1/upload', ImageController.upload);
+router.post('/api/v1/getjobsvalidate', JobController.validateJobs);
+router.post('/api/v1/maildetails', JobController.mailDetails);
+router.get('/api/v1/getoneuser/:id', UserController.getOneUser);
+router.post('/api/v1/sendmail', MailController.sendMail);
+router.post('/api/v1/messages', MessageController.saveMessage);
+router.post('/api/v1/online-users', MessageController.updateOnlineUser);
 
 export default router;

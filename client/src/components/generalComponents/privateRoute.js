@@ -14,44 +14,31 @@ const PrivateRoute = ({
   role,
   ...rest
 }) => {
-  if(user.role === role && authenticated) {
-    return (
-      <Route
-        {...rest}
-        render={(props) => <Component {...props} />}
-      />
-    );
-  }
-  if(restricted && (user.role === 1 || user.role === 0) && authenticated) {
-    return (
-      <Route
-        {...rest}
-        render={(props) => <Component {...props} />}
-      />
-    );
-  }
-  if(notAdmin && (user.role === 1 || user.role === 2) && authenticated) {
-    return (
-      <Route
-        {...rest}
-        render={(props) => <Component {...props} />}
-      />
-    );
-  }
-  if(all && authenticated) {
-    return (
-      <Route
-        {...rest}
-        render={(props) => <Component {...props} />}
-      />
-    );
-  }
-  return (
-    <Route
-      {...rest}
-      render={(props) => <Redirect to="/" />}
-    />
+  console.log(
+    'auth=',
+    authenticated,
+    'restr=',
+    restricted,
+    'na=',
+    notAdmin,
+    'all=',
+    all,
+    'role =',
+    role
   );
+  if (user.role === role && authenticated) {
+    return <Route {...rest} render={(props) => <Component {...props} />} />;
+  }
+  if (restricted && (user.role === 1 || user.role === 0) && authenticated) {
+    return <Route {...rest} render={(props) => <Component {...props} />} />;
+  }
+  if (notAdmin && (user.role === 1 || user.role === 2) && authenticated) {
+    return <Route {...rest} render={(props) => <Component {...props} />} />;
+  }
+  if (all && authenticated) {
+    return <Route {...rest} render={(props) => <Component {...props} />} />;
+  }
+  return <Route {...rest} render={() => <Redirect to="/" />} />;
 };
 
 PrivateRoute.propTypes = {

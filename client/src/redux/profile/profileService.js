@@ -4,14 +4,14 @@ import config from '../../config';
 
 async function updateProfile(id, data, emailId) {
   try {
-    const response = await axios.post(`${config.nodeBaseUrl}/upload`, data);
+    const response = await axios.post(`${config.nodeBaseUrl}/api/v1/upload`, data);
     const image = `/${response.data}`;
     let updatedData;
     await axios
-      .put(`${config.nodeBaseUrl}/updateuser/`.concat(id), { image, emailId })
+      .put(`${config.nodeBaseUrl}/api/v1/updateuser/`.concat(id), { image, emailId })
       .then(async () => {
         await axios
-          .get(`${config.nodeBaseUrl}/getoneuser/`.concat(id))
+          .get(`${config.nodeBaseUrl}/api/v1/getoneuser/`.concat(id))
           .then(async (user) => {
             if (user.data !== null) {
               await sessionService.saveUser(user.data);
@@ -28,7 +28,7 @@ async function updateProfile(id, data, emailId) {
 
 async function sendMail(fullname, email, subject, message) {
   try {
-    const response = await axios.post(`${config.nodeBaseUrl}/sendmail`, {
+    const response = await axios.post(`${config.nodeBaseUrl}/api/v1/sendmail`, {
       fullname,
       email,
       subject,

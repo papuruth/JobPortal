@@ -3,7 +3,7 @@ import config from '../../config';
 
 async function saveMessage(message) {
   try {
-    const response = await axios.post(`${config.nodeBaseUrl}/messages`, {
+    const response = await axios.post(`${config.nodeBaseUrl}/api/v1/messages`, {
       message
     });
     return response.data;
@@ -14,7 +14,7 @@ async function saveMessage(message) {
 
 async function getMessages(sender, receiver) {
   try {
-    const response = await axios.get(`${config.nodeBaseUrl}/chats`, {
+    const response = await axios.get(`${config.nodeBaseUrl}/api/v1/chats`, {
       params: {
         sender,
         receiver
@@ -28,7 +28,7 @@ async function getMessages(sender, receiver) {
 
 async function getOnlineUser(username) {
   try {
-    const response = await axios.get(`${config.nodeBaseUrl}/onlineusers`, {
+    const response = await axios.get(`${config.nodeBaseUrl}/api/v1/onlineusers`, {
       params: {
         username
       }

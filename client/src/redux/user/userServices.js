@@ -3,7 +3,7 @@ import config from '../../config';
 
 async function authUser() {
   try {
-    const response = await axios.get(`${config.nodeBaseUrl}/user`);
+    const response = await axios.get(`${config.nodeBaseUrl}/api/v1/user`);
     return response;
   } catch (error) {
     return error;
@@ -12,7 +12,7 @@ async function authUser() {
 async function login(username, passwd) {
   try {
     const password = btoa(passwd);
-    const response = await axios.post(`${config.nodeBaseUrl}/authenticate`, {
+    const response = await axios.post(`${config.nodeBaseUrl}/api/v1/authenticate`, {
       username,
       password
     });
@@ -23,14 +23,14 @@ async function login(username, passwd) {
 }
 
 async function logout() {
-  const res = await axios.post(`${config.nodeBaseUrl}/logout`);
+  const res = await axios.post(`${config.nodeBaseUrl}/api/v1/logout`);
   return res;
 }
 
 async function register(fullname, email, password, phone, gender) {
   try {
     const passwd = btoa(password);
-    const res = await axios.post(`${config.nodeBaseUrl}/register`, {
+    const res = await axios.post(`${config.nodeBaseUrl}/api/v1/register`, {
       fullname,
       email,
       passwd,
@@ -49,7 +49,7 @@ async function register(fullname, email, password, phone, gender) {
 
 async function getAllUsers(user = null) {
   try {
-    const res = await axios.get(`${config.nodeBaseUrl}/users`, {
+    const res = await axios.get(`${config.nodeBaseUrl}/api/v1/users`, {
       params: {
         user
       }
@@ -63,7 +63,7 @@ async function getAllUsers(user = null) {
 async function editUser(name, emailId, password, phone, _id) {
   try {
     const res = await axios.put(
-      `${config.nodeBaseUrl}/updateuser/`.concat(_id),
+      `${config.nodeBaseUrl}/api/v1/updateuser/`.concat(_id),
       {
         name,
         emailId,
@@ -83,7 +83,7 @@ async function editUser(name, emailId, password, phone, _id) {
 async function deleteUser(_id) {
   try {
     const res = await axios.delete(
-      `${config.nodeBaseUrl}/deleteuser/`.concat(_id)
+      `${config.nodeBaseUrl}/api/v1/deleteuser/`.concat(_id)
     );
     if (res.data.status) {
       return true;
@@ -97,7 +97,7 @@ async function deleteUser(_id) {
 async function banUser(_id, userStatus) {
   try {
     const res = await axios.put(
-      `${config.nodeBaseUrl}/updateuser/`.concat(_id),
+      `${config.nodeBaseUrl}/api/v1/updateuser/`.concat(_id),
       { userStatus }
     );
     return res.data.status;

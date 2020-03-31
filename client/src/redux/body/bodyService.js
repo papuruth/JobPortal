@@ -2,7 +2,7 @@ import axios from 'axios';
 import config from '../../config';
 
 async function getJobs(page, role, name) {
-  const jobs = await axios.get(`${config.nodeBaseUrl}/jobs`, {
+  const jobs = await axios.get(`${config.nodeBaseUrl}/api/v1/jobs`, {
     params: {
       page,
       role,

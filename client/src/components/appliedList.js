@@ -56,6 +56,22 @@ class AppliedList extends React.Component {
     }
   };
 
+  handleChangeClose = (event) => {
+    if (event.target) {
+      let { id } = event.currentTarget;
+      id = id.substring(3);
+      const selectList = [...document.querySelectorAll('select')];
+      const selectId = [];
+      selectList.filter((item, index) => selectId.push(selectList[index].id));
+      selectId.map((item) => {
+        if (id === item) {
+          document.getElementById(item).style.visibility = 'hidden';
+        }
+        return true;
+      });
+    }
+  };
+
   changeStatus = (event) => {
     event.preventDefault();
     const { status } = this.state;
@@ -66,7 +82,7 @@ class AppliedList extends React.Component {
   };
 
   render() {
-    const {user, authenticated} = this.props;
+    const { user, authenticated } = this.props;
     const imageUrl = config.firebase_url.concat(user.image);
     const { appliedjobs } = this.state;
     const statusIndex = [0, 1, 2, 3, 4];
@@ -97,26 +113,24 @@ class AppliedList extends React.Component {
                       alt="Upload Pic"
                     />
                   )}
-                  {user.role === 1 &&
-                    item.userDetails.gender === 'Male' && (
-                      <img
-                        className="img-circle"
-                        src={config.firebase_url.concat(
-                          `${item.userDetails.image}?alt=media`
-                        )}
-                        alt="Upload Pic"
-                      />
-                    )}
-                  {user.role === 1 &&
-                    item.userDetails.gender === 'Female' && (
-                      <img
-                        className="img-circle"
-                        src={config.firebase_url.concat(
-                          `${item.userDetails.image}?alt=media`
-                        )}
-                        alt="Upload Pic"
-                      />
-                    )}
+                  {user.role === 1 && item.userDetails.gender === 'Male' && (
+                    <img
+                      className="img-circle"
+                      src={config.firebase_url.concat(
+                        `${item.userDetails.image}?alt=media`
+                      )}
+                      alt="Upload Pic"
+                    />
+                  )}
+                  {user.role === 1 && item.userDetails.gender === 'Female' && (
+                    <img
+                      className="img-circle"
+                      src={config.firebase_url.concat(
+                        `${item.userDetails.image}?alt=media`
+                      )}
+                      alt="Upload Pic"
+                    />
+                  )}
                 </div>
                 <div className="col-md-4 col-lg-4">
                   <strong>User Details</strong>
@@ -174,7 +188,7 @@ class AppliedList extends React.Component {
                       <dd>{item.jobDetails.city}</dd>
                     </dl>
                     {authenticated && user.role === 1 && (
-                      <dl>
+                      <dl onMouseLeave={this.handleChangeClose} id={`app${item._id}`}>
                         <dt>Status:</dt>
                         {item.statusComp}
                         {user.role === 1 && (
@@ -195,7 +209,10 @@ class AppliedList extends React.Component {
                           style={{ visibility: 'hidden' }}
                         >
                           {statusIndex.map((data) => (
-                            <option value={appliedStatusComp[data].value} key>
+                            <option
+                              value={appliedStatusComp[data].value}
+                              key={appliedStatusComp[data].value}
+                            >
                               {appliedStatusComp[data].value}
                             </option>
                           ))}

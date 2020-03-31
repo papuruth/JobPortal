@@ -13,7 +13,9 @@ export default class Body extends Component {
     this.state = {
       jobsData: [],
       pager: {},
+      toFilter: [],
       roleBasedJobs: [],
+      roleBasedFilter: [],
       filterFlag: true,
       user: {}
     };
@@ -21,10 +23,15 @@ export default class Body extends Component {
 
   static getDerivedStateFromProps(props, state) {
     const { jobs, pager, user } = props;
-    if (jobs !== state.jobs && state.filter) {
+    if (jobs !== state.jobsData && state.filterFlag) {
       return {
         jobsData: jobs,
         pager
+      };
+    }
+    if (jobs !== state.toFilter) {
+      return {
+        toFilter: jobs
       };
     }
     if (user !== state.user) {
@@ -36,7 +43,6 @@ export default class Body extends Component {
   }
 
   componentDidMount() {
-    console.log('in cdm')
     setTimeout(() => {
       const { dispatch, user } = this.props;
       if (Object.keys(user).length) {
@@ -64,7 +70,6 @@ export default class Body extends Component {
       fetchJobByCompany
     } = this.props;
     if (fetchJobByCompany) {
-      console.log('in fjbc')
       if (Object.keys(user).length) {
         const page = 0;
         const { role, name } = user;
@@ -150,10 +155,18 @@ export default class Body extends Component {
   };
 
   clearFilter = (props) => {
-    this.setState((state) => ({
-      filterFlag: !state.filterFlag,
-      jobsData: props
-    }));
+    const { user } = this.props;
+    if (user.role === 1) {
+      this.setState((state) => ({
+        filterFlag: !state.filterFlag,
+        roleBasedJobs: props
+      }));
+    } else {
+      this.setState((state) => ({
+        filterFlag: !state.filterFlag,
+        jobsData: props
+      }));
+    }
   };
 
   render() {
@@ -189,10 +202,11 @@ export default class Body extends Component {
             dataFilter={{ filterData: toFilter, totalJobs: jobsData }}
           />
         )}
-        {authenticated && user.role === 1 && jobsData.length > 0 && (
+        {authenticated && user.role === 1 && roleBasedFilter.length > 0 && (
           <Filter
             filteredData={this.filterMachine}
-            dataFilter={roleBasedFilter}
+            clearFilter={this.clearFilter}
+            dataFilter={{ filterData: roleBasedFilter, totalJobs: jobsData }}
           />
         )}
         {jobsData && pager && !authenticated && (

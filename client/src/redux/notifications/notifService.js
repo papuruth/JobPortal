@@ -9,7 +9,7 @@ import config from '../../config';
  */
 async function getNotifications(name) {
   try {
-    const mails = await axios.get(`${config.nodeBaseUrl}/mails`, {
+    const mails = await axios.get(`${config.nodeBaseUrl}/api/v1/mails`, {
       params: {
         name
       }
