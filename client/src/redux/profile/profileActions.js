@@ -28,8 +28,8 @@ function updateProfile(id, data, emailId) {
     profileService
       .updateProfile(id, data, emailId)
       .then((response) => {
+        dispatch(alertActions.success('Profile Updated Successfully!'));
         dispatch(success(profileConstants.PROFILE_UPDATE_SUCCESS, response));
-        history.push('/profile');
       })
       .catch((error) => {
         dispatch(failure(profileConstants.PROFILE_UPDATE_FAILURE, error));

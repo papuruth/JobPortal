@@ -17,7 +17,6 @@ class Profile extends React.Component {
       subject: '',
       message: '',
       userData: '',
-      profile: {},
       formErrors: {
         photo: '',
         fullname: '',
@@ -36,13 +35,8 @@ class Profile extends React.Component {
   static getDerivedStateFromProps(props, state) {
     if (props.user !== state.userData) {
       return {
-        userData: props.user
-      };
-    }
-
-    if (props.profile !== state.profile) {
-      return {
-        profile: props.profile
+        userData: props.user,
+        imageHash: Date.now()
       };
     }
     return null;
@@ -196,11 +190,12 @@ class Profile extends React.Component {
 
   render() {
     let imageUrl = '';
+    const { userData } = this.state;
     try {
-      if (Object.keys(this.state.profile).length) {
-        imageUrl = config.firebase_url.concat(this.state.profile.image);
+      if (Object.keys(userData).length) {
+        imageUrl = config.firebase_url.concat(userData.image);
       } else {
-        imageUrl = config.firebase_url.concat(this.state.userData.image);
+        imageUrl = config.firebase_url.concat(userData.image);
       }
     } catch (error) {
       console.log(error.message);
@@ -429,7 +424,6 @@ class Profile extends React.Component {
 
 Profile.propTypes = {
   user: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  profile: PropTypes.oneOfType([PropTypes.object]).isRequired,
   dispatch: PropTypes.func.isRequired
 };
 export default Profile;

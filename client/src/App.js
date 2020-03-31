@@ -43,6 +43,15 @@ class App extends React.Component {
     });
   }
 
+  componentDidUpdate() {
+    const { alert, dispatch } = this.props;
+    if (alert.type) {
+      setTimeout(() => {
+        dispatch(alertActions.clear());
+      }, 3000);
+    }
+  }
+
   hideAlert = (e) => {
     e.preventDefault();
     document.getElementById('alert').style.display = 'none';
@@ -58,22 +67,20 @@ class App extends React.Component {
           <div className="content">
             {openWarningDialog && <DemoAppWarning />}
             <div className="">
-              <div className="">
-                {alert.message && (
-                  <div id="alert" className={`alert ${alert.type}`}>
-                    {alert.message}
-                    <span
-                      tabIndex={0}
-                      role="button"
-                      onClick={this.hideAlert}
-                      onKeyPress={this.onKeyPress}
-                      className="w3-button w3-large w3-display-topright"
-                    >
-                      &times;
-                    </span>
-                  </div>
-                )}
-              </div>
+              {alert.message && (
+                <div id="alert" className={`alert ${alert.type}`}>
+                  {alert.message}
+                  <span
+                    tabIndex={0}
+                    role="button"
+                    onClick={this.hideAlert}
+                    onKeyPress={this.onKeyPress}
+                    className="w3-button w3-large w3-display-topright"
+                  >
+                    &times;
+                  </span>
+                </div>
+              )}
             </div>
             <Switch>{routes.map((route, index) => route)}</Switch>
           </div>

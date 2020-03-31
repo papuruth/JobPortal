@@ -30,7 +30,7 @@ const styles = (theme) => ({
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
-      width: '240px',
+      width: '255px',
       flexShrink: 0
     }
   },
@@ -50,7 +50,7 @@ const styles = (theme) => ({
   drawerPaper: {
     width: drawerWidth,
     top: '54px',
-    height: '85%'
+    height: 'calc(100% - 40px)'
   },
   content: {
     flexGrow: 1,

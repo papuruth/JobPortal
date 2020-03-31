@@ -1,13 +1,18 @@
-const express = require('express');
+import express from 'express';
+import passport from '../passport';
+import jobController from '../controllers/job.controller';
+import userController from '../controllers/user.controller';
+import ImageController from '../controllers/imageUpload';
+import MailController from '../controllers/mailController';
+import messageController from '../controllers/messageController';
 
-const router = express.Router();
-const passport = require('../passport');
-const jobController = require('../controllers/job.controller');
-const userController = require('../controllers/user.controller');
-const imageController = require('../controllers/imageUpload');
-const mailController = require('../controllers/mailController');
-const messageController = require('../controllers/messageController');
-
+const router = express.Router({ strict: true });
+// middleware that is specific to this router
+router.use(function timeLog(req, res, next) {
+  console.log('Time: ', Date());
+  next();
+});
+// ===== Routing ====
 router.get('/onlineusers', messageController.getOnlineUsers);
 router.get('/chats', messageController.getMessages);
 router.get('/user', userController.authUser);
@@ -28,7 +33,7 @@ router.get(
 router.get(
   '/facebook',
   passport.authenticate('facebook', {
-    scope: ['public_profile','email']
+    scope: ['public_profile', 'email']
   })
 );
 
@@ -58,12 +63,12 @@ router.put('/updatejob/:id', jobController.updateJobs);
 router.post('/deletejob/:id', jobController.deleteJobs);
 router.post('/apply', jobController.applyJobs);
 router.put('/updatejobstatus', jobController.updateJobStatus);
-router.post('/upload', imageController.upload);
+router.post('/upload', ImageController.upload);
 router.post('/getjobsvalidate', jobController.validateJobs);
 router.post('/maildetails', jobController.mailDetails);
 router.get('/getoneuser/:id', userController.getOneUser);
-router.post('/sendmail', mailController.sendMail);
+router.post('/sendmail', MailController.sendMail);
 router.post('/messages', messageController.saveMessage);
 router.post('/online-users', messageController.updateOnlineUser);
 
-module.exports = router;
+export default router;
