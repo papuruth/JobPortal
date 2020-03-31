@@ -14,7 +14,7 @@
 
 # certs
 client-1.local.key
-client-1.localcrt
+client-1.local.crt
 # misc
 .DS_Store
 .env
