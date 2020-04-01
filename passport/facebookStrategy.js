@@ -1,10 +1,10 @@
-const FacebookStrategy = require('passport-facebook').Strategy;
-const request = require('request');
-const fs = require('fs');
-const User = require('../models/user');
-const roles = require('../enum/userRoles');
-const Download = require('../helpers/download');
-const config = require('../config');
+import { Strategy as FacebookStrategy } from 'passport-facebook';
+import request from 'request';
+import fs from 'fs';
+import User from '../models/user';
+import userRoles from '../enum/userRoles';
+import Download from '../helpers/download';
+import config from '../config';
 
 const facebookStrategy = new FacebookStrategy(
   {
@@ -14,10 +14,9 @@ const facebookStrategy = new FacebookStrategy(
     profileFields: ['id', 'displayName', 'name', 'emails', 'photos']
   },
   (accessToken, refreshToken, profile, done) => {
-    console.log(profile);
     // code
     const { id, displayName, photos, emails, gender } = profile;
-    User.findOne({ 'facebook.fbId': id }, (err, userMatch) => {
+    User.findOne({ 'facebook.fbId': id }, async (err, userMatch) => {
       // handle errors here:
       if (err) {
         console.log('Error!! trying to find user with facebookId');
@@ -33,30 +32,31 @@ const facebookStrategy = new FacebookStrategy(
         'facebook.fbId': id,
         name: displayName,
         image: '/'.concat(emails[0].value).concat('.jpg'),
-        role: roles[2].value,
+        role: userRoles[2],
         emailId: emails[0].value,
         userStatus: 1,
         phone: null,
         gender: gender || null
       });
+
       // Download the user profile image
-      Download(emails[0].value, photos[0].value, (error, dest) => {
-        if (error) console.log('error in downloading dp');
-        else {
-          const filename = `${emails[0].value}`;
-          request.post(
-            `${config.nodeBaseUrl}/upload`,
-            { formData: { filename, file: fs.createReadStream(dest) } },
-            (errUpload, response) => {
-              if (errUpload) {
-                console.log(errUpload.message);
-              } else {
-                console.log(response.body);
-              }
+      try {
+        const dest = await Download(`${emails[0].value}.jpg`, photos[0].value);
+        const filename = `${emails[0].value}`;
+        request.post(
+          `${config.nodeBaseUrl}/api/v1/upload`,
+          { formData: { filename, file: fs.createReadStream(dest) } },
+          (errUpload, response) => {
+            if (errUpload) {
+              console.log(errUpload.message);
+            } else {
+              console.log(response.body);
             }
-          );
-        }
-      });
+          }
+        );
+      } catch (error) {
+        console.log(error.message);
+      }
 
       // save this user
       newFacebookUser.save((err1, savedUser) => {
@@ -70,4 +70,4 @@ const facebookStrategy = new FacebookStrategy(
   }
 );
 
-module.exports = facebookStrategy;
+export default facebookStrategy;
