@@ -1,10 +1,10 @@
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const request = require('request');
-const fs = require('fs');
-const User = require('../models/user');
-const roles = require('../enum/userRoles');
-const Download = require('../helpers/download');
-const config = require('../config');
+import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
+import request from 'request';
+import fs from 'fs';
+import User from '../models/user';
+import userRoles from '../enum/userRoles';
+import Download from '../helpers/download';
+import config from '../config';
 
 const strategy = new GoogleStrategy(
   {
@@ -15,7 +15,7 @@ const strategy = new GoogleStrategy(
   (token, tokenSecret, profile, done) => {
     // code
     const { id, displayName, photos, emails, gender } = profile;
-    User.findOne({ 'google.googleId': id }, (err, userMatch) => {
+    User.findOne({ 'google.googleId': id }, async (err, userMatch) => {
       // handle errors here:
       if (err) {
         console.log('Error!! trying to find user with googleId');
@@ -31,30 +31,32 @@ const strategy = new GoogleStrategy(
         'google.googleId': id,
         name: displayName,
         image: '/'.concat(emails[0].value).concat('.jpg'),
-        role: roles[2].value,
+        role: userRoles[2],
         emailId: emails[0].value,
         userStatus: 1,
         phone: null,
         gender: gender || null
       });
+
       // Download the user profile image
-      Download(emails[0].value, photos[0].value, (error, dest) => {
-        if (error) console.log('error in downloading dp');
-        else {
-          const filename = `${emails[0].value}`;
-          request.post(
-            `${config.nodeBaseUrl}/upload`,
-            { formData: { filename, file: fs.createReadStream(dest) } },
-            (errUpload, response) => {
-              if (errUpload) {
-                console.log(errUpload.message);
-              } else {
-                console.log(response.body);
-              }
+      try {
+        const dest = await Download(`${emails[0].value}.jpg`, photos[0].value);
+        console.log(dest)
+        const filename = `${emails[0].value}`;
+        request.post(
+          `${config.nodeBaseUrl}/api/v1/upload`,
+          { formData: { filename, file: fs.createReadStream(dest) } },
+          (errUpload, response) => {
+            if (errUpload) {
+              console.log(errUpload.message);
+            } else {
+              console.log(response.body);
             }
-          );
-        }
-      });
+          }
+        );
+      } catch (error) {
+        console.log(error.message);
+      }
 
       // save this user
       newGoogleUser.save((err1, savedUser) => {
@@ -68,4 +70,4 @@ const strategy = new GoogleStrategy(
   }
 );
 
-module.exports = strategy;
+export default strategy;

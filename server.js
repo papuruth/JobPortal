@@ -8,7 +8,6 @@ import http from 'http';
 import morgan from 'morgan';
 import passport from 'passport';
 import path from 'path';
-import fs from 'fs';
 import socketConfig from './config/socket';
 import DbConnection from './db'; // loads our connection to the mongo database
 import route from './expressRoutes/routes';

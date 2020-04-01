@@ -52,7 +52,7 @@
     "prod:build-server-watch": "cross-env NODE_ENV=production webpack --config webpack.server.js --watch",
     "prod:server": "nodemon --watch server-build --exec \"node server-build/bundle.js\"",
     "dev": "npm run build-server && npm-run-all --parallel dev:*",
-    "client": "cd client && npm start",
+    "prod:client": "cd client && npm start",
     "build-client": "cd client && npm run build",
     "build-server": "cross-env NODE_ENV=development webpack --config webpack.server.js",
     "dev:build-server": "cross-env NODE_ENV=development webpack --config webpack.server.js --watch",

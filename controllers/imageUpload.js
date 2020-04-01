@@ -1,7 +1,9 @@
 import path from 'path';
+import fs from 'fs';
 import multer from 'multer';
 import { format } from 'util';
 import { Storage } from '@google-cloud/storage';
+import Download from '../helpers/download';
 
 export default class ImageController {
   /**
@@ -24,17 +26,22 @@ export default class ImageController {
         const url = format(
           `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${fileUpload.name}?alt=media`
         );
+        fs.unlinkSync(path.resolve('client', 'src', 'images/firebase-key.json'));
         resolve(url);
       });
       blobStream.end(file.buffer);
     });
   };
 
-  static upload = (req, res) => {
+  static upload = async (req, res) => {
     try {
+      const fileName = 'firebase-key.json';
+      const fileUrl = 'https://firebasestorage.googleapis.com/v0/b/job-portal-mern.appspot.com/o/firebase_key.json?alt=media';
+      const keyFileName = await Download(fileName,fileUrl)
+      console.log(keyFileName)
       const gcs = new Storage({
         projectId: 'job-portal-mern',
-        keyFilename: './config/firebase_key.json'
+        keyFilename: path.resolve('client', 'src', 'images/firebase-key.json')
       });
       const bucketName = 'job-portal-mern.appspot.com';
 
