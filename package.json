@@ -42,8 +42,8 @@
     "rimraf": "^3.0.2",
     "socket.io": "^2.2.0",
     "uuid": "^3.3.2",
-    "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11",
+    "webpack": "^5.1.1",
+    "webpack-cli": "^4.0.0",
     "webpack-node-externals": "^1.7.2",
     "snyk": "^1.414.1"
   },
