@@ -44,8 +44,7 @@
     "uuid": "^3.3.2",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
-    "webpack-node-externals": "^1.7.2",
-    "snyk": "^1.414.1"
+    "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
     "start": "npm run prod:build-server && npm-run-all --parallel prod:*",
@@ -58,9 +57,7 @@
     "build-server": "cross-env NODE_ENV=development webpack --config webpack.server.js",
     "dev:build-server": "cross-env NODE_ENV=development webpack --config webpack.server.js --watch",
     "dev:server": "nodemon --watch server-build --exec \"node server-build/bundle.js\"",
-    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "browserslist": {
     "production": [
@@ -82,6 +79,5 @@
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-prettier": "^3.1.2",
     "prettier": "1.19.1"
-  },
-  "snyk": true
+  }
 }
