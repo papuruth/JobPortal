@@ -57,7 +57,7 @@
     "build-server": "cross-env NODE_ENV=development webpack --config webpack.server.js",
     "dev:build-server": "cross-env NODE_ENV=development webpack --config webpack.server.js --watch",
     "dev:server": "nodemon --watch server-build --exec \"node server-build/bundle.js\"",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install --production=false && npm run build"
   },
   "browserslist": {
     "production": [
